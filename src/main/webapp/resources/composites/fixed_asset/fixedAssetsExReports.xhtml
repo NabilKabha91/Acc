@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="fixedAssetsExReports" required="true"
+		default="true" type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<h:form>
+
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						
+						<div>
+						
+						<p:panelGrid id="b" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+							
+							<p:column></p:column>
+						<p:column>
+							<center><h1 style="font-weight: bold">تقارير الإستبعاد</h1></center>
+							</p:column>
+							
+				<p:column>
+				<div style="float:left">
+				<common:printHeader  target="@form" office="#{utils.getCurrentOffice()}"
+									
+									 style="width:auto; border-radius:20px;background-color:#888888"
+										reportName="تقارير الاستبعادات">
+
+									</common:printHeader>
+									<p:commandButton value="اصدار الى اكسل "   id="exportEx"  style="width:auto; border-radius:20px;background-color:#888888" action="#{exclusionMB.exportToExcel}">
+			</p:commandButton> </div>
+									</p:column>
+									<p:column></p:column>
+									
+									
+										<p:column></p:column>
+			
+									
+										
+									</p:panelGrid>
+						</div>
+						<p:panelGrid id="a" columns="4" layout="grid"
+								styleClass="ui-panelgrid-blank form-group">
+
+								<p:column>
+
+									<h:panelGroup styleClass="md-inputfield">
+										<p:inputText id="g"
+		
+											value="#{exclusionMB.fromDate}"
+											required="true" />
+										<label>البحث عن طريق السنة</label>
+
+									</h:panelGroup>
+								</p:column>
+								
+								
+								
+								<p:commandButton value="بحث" icon="ui-icon-search" style="width:auto; border-radius:20px;background-color:#888888"
+				action="#{exclusionMB.showExclusion()}" process="@form" update="@form" />
+				<p:column></p:column>
+								<p:column></p:column>
+								<p:column>
+							
+								</p:column>
+								</p:panelGrid>
+									
+							
+						
+								<p:dataTable    emptyMessage="#{msg['noRecord']}" id="billsDetails" var="det" styleClass="txt-center" value="#{exclusionMB.exclusionList2}" rendered="#{exclusionMB.tableHide}">
+					<p:column   headerText="اسم الاصل">
+						
+							                      <p:outputLabel  value="#{det.asset.assetName}"  />
+							                      <f:facet name="footer">
+									<h:outputLabel style="color: Black;font-size: 15px;font-weight:bold"
+									>
+									المجموع
+									</h:outputLabel>
+								</f:facet>
+						
+								</p:column>
+												
+								<p:column  headerText="تاريخ الاستبعاد">
+	                    
+						  <p:outputLabel  value="#{det.date1}"  >
+						  <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3"/>
+						  </p:outputLabel>
+					
+					</p:column>						
+												
+														
+									<p:column  headerText="بيع/اتلاف  ">
+	                    
+						 <p:outputLabel  value="بيع" rendered="#{det.disposalOrSale eq 1 }"/>
+					 <p:outputLabel  value="اتلاف" rendered="#{det.disposalOrSale eq 2 }"/>
+						 
+					
+					</p:column>		
+							<p:column  headerText="الحساب المدين">
+							
+							 <p:outputLabel  value="#{det.group1}"  />
+	                    
+	                      															             
+	                   
+						
+					
+					</p:column>		
+					<p:column  headerText="القيمة المحصلة من البيع ">
+					 <p:outputLabel  value="#{det.disposalOrSale eq 2?0:det.theValueObtainedFromTheSale}"  />
+					<f:facet name="footer">
+									<h:outputLabel style="color: Black;font-size: 15px;font-weight:bold"
+										value="#{exclusionMB.exclusionList2.stream().map(s->s.theValueObtainedFromTheSale).sum()}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputLabel>
+								</f:facet>
+							</p:column>			
+								
+					<p:column headerText="قيمة الاصل التاريخية"  >
+						 <p:outputLabel  value="#{det.assetValue}"  />
+						 <f:facet name="footer">
+									<h:outputLabel style="color: Black;font-size: 15px;font-weight:bold"
+										value="#{exclusionMB.exclusionList2.stream().map(s->s.assetValue).sum()}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputLabel>
+								</f:facet>
+							
+					</p:column>	
+					<p:column headerText="الاستهلاك المتراكم لتاريخه"  >
+						 <p:outputLabel  value="#{det.accumlatedDepreciation}"  />
+						  <f:facet name="footer">
+									<h:outputLabel style="color: Black;font-size: 15px;font-weight:bold"
+										value="#{exclusionMB.exclusionList2.stream().map(s->s.accumlatedDepreciation).sum()}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputLabel>
+								</f:facet>
+							
+					</p:column>	
+					<p:column headerText="صافي القيمة الدفترية"  >
+					 <p:outputLabel  value="#{det.netBookValue}"  />
+					  <f:facet name="footer">
+									<h:outputLabel style="color: Black;font-size: 15px;font-weight:bold"
+										value="#{exclusionMB.exclusionList2.stream().map(s->s.netBookValue).sum()}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputLabel>
+								</f:facet>
+							
+					</p:column>	
+					<p:column headerText="ربح/خسارة"  >
+								 <p:outputLabel  value="#{det.gainAndLoss}"  />
+								  <f:facet name="footer">
+									<h:outputLabel style="color: Black;font-size: 15px;font-weight:bold"
+										value="#{exclusionMB.exclusionList2.stream().map(s->s.gainAndLoss).sum()}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputLabel>
+								</f:facet>
+					</p:column>						
+														</p:dataTable>
+				
+
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</composite:implementation>
+</body>
+</html>

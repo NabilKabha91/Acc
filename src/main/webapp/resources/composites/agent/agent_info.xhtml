@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addAgent" required="true" default="true" type="java.lang.Boolean"
+		shortDescription="true for add agent, false for edit " />
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>#{cc.attrs.title}</h1>
+					<p:panelGrid id="pnlAgent" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						<p:selectOneMenu id="agentList" value="#{agentMB.agentsInfo}" style="margin-bottom:10px;"
+							converter="omnifaces.SelectItemsConverter" rendered="#{!cc.attrs.addAgent}" filter="true" filterMatchMode="contains">
+							<p:ajax update="pnlAgent" />
+							<f:selectItem itemLabel="#{msg['agent.select_agent']}" itemValue="" />
+							<f:selectItems value="#{agentMB.agentList}" var="agent" itemLabel="#{agent.agentNameAr}" itemValue="#{agent}" />
+						</p:selectOneMenu>
+						<p:spacer rendered="#{!cc.attrs.addAgent}" />
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{agentMB.agentsInfo.agentNameAr}" required="true" />
+							<label>#{msg['addAgent.agent_name']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{agentMB.agentsInfo.address}" />
+							<label>#{msg['addAgent.agent_address']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{agentMB.agentsInfo.email}" />
+							<label>#{msg['addAgent.agent_email']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{agentMB.agentsInfo.phoneNumber}" required="true" />
+							<label>#{msg['addAgent.agent_phone']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{agentMB.agentsInfo.faxNumber}" />
+							<label>#{msg['addAgent.agent_fax']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{agentMB.agentsInfo.pox}" />
+							<label>#{msg['addAgent.agent_pox']}</label>
+						</h:panelGroup>
+					</p:panelGrid>
+
+	<h:panelGroup layout="block" id="UP" styleClass=" Wid80 MarAuto">
+				
+				<p:fileUpload id="up" disabled="#{!permissionMB.uploudBTN}"  onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" label=" #{screenLabels.UPLOAD_BTN} - excel" auto="true"
+					fileUploadListener="#{agentMB.upload}" mode="advanced" dragDropSupport="false" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(xlsx)$/"
+					update="@form" process="@form" invalidFileMessage=" يرجى رفع ملف اكسل بصيغة xlsx فقط " > 
+				</p:fileUpload>
+			</h:panelGroup>
+
+
+
+
+
+
+
+
+
+
+
+
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{agentMB.saveAgent()}"
+						process="@form" update="@form" rendered="#{cc.attrs.addAgent}" />
+
+					<p:commandButton value="#{msg['edit_btn']}" icon="ui-icon-edit" style="width:auto" action="#{agentMB.saveAgent()}"
+						process="@form" update="@form" rendered="#{!cc.attrs.addAgent}" />
+
+					<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{agentMB.cancelAction()}" />
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

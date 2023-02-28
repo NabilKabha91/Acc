@@ -1,0 +1,172 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	 template="/WEB-INF/template.xhtml">
+	<ui:define name="title"> #{msg['Statement_of_account']} </ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+
+<h:form id="officeInfo">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px"> #{msg['Statement_of_account']} </h1>
+						<p:panelGrid id="pnlReport" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+							<p:selectOneMenu id="bonusesList" value="#{statementOfAccountSuppliersMB.suppliers}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter" required="true"
+									requiredMessage=" #{msg['Supplier_Name']} #{msg['required']}"
+									 filter="true" filterMatchMode="contains" multiple="true">
+									 
+									<f:selectItem itemLabel=" #{msg['select']} " itemValue="" />
+								
+									<f:selectItems value="#{statementOfAccountSuppliersMB.suppliersList}" var="suppliers" itemLabel="#{utils.isArabic() ? suppliers.suppliersNameAr : suppliers.suppliersNameEn}" itemValue="#{suppliers}" />
+									
+								</p:selectOneMenu>
+							<p:spacer />
+
+								<p:row>
+								<p:column>
+									<h:panelGroup >
+																			<label>#{msg['report.from_date']}:</label>
+									
+										<p:calendar value="#{statementOfAccountSuppliersMB.fromDate}" pattern="yyyy/MM/dd">
+											<p:ajax event="dateSelect" process="@form" update="@form" ></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+																<p:column>
+								</p:column>
+								<p:column>
+									<h:panelGroup >
+											<label>#{msg['report.to_date']}:</label>
+									
+										<p:calendar value="#{statementOfAccountSuppliersMB.toDate}" pattern="yyyy/MM/dd">
+											<p:ajax process="@form" update="@form" ></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+							</p:row>		
+								   
+							<p:spacer />
+
+						</p:panelGrid>
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto" action="#{statementOfAccountSuppliersMB.init2()}"
+							process="@form" update="@form" />
+							
+						
+						<br />
+					</div>
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+								<p:commandButton value="اصدار الى اكسل "   id="exportEx"  style="width:auto" action="#{statementOfAccountSuppliersMB.exportToExcel}">
+			</p:commandButton>
+									<common:printHeader target="@form:print" office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['Statement_of_account']}  ">
+
+									</common:printHeader>
+	
+	<p:panelGrid columns="2" styleClass="no-border" style="width :100%;  direction:#{localeMB.dir}" 
+										>
+
+										<p:outputLabel for="user" value=" #{msg['Supplier_Name']}:" />
+								<p:outputLabel id="user" value="#{utils.isArabic() ?statementOfAccountSuppliersMB.suppliers.suppliersNameAr:statementOfAccountSuppliersMB.suppliers.suppliersNameEn}" />
+								
+								<p:outputLabel for="usercode" value="كود العميل :" />
+								<p:outputLabel id="usercode" value="#{statementOfAccountSuppliersMB.suppliers.previousCode}" />
+									
+
+ 
+                        
+                        <center>
+										<p:outputLabel style="color: red;font-size: 20px;font-weight:bold;" id="emp" value="#{selectCompany.legalCompanyName}"/>
+</center>									
+									</p:panelGrid>
+							
+									<p:dataTable var="record" value="#{statementOfAccountSuppliersMB.statementAccountList}" id="groupList" >
+						<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Date']}"  />
+					</f:facet>
+					<h:outputLabel  value="#{record.date}" >
+																				<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3"/>
+					
+					</h:outputLabel>
+				</p:column>
+						<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Type_of_document']}"/>
+					</f:facet>
+					<p:commandLink  value="#{record.documentType}"  >
+					
+					</p:commandLink>
+				</p:column>
+				
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Document_Number']}"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.documentNumber}" >
+					</h:outputLabel>
+				</p:column>
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Descreption']}  " />
+					</f:facet>
+					<h:outputLabel  value="#{record.description}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Debit']}  "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.debit}" >
+						                      											 <f:convertNumber pattern="###,###.##"/>
+					
+					</h:outputLabel>
+				</p:column>
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Credit']}  " />
+					</f:facet>
+					<h:outputLabel  value="#{record.credit}" >
+						                      											 <f:convertNumber pattern="###,###.##"/>
+					
+					</h:outputLabel>
+				</p:column>
+				
+				<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Balance']}"  />
+					</f:facet>
+					<h:outputLabel  value="#{record.total}" >
+						                      											 <f:convertNumber pattern="###,###.##"/>
+					
+					</h:outputLabel>
+				</p:column>
+				
+					</p:dataTable>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+
+		
+			
+								
+		
+
+	</ui:define>
+</ui:composition>

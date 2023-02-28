@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+		<h:outputStylesheet>
+		</h:outputStylesheet>
+		<h:form id="companyInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+			
+			
+				<p:commandButton icon="ui-icon-add" value="#{msg['addCompany']}" action="#{companyMB.init()}" actionListener="#{companyDetailsMB.redirectToCompanyAddition()}"  >
+					<f:setPropertyActionListener value="true" target="#{companyMB.addCompany}" />
+				</p:commandButton>
+				
+				
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="companyDetails" var="det" styleClass="txt-center" value="#{companyDetailsMB.companyList}">
+					
+
+					<p:column filterBy="#{det.legalCompanyName}" headerText="#{msg['addCompany.legalCompanyName']}">
+						<p:outputLabel value="#{det.legalCompanyName}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.companyCommercialName}" headerText="#{msg['addCompany.companyCommercialName']}">
+						<p:outputLabel value="#{det.companyCommercialName}" />
+					</p:column>
+
+				<p:column filterBy="#{det.companyType}" headerText="#{msg['addCompany.companyType']}">
+<p:selectOneMenu value="#{det.companyType}" required="true" >
+						<f:selectItem itemLabel="#{msg['addCompany.companyType']}" itemValue="" />
+					<f:selectItems value="#{companyMB.comTypeList}" />
+						</p:selectOneMenu>
+												</p:column>
+
+					<p:column  filterBy="#{det.companyActivityNature}" headerText="#{msg['addCompany.companyActivityNature']}">
+						<p:outputLabel value="#{det.companyActivityNature}" />
+					</p:column>
+
+					<p:column filterBy="#{det.nationalCompanyNumber}" headerText="#{msg['addCompany.companyId']}">
+						<p:outputLabel value="#{det.legalCompanyName}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.registrationId}" headerText="#{msg['addCompany.registrationId']}">
+						<p:outputLabel value="#{det.registrationId}" />
+					</p:column>
+					
+					
+					
+					<p:column filterBy="#{det.companyGoal}" headerText="#{msg['addCompany.companyGoal']}">
+						<p:outputLabel value="#{det.companyGoal}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.email}" headerText="#{msg['addCompany.email']}">
+						<p:outputLabel value="#{det.email}" />
+					</p:column>
+
+				<p:column filterBy="#{det.phoneNumber}" headerText="#{msg['addCompany.phone_number']}">
+						<p:outputLabel value="#{det.phoneNumber}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.address}" headerText="#{msg['addCompany.address']}">
+						<p:outputLabel value="#{det.address}" />
+					</p:column>
+
+					<p:column filterBy="#{det.pox}" headerText="#{msg['addCompany.pox']}">
+						<p:outputLabel value="#{det.pox}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.faxNumber}" headerText="#{msg['addCompany.fax']}">
+						<p:outputLabel value="#{det.faxNumber}" />
+					</p:column>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.pox}" />
+							<label>#{msg['addCompany.pox']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.faxNumber}" />
+							<label>#{msg['addCompany.fax']}</label>
+						</h:panelGroup>
+					
+				<p:column filterBy="#{det.closeFinancial}" headerText="تاريخ اغلاق السنة المالية ">
+						<p:outputLabel value="#{det.closeFinancial}" />
+					</p:column>
+					
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit"  actionListener="#{companyDetailsMB.redirectToCompanyEdit()}" process="@this" >
+						    <f:setPropertyActionListener value="#{det}" target="#{companyMB.company}" />
+						    <f:setPropertyActionListener value="false" target="#{companyMB.addCompany}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_Company']}" trackMouse="true" />
+					<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{companyDetailsMB.deleteCompany(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+						
+					</p:column>
+					
+					
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

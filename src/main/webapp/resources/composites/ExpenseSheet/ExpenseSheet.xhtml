@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="ExpenseSheet" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+</composite:interface>
+</head>
+<body>
+	<h:outputStylesheet library="css" name="custom-v2.8.css" />
+	<h:outputStylesheet rendered="#{cc.attrs.addWordCss}" library="css"
+		name="word.css" />
+	<composite:implementation>
+
+
+
+		<div class="ui-g">
+
+
+
+
+
+
+
+			<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">
+
+				<div class="card card-w-title">
+				
+				<div align ="center">
+					<p:outputLabel value="ExpenseSheet" align="center" style="font-size:30px"></p:outputLabel>
+</div>
+					<p:commandButton
+						action="#{expenseSheetMB.addNewDetails()}"
+						oncomplete="PF('bui').hide()" onstart="PF('bui').show()"
+						style="width:auto" value="Add Newline" process="@this" 
+						icon="ui-icon-plus" />
+
+
+
+
+
+						<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet"
+							rowIndexVar="index" var="det" styleClass="txt-center"
+							value="#{expenseSheetMB.addExpenseSheetist}"
+							style="border:hidden;">
+
+
+
+
+							<p:column headerText="#" width="20" style="border:hidden;">
+
+								<h:outputText value="#{index+1}" />
+
+
+
+							</p:column>
+
+
+
+							<p:column headerText="Items" width="90"
+								style="border:hidden;">
+								<p:selectOneMenu required="true"
+									converter="omnifaces.SelectItemsConverter" filter="true"
+									filterMatchMode="contains" id="agents"
+									value="#{det.items}" style="margin-bottom:10px;"
+									styleClass="Wid100">
+									<p:ajax event="change" process="@this" update="tblSheet" />
+									<f:selectItem itemLabel="#{msg['select']}" />
+									
+									<f:selectItems
+										value="#{expenseSheetMB.itemsScreenList}"
+										var="itemsScreen"
+										itemLabel="#{utils.isArabic() ?itemsScreen.nameItem:itemsScreen.nameItemEn}"
+										itemValue="#{itemsScreen}" />
+								</p:selectOneMenu>
+							</p:column>
+
+							<p:column headerText="Date" width="50"
+								style="border:hidden;">
+							  <p:calendar value="#{det.date}" />
+         
+							</p:column>  
+
+					
+							<p:column headerText="QT" width="50"
+								style="border:hidden;">
+								     <p:inputNumber  value="#{det.qT}" />
+								
+							</p:column>
+							<p:column headerText="Price" width="50" style="border:hidden;">
+								  <p:inputNumber  value="#{det.price}" />
+							</p:column>
+							<p:column headerText="Cost" width="30"
+								style="border:hidden;">
+                               <p:inputNumber  value="#{det.cost}" />
+							
+							</p:column>
+
+					<p:column headerText="Invoice" width="30"
+								style="border:hidden;">
+                                 <p:inputNumber  value="#{det.invoice}" />
+								
+							</p:column>
+							
+						<p:column headerText="Suppliers" width="30"
+								style="border:hidden;">
+				<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" 
+									value="#{det.suppliers}" style="margin-bottom:10px;"
+									styleClass="Wid100" required="true">
+							  	<f:selectItem itemLabel="#{msg['select']}" />
+									
+									<f:selectItems
+										value="#{expenseSheetMB.suppliersList}"
+										var="suppliers"
+										itemLabel="#{utils.isArabic() ?suppliers.suppliersNameAr:suppliers.suppliersNameEn}"
+										itemValue="#{suppliers}" />
+		               </p:selectOneMenu>
+							</p:column>
+				
+									
+							<p:column headerText="Cost Center" width="30"
+										style="border:hidden;">
+							<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="group2"
+									value="#{det.costCenter}" style="margin-bottom:10px;"
+									styleClass="Wid100" required="true" >
+									<f:selectItem itemLabel="مراكز التكلفة " itemValue="" />
+
+									<f:selectItems
+										value="#{expenseSheetDetailsMB.costCenterList}"
+										var="costCenter" itemLabel="#{costCenter.costCenterCoding}"
+										itemValue="#{costCenter}" />
+
+								</p:selectOneMenu>
+								</p:column>
+						
+									<p:column headerText="delete" width="30"
+								style="border:hidden;">
+
+								<p:commandButton styleClass="red-btn"
+									action="#{expenseSheetMB.delete(det)}"
+									process="@this" update="@form" icon="ui-icon-delete">
+									<p:confirm header="#{msg['glopal.confirmation']}"
+										message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+								</p:commandButton>
+
+							</p:column>
+							
+
+						</p:dataTable>
+				</div>
+			</div>
+
+
+
+
+
+			<br />
+			<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">
+				<div class="card card-w-title">
+					<p:panelGrid columns="3" id="pnl30" styleClass="ui-noborder Wid120">
+
+						<p:commandButton value="Save" icon="ui-icon-save"
+							style="width:auto"
+							action="#{expenseSheetMB.save()}"
+							process="@form" update="@form" >
+
+						</p:commandButton>
+
+						<p:commandButton value="Print" onclick="window.print();"
+							type="button" icon="ui-icon-print">
+						</p:commandButton>
+						<p:commandButton value="GO to the home page" icon="ui-icon-cancel"
+							style="width:auto" process="@this" update="@this"
+							action="#{expenseSheetMB.cancelAction()}" />
+
+						<p:dialog resizable="false" height="45vh" width="450px"
+							modal="true" showHeader="false" widgetVar="uploadDocument"
+							closeOnEscape="true" dynamic="true">
+
+							<p:spacer height="10" width="100%"></p:spacer>
+							<center>
+								<h:panelGroup columns="2" id="p" layout="block"
+									styleClass="no-border Wid70 MarAuto">
+
+									<p:outputLabel style="font-size: 17px;"
+										value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+									<p:spacer height="10" width="100%"></p:spacer>
+
+									<p:fileUpload
+										rendered="#{productionEntryDocumentMB.productionEntryDocument.id ne null}"
+										fileUploadListener="#{productionEntryDocumentMB.uploadDocument}"
+										mode="advanced" label="#{msg['attached']}" auto="true"
+										allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+										uploadLabel="#{msg['attached']}"
+										cancelLabel="#{msg['Cancel']}">
+									</p:fileUpload>
+
+									<p:commandButton value="لا" style="width:auto"
+										action="#{expenseSheetMB.cancelAction()}"
+										process="@form" update="@form">
+
+									</p:commandButton>
+
+
+								</h:panelGroup>
+							</center>
+						</p:dialog>
+						<p:dataTable
+							rendered="#{productionEntryDocumentMB.productionEntryDocument.id ne null}"
+							reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+							var="doc" styleClass="txt-center"
+							value="#{productionEntryDocumentMB.documentList}">
+
+							<p:column>
+								<p:link value="#{doc.documentName}" type="button"
+									onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+							</p:column>
+
+
+						</p:dataTable>
+					</p:panelGrid>
+				</div>
+			</div>
+
+
+
+			<br></br> <br></br>
+
+		</div>
+
+
+
+
+	</composite:implementation>
+</body>
+</html>

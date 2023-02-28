@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:off="http://java.sun.com/jsf/composite/composites/office"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml" xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+	<ui:define name="title">#{msg['report.expectedHourCompare']}</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form>
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px">#{msg['report.expectedHourCompare']}</h1>
+						<p:panelGrid id="pnlReport" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+							<p:selectOneMenu id="agentList" value="#{reportTotalHoursComparisonMB.agentInfo}" style="margin-bottom:10px;"
+								converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="#{msg['agent.select_agent']} #{msg['required']}"
+								filter="true" filterMatchMode="contains">
+								<p:ajax update="yearList" process="@this" />
+								<f:selectItem itemLabel="#{msg['agent.select_agent']}" itemValue="" />
+								<f:selectItems value="#{reportTotalHoursComparisonMB.agentInfoList}" var="agent" itemLabel="#{agent.agentNameAr}"
+									itemValue="#{agent}" />
+							</p:selectOneMenu>
+							<p:spacer />
+
+							<p:selectOneMenu id="yearList" value="#{reportTotalHoursComparisonMB.selectedYear}" style="margin-bottom:10px;"
+								converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="#{msg['newFinancialYear.year']} #{msg['required']}"
+								filter="true" filterMatchMode="contains">
+								<p:ajax update="serviceTypeList" process="@this" />
+								<f:selectItem itemLabel="#{msg['newFinancialYear.year']}" noSelectionOption="true" />
+								<f:selectItems value="#{reportTotalHoursComparisonMB.agentInfo.years}" var="year" itemLabel="#{year.toStringDate()}"
+									itemValue="#{year}" />
+							</p:selectOneMenu>
+							<p:spacer />
+
+
+							<p:selectOneMenu id="serviceTypeList" value="#{reportTotalHoursComparisonMB.serviceType}" style="margin-bottom:10px;"
+								converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="#{msg['serviceType.select_service']} #{msg['required']}"
+								filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="#{msg['serviceType.select_service']}" noSelectionOption="true" />
+								<f:selectItems value="#{reportTotalHoursComparisonMB.selectedYear.yearServicesType}" var="service"
+									itemLabel="#{service.serviceNameAr}" itemValue="#{service}" />
+							</p:selectOneMenu>
+							<p:spacer />
+						</p:panelGrid>
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto" action="#{reportTotalHoursComparisonMB.search()}"
+							process="@form" update="@form" />
+
+						<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this" update="@this"
+							action="#{reportTotalHoursComparisonMB.cancelAction()}" />
+					</div>
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-8">
+								<h:panelGroup id="print" layout="block">
+									<common:printHeader target="@form:print" office="#{utils.getCurrentOffice()}" reportName="#{msg['report.expectedHourCompare']}">
+
+									</common:printHeader>
+
+									<p:panelGrid styleClass="no-border" style="width :100%;  direction:#{localeMB.dir}" columns="8"
+										columnClasses="bold , ,bold, ,bold,,bold">
+										<p:outputLabel for="agent" value="#{msg['report.agent_name']}" />
+										<p:outputLabel id="agent"
+											value="#{utils.isArabic()? reportTotalHoursComparisonMB.agentInfo.agentNameAr:reportTotalHoursComparisonMB.agentInfo.agentNameEn}" />
+
+										<p:outputLabel for="year" value="#{msg['newFinancialYear.year']}" />
+										<p:outputLabel id="year" value="#{reportTotalHoursComparisonMB.selectedYear.toStringDate()}" />
+										<p:outputLabel for="serv" value="#{msg['title.service_type']}" />
+										<p:outputLabel id="serv"
+											value="#{utils.isArabic()? reportTotalHoursComparisonMB.serviceType.serviceNameAr:reportTotalHoursComparisonMB.serviceType.serviceNameEn}" />
+
+
+									</p:panelGrid>
+									<br />
+
+									<p:dataTable value="#{reportTotalHoursComparisonMB.totalHoursComparisonList}" var="dataList"
+										emptyMessage="#{msg['datatable.no_records_found']}">
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['report.job_title']}" />
+											</f:facet>
+											<h:outputText value="#{dataList.userType}" />
+											<f:facet name="footer">
+												<h:outputText value="#{msg['report.total']}" />
+											</f:facet>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['report.expected-hours']}" />
+											</f:facet>
+											<h:outputText value="#{utils.toTimeString(dataList.expectedHours)}" />
+											<f:facet name="footer">
+												<h:outputText
+													value="#{utils.toTimeString(reportTotalHoursComparisonMB.totalHoursComparisonList.stream().map(y->y.expectedHours).sum())}" />
+											</f:facet>
+										</p:column>
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg['newFinancialYear.estimated_costs']}" />
+											</f:facet>
+											<h:outputText value="#{dataList.estimatedCoast}" />
+											<f:facet name="footer">
+												<h:outputText value="#{reportTotalHoursComparisonMB.totalHoursComparisonList.stream().map(y->y.estimatedCoast).sum()}" />
+											</f:facet>
+										</p:column>
+									</p:dataTable>
+									<b/>
+									<p:panelGrid columns="2" style="width:100%;text-align: right!important;" styleClass="txt-center MarAuto	show-on-print">
+										<p:outputLabel value="توقيع الشريك"></p:outputLabel>
+										<p:outputLabel value="توقيع الشريك المسؤول"></p:outputLabel>
+									</p:panelGrid>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

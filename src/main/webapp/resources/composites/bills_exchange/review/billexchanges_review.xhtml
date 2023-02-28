@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:common="http://java.sun.com/jsf/composite/composites/common" >
+<head>
+<composite:interface>
+	<composite:attribute name="addBill" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+</composite:interface>
+
+</head>
+<f:view contentType="text/html" locale="#{languageDetails.locale}">
+
+	<h:body>
+
+		<h:form>
+
+	
+	<composite:implementation>
+		<p:panel id="print" >
+					<div class="WordSection1" align="center" dir="#{localeMB.dir}">
+	
+		<p:spacer Height="180px"/>
+		
+								<h:panelGroup styleClass=" FLeft left20  " id="header">
+				
+				
+							
+							
+					</h:panelGroup>
+					
+							
+		<p:spacer width="60"/>
+	
+	<div class="ui-g">
+	
+		          
+								<h:panelGrid columns="1" id="c14"  styleClass="no-border Wid80 MarAuto"  >
+								
+						
+				    	                      		<br></br>      
+<h:panelGroup>
+				     	                      		<h:outputText value="#{billExchangeMB.billsExchange.company.legalCompanyName}" style="font-size: 25px;font-weight:bold;"/>        
+				     		<p:graphicImage styleClass=" FLeft   " width="80" rendered="#{not empty billExchangeMB.billsExchange.company.picName}" title="logo"
+												url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/#{utils.getReportPath()}/image/#{companyMB.company.picName}" />
+<br></br>
+				    	                      		<h:outputText value="#{billExchangeMB.billsExchange.company.address}" style="font-size: 15px;font-weight:bold;" />  
+				    	                      		     	<br></br>
+				    	                      		<h:outputText value="#{billExchangeMB.billsExchange.company.faxNumber}" style="font-size: 15px;font-weight:bold;" />  
+				    	                      					 <br></br>   	                 
+				    	                      					      		<h:outputText value="#{billExchangeMB.billsExchange.company.pox}" style="font-size: 15px;font-weight:bold;" />  
+				    	                      	<br></br>
+													<h:outputText value="#{billExchangeMB.billsExchange.company.phoneNumber}" style="font-size: 15px;font-weight:bold;" />  
+																	<br></br>
+																	</h:panelGroup>
+																	<br></br>
+			                           		<h:panelGroup>
+			                           		<h:outputLabel value=" التاريخ :" style="font-size: 15px;font-weight:bold;" >
+								         		<h:outputText value="#{billExchangeMB.billsExchange.todayDate}" style="font-size: 15px;font-weight:bold;"  >  
+								         							 <f:convertDateTime pattern="dd/MM/yyyy"   />
+								         		
+								         		</h:outputText>
+								                </h:outputLabel>
+							        		<h:outputLabel value="رقم سند الصرف :" styleClass=" FLeft   " style="font-size: 15px;font-weight:bold;" >
+								         		<h:outputText value="#{billExchangeMB.billsExchange.billsExchangeNumber}" style="font-size: 15px;font-weight:bold;"  />  
+								                </h:outputLabel>
+								                <center>	
+								                 <h:outputLabel  style="font-size: 25px;font-weight:bold;"	value="#{billExchangeMB.billsExchange.documentType}" />
+								                 
+								                <table border="1" style='border-collapse: separate;'>
+  <tr>
+     <th> #{msg['Decimal_'+=utils.getVersion()]}</th>
+    <th> #{msg['Integer_'+=utils.getVersion()]}</th>
+  </tr>
+  <tr>
+    <td>
+    <p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{billExchangeMB.billsExchange.decimalPart}">
+								 <f:convertNumber pattern=".##"/>
+										
+										</h:outputText>
+									</p>
+									</td>
+        <td><p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{billExchangeMB.billsExchange.intPart}">
+										</h:outputText>
+									</p></td>
+  </tr>
+  </table>
+								                </center>
+								                </h:panelGroup>		
+								                <br></br>
+								                <h:outputLabel value="صرفنا الى السيد(ة)/السادة " style="font-size: 20px;font-weight:bold;">
+								   									   	<p:spacer width="5" height="5" /> 
+								   	
+								   	<h:outputText  value="#{utils.isArabic() ?billExchangeMB.billsExchange.suppliers.suppliersNameAr:billExchangeMB.billsExchange.suppliers.suppliersNameEn}" style="font-size: 20px;" /> 
+								   	<p:spacer width="20" height="20" /> 
+								              								                <h:outputLabel value="المحترم(ة)/المحترمين " style="font-size: 20px;font-weight:bold;"/>
+								              
+								</h:outputLabel>    
+								 
+								 	<h:outputLabel value="مبلغ وقدره  " style="font-size: 20px;font-weight:bold;" rendered="#{billExchangeMB.billsExchange.amountWritten ne null}">
+								                <p:spacer >  </p:spacer>
+								   	<h:outputText  value="#{billExchangeMB.billsExchange.amountWritten}" style="font-size: 20px;" />  
+								              
+								</h:outputLabel>  
+								<h:outputLabel value="مبلغ وقدره  " style="font-size: 20px;font-weight:bold;" rendered="#{billExchangeMB.billsExchange.valueWritten ne null}">
+								                <p:spacer >  </p:spacer>
+								   	<h:outputText  value="#{billExchangeMB.billsExchange.valueWritten}" style="font-size: 20px;" />  
+								              
+								</h:outputLabel>  
+								 <h:outputLabel   value="نقدا " style="font-size: 20px;font-weight:bold;" rendered="#{billExchangeMB.billsExchange.paymentMethod eq 1}">
+								              
+								</h:outputLabel>
+								<h:outputLabel   value="شيك    :" style="font-size: 20px;font-weight:bold;" rendered="#{billExchangeMB.billsExchange.paymentMethod eq 2}">
+								              
+ <p:dataTable emptyMessage="#{msg['noRecord']}" id="check" rowIndexVar="index" var="det" styleClass="txt-center" style="border:hidden;"
+											value="#{billExchangeMB.checkPaymentList}" >
+											
+						<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="رقم الشيك  " />
+											</f:facet>
+					   <h:outputText   value="#{det.checkNumber}"  />
+											
+								
+								</p:column>
+												<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="#{msg['Due_date']} " />
+											</f:facet>
+					   <h:outputText   value="#{det.dueDate}">
+																	         							 <f:convertDateTime pattern="dd/MM/yyyy"   />
+									</h:outputText>
+								</p:column>
+								
+								
+											<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="البنك المسحوب عليه    " />
+											</f:facet>
+					   <h:outputText   value="#{det.bank}"  />
+											
+								
+								</p:column>
+										
+								
+									<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="تاريخ القبض" />
+											</f:facet>
+															   <h:outputText   value="#{det.arrestDate}" 
+>
+								         							 <f:convertDateTime pattern="dd/MM/yyyy"   />
+</h:outputText>
+											
+								
+								</p:column>
+								</p:dataTable>								              
+								</h:outputLabel>
+								<br></br>
+								<h:outputLabel value="وذلك عن  :" style="font-size: 20px;font-weight:bold;" rendered="#{billExchangeMB.billsExchange.note ne null}">
+								         		<h:outputText value="#{billExchangeMB.billsExchange.note}" style="font-size: 20px;font-weight:bold;"  />  
+								                </h:outputLabel>
+								    <h:outputLabel value="اسم المستلم   :" style="font-size: 20px;font-weight:bold;" >
+								    <h:outputLabel value="---------------------" style="font-size: 20px;font-weight:bold;" />
+								                </h:outputLabel>
+								                
+								                <h:outputLabel value="توقيع المستلم    :" style="font-size: 20px;font-weight:bold;" >
+								    <h:outputLabel value="--------------------- " style="font-size: 20px;font-weight:bold;" />
+								                </h:outputLabel>
+								                            
+								                
+                            </h:panelGrid>
+                            
+													                                <br></br>
+								           								                
+								               
+								                <br></br>
+								                
+								            	                                  <br></br>
+			
+			
+			</div>
+			</div>
+			</p:panel>
+			
+										
+	</composite:implementation>
+</h:form>
+</h:body>
+</f:view>
+</html>

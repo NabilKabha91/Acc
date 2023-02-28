@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:common="http://java.sun.com/jsf/composite/composites/common" >
+<head>
+<composite:interface>
+	<composite:attribute name="addBill" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+</composite:interface>
+
+</head>
+<f:view contentType="text/html" locale="#{localeMB.locale}">
+
+	<h:body>
+
+		<h:form>
+
+	
+	<composite:implementation>
+		<p:panel id="print" >
+					<div class="WordSection1" align="center" dir="#{localeMB.dir}">
+	
+		<p:spacer Height="180px"/>
+		
+								<h:panelGroup styleClass=" FLeft left20  " id="header">
+				
+				
+							
+							
+					</h:panelGroup>
+					
+							
+		<p:spacer width="60"/>
+	
+	<div class="ui-g">
+	
+		          
+								<h:panelGrid columns="1" id="c14"  styleClass="no-border Wid80 MarAuto"  >
+								
+					<h:panelGroup>	
+			<center>    	                      		     
+
+<p:graphicImage  width="80" rendered="#{not empty restrictionsMB.restrictions.company.picName}" title="logo"
+												url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/file-sheet/image/#{restrictionsMB.restrictions.company.picName}"  />
+												
+												</center>
+												<center>
+				     	                      		<h:outputText  value="#{restrictionsMB.restrictions.company.legalCompanyName}" style="font-size: 25px;font-weight:bold;"/>        
+				     		
+
+																	</center>	
+														<br></br>		
+			                           		<center>	
+								                 <h:outputLabel  style="font-size: 25px;font-weight:bold;"	value="سند قيد" />
+								                 </center>
+								                 <br></br>
+			                           		<h:outputLabel value=" التاريخ :" style="font-size: 15px;font-weight:bold;" >
+								         		<h:outputText value="#{restrictionsMB.restrictions.todayDate}" style="font-size: 15px;font-weight:bold;"  >  
+										<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3"/>
+								         		
+								         		</h:outputText>
+								                </h:outputLabel>
+								                <br/>
+								                	<h:outputLabel value=" اسم المورد  :" style="font-size: 15px;font-weight:bold;" >
+								         		<h:outputText value="#{utils.isArabic() ? restrictionsMB.restrictions.suppliers.suppliersNameAr :restrictionsMB.restrictions.suppliers.suppliersNameEn}" style="font-size: 15px;font-weight:bold;"  >  
+										
+								         		</h:outputText>
+								                </h:outputLabel>
+							        		<h:outputLabel value="رقم سند القيد :" styleClass=" FLeft   " style="font-size: 15px;font-weight:bold;" >
+								         		<h:outputText value="#{restrictionsMB.restrictions.restrictions}" style="font-size: 15px;font-weight:bold;"  />  
+								                </h:outputLabel>
+								                
+ 
+ 
+ 
+<br></br>
+<br></br>
+
+
+	<table border="1" style='margin-left: 5.4pt; border-collapse: collapse;'>
+					<tr>
+					
+						<td width="522" valign="top" style='width: 320.7pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<p class="MsoCommentText">#{msg['Account_Number']}</p>
+						</td>
+						<td width="60" valign="top" style='width: 45.0pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Descreption']}</span>
+							</h6>
+						</td>
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Debit']}</span>
+								<br></br>
+								<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? restrictionsMB.restrictions.definitionOfCurrencies.definitionOfCurrenciesName : restrictionsMB.restrictions.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+					
+						
+							<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Credit']}</span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? restrictionsMB.restrictions.definitionOfCurrencies.definitionOfCurrenciesName : restrictionsMB.restrictions.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						<h:panelGroup rendered="#{utils.getVersion() eq 'KSA'}">
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt' >
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>مراكز تكلفة </span>
+								<br></br>
+								
+							</h6>
+						</td>
+						</h:panelGroup>
+												<h:panelGroup rendered="#{utils.getVersion() eq 'KSA'}">
+						
+							<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>تحليلي </span>
+								<br></br>
+								
+							</h6>
+						</td>
+						</h:panelGroup>
+							</tr>
+
+					
+						<c:forEach items="#{restrictionsMB.addRestrictionsList}" var="det">
+							<tr >
+							
+								<td width="200" style='width: 200pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoNormal" align="right" style='text-align: right'>
+										<span dir="#{languageDetails.dir}" style='font-size: 12.0pt'> 
+										<h:outputText value="#{det.grpName}" />
+										</span>
+									</p>
+								</td>
+								<td width="60" style='width: 45.0pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+										<h:outputText value="#{det.description}" />
+									</p>
+								</td>
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.debit}" >
+																								<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+									</p>
+								</td>
+								
+								
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.credit}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+									</p>
+								</td>
+														<h:panelGroup rendered="#{utils.getVersion() eq 'KSA'}">
+								
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt' rendered="#{utils.getVersion() eq 'KSA'}">
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.costCenter.costCenterCoding}">
+										</h:outputText>
+									</p>
+								</td>
+								</h:panelGroup>
+														<h:panelGroup rendered="#{utils.getVersion() eq 'KSA'}">
+								
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt' rendered="#{utils.getVersion() eq 'KSA'}">
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.analytical.analytical}">
+										</h:outputText>
+									</p>
+								</td>
+								</h:panelGroup>
+								
+							</tr>
+						</c:forEach>
+				</table>
+				
+				
+				<br></br>
+												<h:panelGrid columns="3" id="ccc"  styleClass="no-border Wid80 MarAuto"  >
+				
+					<h:outputLabel value="اعداد"  style="font-size: 15px;font-weight:bold;" >
+								                </h:outputLabel>
+								               
+					<h:outputLabel value="مراجعة "  style="font-size: 15px;font-weight:bold;" >
+								                </h:outputLabel>
+								                
+								                <h:outputLabel value="اعتماد"  style="font-size: 15px;font-weight:bold;" >
+								                </h:outputLabel>			                
+								               </h:panelGrid> 
+  						                </h:panelGroup>		
+								                <br></br>
+								              
+			</h:panelGrid>
+			</div>
+			</div>
+			</p:panel>
+			
+										
+	</composite:implementation>
+</h:form>
+</h:body>
+</f:view>
+</html>

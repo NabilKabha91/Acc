@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="fixedAssets" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+</composite:interface>
+
+</head>
+<body>
+<br></br>
+<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+	<div class="card card-w-title"  style="box-shadow: 3px 3px 3px 3px #888888;">
+
+
+		<p:panelGrid id="pnlAssets2" columns="3" layout="grid"
+			styleClass="ui-panelgrid-blank form-group">
+
+
+			<h:panelGroup styleClass="md-inputfield">
+				<p:calendar value="#{assetsMB.financialStatementDate}" pattern="yyyy/MM/dd"
+					required="true" />
+				<label>تاريخ القوائم المالية</label>
+			</h:panelGroup>
+			<h:column></h:column>
+			<h:column></h:column>
+
+
+			<h:panelGroup styleClass="md-inputfield">
+				<p:calendar value="#{assetsMB.financialStatementDateForPreviouseYear}" pattern="yyyy/MM/dd"
+					required="true" />
+				<label>تاريخ القوائم الماليه للسنه السابقه</label>
+			</h:panelGroup>
+			<h:column></h:column>
+			<h:column></h:column>
+			<p:commandButton value="بحث" icon="ui-icon-search" style="width:auto; border-radius:20px;background-color:#888888"
+				action="#{assetsMB.getTree()}"  />
+		</p:panelGrid>
+		<br></br>
+		<br></br>
+			<div style ="overflow-x:scroll;box-shadow: 3px 3px 3px 3px #888888;">
+			<p:panelGrid columns="10" id="pnl2" styleClass="ui-noborder" style="width:200%">
+		<p:dataTable var="record" value="#{assetsMB.assetsTreeList}" id="groupList" > >
+
+					<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="الاصل"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.asset}" >
+					</h:outputLabel>
+				</p:column>
+				
+					<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="مجموعة الاصل"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.categoryAsset}" >
+					</h:outputLabel>
+				</p:column>
+					<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ الشراء"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.purchaseDate}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="الكلفة التاريخية للاصل"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.valueAsset}" >
+					</h:outputLabel>
+				</p:column>
+					<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="نسبة الاستهلاك"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.deprectiation}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="العمر الانتاجي"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.usefulLife}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ بداية الاستهلاك"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.deprectiationStartDate}" >
+					</h:outputLabel>
+				</p:column>
+				
+				<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ نهاية السنة السابقة"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.endPreviousYear}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="الاستهلاك المتراكم بداية السنة"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.accumulatedDepreciation}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" rendered="false" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ بداية السنة المالية "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.fiscalYearStart}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" rendered="false" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ القوائم المالية"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.financialStatemnetYear}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" rendered="false" >
+					<f:facet name="header">
+						<h:outputText value="فترة الاستخدام"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.usingDuration}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" rendered="false" >
+					<f:facet name="header">
+						<h:outputText value="اساس الاحتساب"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.basisOfCalculation}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="استهلاك الفترة"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.deprectiationDuration}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="الاستهلاك المتراكم في نهاية السنة"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.accumulatedDeperciationEndYear}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="10%" >
+					<f:facet name="header">
+						<h:outputText value="صافي القيمة الدفترية"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.netBookValue}" >
+					</h:outputLabel>
+				</p:column>
+				
+					</p:dataTable>
+					</p:panelGrid>
+		</div>
+
+
+	</div>
+
+</div></div></div>
+
+
+</body>
+</html>

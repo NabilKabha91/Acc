@@ -1,0 +1,486 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pu="http://primefaces.org/ultima">
+	<h:head>
+
+	</h:head>
+	<h:form id="menuform">
+		<div class="layout-menu #{guestPreferences.menuClass}">
+			<div class="nano">
+				<div class="nano-content menu-scroll-content">
+					<ui:fragment
+						rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+						<div class="profile">
+							<div class="profile-image"></div>
+
+						</div>
+						<h:form>
+							<ul id="profile-menu" class="ultima-menu">
+								<ui:remove>
+									<li role="menuitem"><a
+										href="#{request.contextPath}/pages/company/edit-company.html"
+										class="ripplelink"> <i class="material-icons">&#xE7FD;</i>
+											<span>#{msg['glopal.profile']}</span>
+									</a></li>
+									<li role="menuitem"><a href="#" class="ripplelink"> <i
+											class="material-icons">&#xE8B9;</i> <span>Settings</span>
+									</a></li>
+								</ui:remove>
+								<li role="menuitem"><p:commandLink
+										action="#{loginMB.logout()}" styleClass="ripplelink">
+										<i class="material-icons">&#xE8AC;</i>
+										<span>#{msg['Logout']}</span>
+									</p:commandLink></li>
+							</ul>
+						</h:form>
+					</ui:fragment>
+
+					<pu:menu widgetVar="me" styleClass="men">
+						<p:menuitem id="Homepage" value="#{msg['Companies_list']}"
+							icon="&#xE8B8;" url="/pages/timeSheet.xhtml">
+						</p:menuitem>
+						<p:submenu id="manage" label="#{msg['menu.manage']}"
+							icon="&#xE8B8;">
+							<p:menuitem value="#{msg['title.office']}"
+								rendered="#{utils.isAdmin()}" icon="add_to_queue"
+								url="/pages/office/offices.html" ajax="false" />
+							<p:menuitem value="#{msg['Company_Info']}"
+								rendered="#{utils.isAdmin() or utils.isSuperUser() }"
+								icon="add_to_queue" url="/pages/company/edit-company.html"
+								ajax="false" />
+							<p:menuitem value="#{msg['title.user']}"
+								rendered="#{utils.isAdmin() or utils.isSuperUser()}"
+								icon="add_to_queue" url="/pages/user/users.html" ajax="false" />
+							<p:menuitem value="#{msg['Bank_Details']}"
+								rendered="#{utils.isBankDataPermissions()}" icon="add_to_queue"
+								url="/pages/bank_data/bank_data.html" ajax="false" />
+							<p:menuitem value="#{msg['Invoice_management']}"
+								disabled="#{currentUser.billManagementPermissions eq false}"
+								icon="add_to_queue"
+								url="/pages/bill_management/bill_management.html" ajax="false" />
+							<p:menuitem value="#{msg['Currency']}"
+								disabled="#{currentUser.definitionOfCurrenciesPermissions eq false}"
+								icon="add_to_queue"
+								url="/pages/definition_of_currencies/definition_of_currencies.html"
+								ajax="false" />
+							<p:menuitem value="#{msg['Tax_'+=utils.getVersion()]} "
+								disabled="#{currentUser.definitionOfTaxPermissions eq false}"
+								icon="fa fa-file-text-o"
+								url="/pages/definition_of_tax/definition_of_tax.html"
+								ajax="false" />
+							<p:menuitem
+								value="#{msg['ComercialProfitTax_'+=utils.getVersion()]} "
+								icon="fa fa-file-text-o"
+								url="/pages/ComercialProfitTax/ComercialProfitTax.html"
+								ajax="false" rendered="#{utils.getVersion() eq 'EGY'}" />
+							<p:menuitem value="#{msg['discountTax_'+=utils.getVersion()]} "
+								icon="fa fa-file-text-o"
+								url="/pages/DiscountTax/DiscountTax.html" ajax="false"
+								rendered="#{utils.getVersion() eq 'EGY'}" />
+							<p:menuitem
+								value="#{msg['ComercialDiscount_'+=utils.getVersion()]} "
+								disabled="#{currentUser.comericalDiscountPermissions eq false}"
+								icon="fa fa-file-text-o"
+								url="/pages/ComercialDiscount/comericalDiscount.html"
+								ajax="false"
+								rendered="#{utils.isAdmin() or utils.isSuperUser()}" />
+							<p:menuitem value=" محتجزات" icon="fa fa-file-text-o"
+								url="/pages/QualityAssurance/qualityAssurance.html" ajax="false"
+								rendered="#{utils.getVersion() eq 'KSA' and utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 20}" />
+							<p:menuitem value=" تحميل" icon="add_to_queue"
+								rendered="#{utils.isAdmin()}" url="/pages/uploadsDocument.html"
+								ajax="false" />
+							<p:menuitem value=" صلاحيات المستخدمين " icon="add_to_queue"
+								rendered="#{utils.isAdmin()}"
+								url="/pages/user/usersPermissions.html" ajax="false" />
+							<p:menuitem value="Dashboard"
+								rendered="#{utils.isAdmin() or utils.isSuperUser()}"
+								icon="add_to_queue" url="/pages/addCompanys.html" ajax="false" />
+						</p:submenu>
+						<p:submenu rendered="#{utils.isAccounting() eq  true}"
+							id="customer" label="#{msg['Customers']}" icon="&#xE8B8;">
+							<p:menuitem value="تكويد المندوب" icon="add_to_queue"
+								url="/pages/DelegateCoding/Delegate.html" ajax="false"
+								rendered="#{utils.getVersion() ne 'JO'}" />
+							<p:menuitem value="#{msg['Customers_List']}" icon="add_to_queue"
+								url="/pages/customer/customers.html" />
+								<p:menuitem value="كشف حساب عملاء" icon="add_to_queue"
+								url="/pages/manageGrouping/StatementAccount.html" />
+							<p:menuitem value="#{msg['Services_Product_list']}"
+								disabled="#{currentUser.servicesAndProductsPermissions eq false}"
+								icon="add_to_queue"
+								url="/pages/services_and_products/services_and_products.html"
+								ajax="false" />
+							<p:menuitem value="امر البيع " icon="fa fa-file-text-o"
+								url="/pages/SellOrder/SellOrders.html" ajax="false" />
+							<p:menuitem value="#{msg['Invoices']} "
+								disabled="#{currentUser.billPermissions eq false}"
+								icon="fa fa-file-text-o" url="/pages/bills/bills.html"
+								ajax="false" />
+
+							<p:menuitem value="مراكز التكلفه " icon="add_to_queue"
+								url="/pages/CostCenter/CostCenter.html" ajax="false" />
+							<p:menuitem value="تحليلي  " icon="add_to_queue"
+								url="/pages/Analytical/Analytical.html" ajax="false" />
+
+						</p:submenu>
+
+						<p:submenu id="suppliers" label="#{msg['Suppliers']} "
+							icon="&#xE8B8;">
+							<p:menuitem value="#{msg['Suppliers_List']} "
+								disabled="#{currentUser.suppliersPermissions eq false}"
+								icon="add_to_queue" url="/pages/suppliers/suppliers.html"
+								ajax="false" />
+                       <p:menuitem value="كشف حساب الموردين  "
+								disabled="#{currentUser.suppliersPermissions eq false}"
+								icon="add_to_queue" url="/pages/manageGrouping/StatementAccountSuppliers.html"
+								ajax="false" />
+							<p:menuitem value="امر الشراء " icon="fa fa-file-text-o"
+								url="/pages/Purchase_Order/purchaseOrder.html" ajax="false" />
+							<p:menuitem value="#{msg['Bills']} "
+								disabled="#{currentUser.purchasebillsPermissions eq false}"
+								icon="fa fa-file-text-o"
+								url="/pages/purchase_bills/purchasebills.html" ajax="false" />
+						</p:submenu>
+
+						<p:submenu
+							rendered="#{(utils.isInventory() eq  true) and (utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 10 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 11 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 22 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 17 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 20 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 25 )}"
+							id="Inventory" label="#{msg['Inventory']} " icon="&#xE8B8;">
+							<p:menuitem value="تعريف  المستودعات" icon="fa fa-file-text-o"
+								url="/pages/Warehouses/Warehouses.html" ajax="false" />
+							<p:menuitem value="#{msg['Units_List']} " icon="add_to_queue"
+								disabled="#{currentUser.unitPermissions eq false}"
+								url="/pages/Unit/unit.html" />
+							<p:menuitem value="#{msg['Items_List']}  "
+								disabled="#{currentUser.itemsScreenPermissions eq false}"
+								icon="add_to_queue" url="/pages/ItemsScreen/ItemsScreen.html"
+								ajax="false" />
+							<p:menuitem rendered="#{utils.isAdmin()}"
+								value="#{msg['Orders']}"
+								disabled="#{currentUser.orderItemPermissions eq false}"
+								icon="fa fa-file-text-o" url="/pages/orderItem/orderItem.html"
+								ajax="false" />
+							<p:menuitem value="سند اخراج بضاعه  " icon="fa fa-file-text-o"
+								url="/pages/WarehouseReceipt/WarehouseReceipt.html" ajax="false" />
+							<p:menuitem value="سند ادخال بضاعه   " icon="fa fa-file-text-o"
+								url="/pages/WarehouseEntryVoucher/WarehouseEntryVoucher.html"
+								ajax="false" />
+							<p:menuitem value="#{msg['Items_purchases']}"
+								icon="fa fa-file-text-o" url="/pages/materials/Materials.html"
+								ajax="false" rendered="#{utils.isAdmin()}" />
+							<p:menuitem
+								value="#{msg['ItemsTransfervoucher_'+=utils.getVersion()]} "
+								disabled="#{currentUser.warehouseReleaseDocumentPermissions eq false}"
+								icon="fa fa-file-text-o"
+								url="/pages/WarehouseReleaseDocument/WarehouseReleaseDocument.html"
+								ajax="false" />
+							<p:menuitem value="	اذن دخول بضاعة  " icon="fa fa-file-text-o"
+								url="/pages/GoodsEntryPermit/GoodEntryPermit.html" ajax="false"
+								rendered="#{utils.getVersion() eq 'EGY'}" />
+							<p:menuitem value="سند تحويل  بضاعة  " icon="fa fa-file-text-o"
+								url="/pages/GoodsTransferSlips/GoodTransferSlips.html"
+								ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+							<p:menuitem value="سند استلام تحويل   بضاعة  "
+								icon="fa fa-file-text-o"
+								url="/pages/GoodsTransferReceiptProof/GoodsTransferReceiptProof.html"
+								ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+							<p:menuitem value="سند ادخال انتاج تام  " icon="add_to_queue"
+								url="/pages/ProductionEntryDocument/ProductionEntryDocument.html"
+								ajax="false" />
+
+							<p:menuitem value=" طلب صرف مستودع " icon="add_to_queue"
+								url="/pages/RequestWarehouseReleaseDocument/RequestWarehouseReleaseDocument.html"
+								ajax="false" />
+						</p:submenu>
+
+						<p:submenu rendered="#{utils.isAccounting() eq  true}" id="report"
+							label="#{msg['Accounting']}" icon="fa fa-clone">
+							<p:menuitem value="#{msg['Chart_of_Accounts']}"
+								disabled="#{currentUser.chartOfAccountsPermissions eq false}"
+								icon="fa fa-file-text-o" action="#{groupingBacking.initialize}"
+								ajax="false" />
+							<p:menuitem value="#{msg['Entries']}"
+								disabled="#{currentUser.entriesPermissions eq false}"
+								icon="fa fa-file-text-o"
+								url="/pages/restrictions/restrictions.html" ajax="false" />
+							<p:menuitem value="#{msg['Recipt_Voucher']}"
+								disabled="#{currentUser.reciptVoucherPermissions eq false}"
+								icon="fa fa-file-text-o"
+								url="/pages/receive_payment/receivePayment.html" ajax="false" />
+							<p:menuitem value="#{msg['Payment_Voucher']}"
+								disabled="#{currentUser.paymentVoucherPermissions eq false}"
+								icon="fa fa-file-text-o"
+								url="/pages/bills_exchange/billexchange.html" ajax="false" />
+							<p:menuitem value="#{msg['Debit_Note']}"
+								disabled="#{currentUser.debitNotePermissions eq false}"
+								icon="fa fa-file-text-o"
+								url="/pages/noteCredit/note_credit.html" ajax="false" />
+							<p:menuitem value="#{msg['Credit_Note']}"
+								disabled="#{currentUser.creditNotePermissions eq false}"
+								icon="fa fa-file-text-o" url="/pages/noteDebit/note_debit.html"
+								ajax="false" />
+							<p:menuitem value="#{msg['Bank_Deposit_voucher']}"
+								icon="fa fa-file-text-o"
+								url="/pages/bankDeposit/bank_deposit.html"
+								disabled="#{currentUser.bankDepositPermissions eq false}"
+								ajax="false" />
+							<p:menuitem value="#{msg['Statement_of_account']}"
+								icon="add_to_queue"
+								url="/pages/manageGrouping/StatementAccountGrouping.html"
+								disabled="#{currentUser.statementOfAccountPermissions eq false}"
+								ajax="false" />
+					
+
+							<p:menuitem value="#{msg['Trial_Balance']}"
+								disabled="#{currentUser.trialBalancePermissions eq false}"
+								icon="add_to_queue"
+								url="/pages/manageGrouping/GroupingTable.html" ajax="false" />
+
+
+							<p:menuitem rendered="#{utils.isAdmin()}" value=" ااعمار الذمم "
+								icon="add_to_queue" url="/pages/manageGrouping/AgentReport.html"
+								ajax="false" />
+								
+		                  <p:menuitem value="#{msg['c_O_month']}"
+								url="/pages/months/close-months.html"
+								disabled="#{currentUser.statementOfFinancialPositionPermissions eq false}"
+								ajax="false" />
+							<p:menuitem value="#{msg['m_y_closing']}"
+								url="/pages/months/close-years.html"
+								disabled="#{currentUser.statementOfFinancialPositionPermissions eq false}"
+								ajax="false" />
+
+						</p:submenu>
+
+						<p:submenu rendered="#{utils.isFixedAsset() eq  true}" id="assets"
+							label="الموجودات" icon="&#xE8B8;">
+
+							<p:menuitem value="اضافة" icon="&#xE8B8;"
+								url="/pages/fixed_assets/fixedAssets1.html"></p:menuitem>
+
+							<p:menuitem value="سجل الموجودات الثابته" icon="&#xE8B8;"
+								url="/pages/fixed_assets/fa4.html"></p:menuitem>
+							<p:menuitem value="استبعاد" icon="&#xE8B8;"
+								url="/pages/fixed_assets/exclusion.html"></p:menuitem>
+							<p:menuitem value="تقارير الاستبعاد" icon="&#xE8B8;"
+								url="/pages/fixed_assets/exclusionReports.html"></p:menuitem>
+						</p:submenu>
+
+						<p:submenu id="patient"
+							rendered="#{utils.isPatient() eq  true and utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 21}"
+							label="Patients" icon="&#xE8B8;">
+							<p:menuitem value="#{msg['basic_info']}" icon="add_to_queue"
+								url="/pages/patients/patients_info.html"
+								disabled="#{currentUser.statementOfFinancialPositionPermissions eq false}"
+								ajax="false" />
+							<p:menuitem value="Diagonsis" icon="add_to_clock"
+								url="/pages/patients/diagnosis.html" ajax="false" />
+							<p:menuitem value="Sessions" icon="add_to_queue"
+								url="/pages/patients/sessions.html" ajax="false" />
+						</p:submenu>
+
+						<p:submenu
+							rendered="#{utils.isSallon() eq  true and utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 26}"
+							id="sallon" label="sallon" icon="&#xE8B8;">
+		                     <p:menuitem value="#{msg['Items_List']}"
+								disabled="#{currentUser.itemsScreenPermissions eq false}"
+								icon="add_to_queue" url="/pages/ItemsScreen/ItemsScreen.html"
+								ajax="false" />
+							<p:menuitem value="CustomerSheet" icon="add_to_queue"
+								url="/pages/CustomerSheet/CustomerSheet.html" ajax="false" />
+							<p:menuitem value="ExpenseSheet" icon="add_to_queue"
+								url="/pages/ExpenseSheet/expenseSheet.html" ajax="false" />
+							<p:menuitem value="  CustomerSheetReport    "
+								url="/pages/manageGrouping/CustomerSheetReport.html"
+								ajax="false" />
+							<p:menuitem value="  CustomerSheetReportAllCustomer    "
+								url="/pages/manageGrouping/CustomerSheetReportAllCustomer.html"
+								ajax="false" />
+							<p:menuitem value=" ExpenseSheetReport    "
+								url="/pages/manageGrouping/ExpenseSheetReport.html" ajax="false" />
+									<p:menuitem value="cashAndvisa"
+								url="/pages/manageGrouping/cashAndvisa.html" ajax="false" />
+						
+							<p:menuitem value="profitAndLoss"
+								url="/pages/manageGrouping/profitAndLoss.html" ajax="false" />
+						</p:submenu>
+						<p:submenu rendered="#{utils.isHr() eq  true}" id="employees"
+							label="#{msg['Salaries_staement']}" icon="&#xE8B8;">
+							<p:menuitem value="#{msg['Employees_details']}"
+								disabled="#{currentUser.employeesPermissions eq false}"
+								icon="add_to_queue" url="/pages/employees/employees.html"
+								ajax="false" />
+							<p:menuitem value="#{msg['Allowances']}"
+								disabled="#{currentUser.allowancesPermissions eq false}"
+								icon="add_to_queue" url="/pages/bonuses/bonuses.html"
+								ajax="false" />
+							<p:menuitem value="#{msg['Deductions']}"
+								disabled="#{currentUser.deductionsPermissions eq false}"
+								icon="add_to_queue" url="/pages/deductions/deductions.html"
+								ajax="false" />
+
+							<p:menuitem value=" كشف الرواتب  " rendered="#{utils.isAdmin()}"
+								icon="add_to_queue" url="/pages/employees/payroll.html"
+								ajax="false" />
+							<p:menuitem value="#{msg['Salaries_statements']}"
+								disabled="#{currentUser.salariesStatementsPermissions eq false}"
+								icon="add_to_queue" url="/pages/payroll/payroll.html"
+								ajax="false" />
+							<p:menuitem value="  كشف الرواتب  " rendered="#{utils.isAdmin()}"
+								icon="add_to_queue"
+								url="/pages/payrollReport/payrollReport.html" ajax="false" />
+
+
+						</p:submenu>
+						<p:submenu id="report1" label="#{msg['title.reports']}"
+							icon="fa fa-clone">
+							<p:menuitem value=" قائمة الدخل    "
+								url="/pages/manageGrouping/IncomeStatement.html" ajax="false"
+								disabled="#{currentUser.incomeStatementPermissions eq false}" />
+							<p:menuitem value=" قائمة المركز المالي     "
+								url="/pages/manageGrouping/StatementOfFinancialPosition.html"
+								disabled="#{currentUser.statementOfFinancialPositionPermissions eq false}"
+								ajax="false" />
+							<p:menuitem value="  ضريبة القيمة المضافة للعملاء"
+								icon="add_to_queue"
+								url="/pages/manageGrouping/valueAddedTax.html" ajax="false" />
+							<p:menuitem value="  ضريبة القيمة المضافة للموردين"
+								icon="add_to_queue"
+								url="/pages/manageGrouping/valueAddedTaxSuppliers.html"
+								ajax="false" />
+							<p:menuitem value="ضريبة القيمة المضافة للجميع العملاء"
+								icon="add_to_queue"
+								url="/pages/manageGrouping/valueAddedTaxallCoustomers.html"
+								ajax="false" rendered="#{utils.getVersion() eq 'KSA'}" />
+							<p:menuitem value="  ضريبة المضافة لجميع الموردين"
+								icon="add_to_queue"
+								url="/pages/manageGrouping/valueAddedTaxSuppliers2.html"
+								ajax="false" rendered="#{utils.getVersion() eq 'KSA'}" />
+							<p:menuitem value="الايرادات حسب  الخدمه والمنتج "
+								icon="add_to_queue"
+								url="/pages/manageGrouping/RevenuesServiceProduct.html"
+								ajax="false" />
+							<p:menuitem value="الايرادات حسب  العميل   " icon="add_to_queue"
+								url="/pages/manageGrouping/RevenuesCustomer.html" ajax="false" />
+							<p:menuitem value="تقرير انتاج " icon="add_to_queue"
+								url="/pages/manageGrouping/productionReport.html" ajax="false"
+								rendered="#{utils.getVersion() ne 'JO'}" />
+				
+						<p:menuitem value="كشف حساب تحليلي ومراكز تكلفه "
+							icon="add_to_queue"
+							url="/pages/manageGrouping/StatementAccountCostCenter.html"
+							ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+						<p:menuitem value="كشف حساب  العملاء (مندوب ومراكز تكلفه ) "
+							icon="add_to_queue"
+							url="/pages/manageGrouping/StatementAccountDelegate.html"
+							ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+						<p:menuitem value="كشف حساب  الموردين (مراكز تكلفه ) "
+							icon="add_to_queue"
+							url="/pages/manageGrouping/StatementAccountSuppliersCostCenter.html"
+							ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+
+						<p:menuitem value="ميزان مراجعه (عملاء))" icon="add_to_queue"
+							url="/pages/manageGrouping/TrialBalanceCustomer.html"
+							ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+
+						<p:menuitem value="ميزان مراجعه موردين" icon="add_to_queue"
+							url="/pages/manageGrouping/TrialBalanceSuppliers.html"
+							ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+						<p:menuitem value="ميزان مراجعه ذمم موظفين " icon="add_to_queue"
+							url="/pages/manageGrouping/TrialBalanceReceivablesStaff.html"
+							ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+
+						<p:menuitem value="ميزان مراجعه المخزون 
+                             " icon="add_to_queue"
+							url="/pages/manageGrouping/InventoryTrialBalance.html"
+							ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+								<p:menuitem value="تقرير  مبيعات الاصناف  
+                             " icon="add_to_queue"  
+							url="/pages/manageGrouping/SalesReport.html"
+							ajax="false" rendered="#{utils.getVersion() ne 'JO'}" />
+	                       </p:submenu>
+						<p:submenu id="themes" label="#{msg['global.color']}"
+							icon="&#xE40A;">
+							<p:menuitem id="theme1" value="Indigo - Pink" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('indigo')}"
+								ajax="false" />
+							<p:menuitem id="theme2" value="Brown - Green" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('brown')}"
+								ajax="false" />
+							<p:menuitem id="theme3" value="Blue - Amber" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('blue')}"
+								ajax="false" />
+							<p:menuitem id="theme4" value="Blue Grey - Green" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('blue-grey')}"
+								ajax="false" />
+							<p:menuitem id="theme5" value="Dark - Blue" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('dark-blue')}"
+								ajax="false" />
+							<p:menuitem id="theme6" value="Dark - Green" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('dark-green')}"
+								ajax="false" />
+							<p:menuitem id="theme7" value="Green - Yellow" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('green')}"
+								ajax="false" />
+							<p:menuitem id="theme8" value="Purple - Cyan" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('purple-cyan')}"
+								ajax="false" />
+							<p:menuitem id="theme9" value="Purple - Amber" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('purple-amber')}"
+								ajax="false" />
+							<p:menuitem id="theme10" value="Teal - Lime" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('teal')}"
+								ajax="false" />
+							<p:menuitem id="theme11" value="Cyan - Amber" icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('cyan')}"
+								ajax="false" />
+							<p:menuitem id="theme12" value="Grey - Deep Orange"
+								icon="&#xE3AE;"
+								actionListener="#{guestPreferences.setTheme('grey')}"
+								ajax="false" />
+						</p:submenu>
+
+
+					</pu:menu>
+				</div>
+			</div>
+		</div>
+		<h:outputScript>
+		
+		
+		$('.ultima-menu li').removeClass('active-menuitem');
+		$('.ultima-menu ul').css('display','none');
+		
+		 var currentPageName;
+                currentPageName=document.location.href.match(/[^\/]+$/)[0];
+                if(currentPageName.indexOf('.')>0){
+                	currentPageName=currentPageName.split('.')[0];
+                	currentPageName=currentPageName+'.';
+                    }
+                    
+                    console.log(currentPageName);
+                    
+                     $.each($('.ultima-menu li a'), function(index, value) {
+                     if($(value).attr('href').indexOf(currentPageName)>0){
+                     
+                     $(value).parents( ".ultima-menu  li" ).addClass('active-menuitem');
+                     $(value).parents( ".ultima-menu ul" ).css('display','block');;
+                     console.log($(value));
+                     }
+                     
+                     if(null!= $(value).attr('title')){
+                     if($(value).attr('title').indexOf(currentPageName)>0){
+                     
+                     $(value).parents( ".ultima-menu  li" ).addClass('active-menuitem');
+                     $(value).parents( ".ultima-menu ul" ).css('display','block');;
+                     console.log($(value));
+                     }}
+                     
+                      });
+
+		</h:outputScript>
+	</h:form>
+</ui:composition>

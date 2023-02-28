@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addOffice" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add office, false for edit " />
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<p:growl autoUpdate="true"></p:growl>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<p:panel styleClass="card card-w-title" toggleable="true" header=" ">
+					<h1>#{cc.attrs.title}</h1>
+					<p:panelGrid id="pnlOffice" columns="2" layout="grid"
+						styleClass="ui-panelgrid-blank form-group">
+						<p:selectOneMenu id="officeList" value="#{officeMB.office}"
+							style="margin-bottom:10px;"
+							converter="omnifaces.SelectItemsConverter"
+							rendered="#{!cc.attrs.addOffice and utils.isAdmin()}"
+							required="true"
+							requiredMessage=" #{msg['office.select_office']} #{msg['required']}">
+							<p:ajax update="pnlOffice pnlWorkingDays"
+								listener="#{officeMB.prepareWorking}" />
+							<f:selectItem itemLabel="#{msg['office.select_office']}"
+								itemValue="" />
+							<f:selectItems value="#{officeMB.officeList}" var="office"
+								itemLabel="#{office.nameAr}" itemValue="#{office}" />
+						</p:selectOneMenu>
+						<h:panelGroup styleClass="md-inputfield"
+							rendered="#{!cc.attrs.addOffice and !utils.isAdmin()}">
+							<p:inputText value="#{utils.getCurrentOffice().nameAr}"
+								readonly="true" />
+							<label>#{msg['addUser.office']}</label>
+						</h:panelGroup>
+						<p:spacer rendered="#{!cc.attrs.addOffice}" />
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{officeMB.office.nameAr}" required="true"
+								requiredMessage="#{msg['addOffice.office_name_ar']} #{msg['required']}" />
+							<label>#{msg['addOffice.office_name_ar']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{officeMB.office.nameEn}" required="true"
+								requiredMessage="#{msg['addOffice.office_name_en']} #{msg['required']}" />
+							<label>#{msg['addOffice.office_name_en']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{officeMB.office.email}" />
+							<label>#{msg['addOffice.office_email']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{officeMB.office.phoneNumber}" />
+							<label>#{msg['addOffice.office_phone_number']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{officeMB.office.address}" />
+							<label>#{msg['addOffice.office_address']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{officeMB.office.po}" />
+							<label>#{msg['addOffice.office_pox']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputNumber value="#{officeMB.office.countUser}"
+								thousandSeparator=""
+								requiredMessage="#{msg['addOffice.count_user']} #{msg['required']}"
+								decimalSeparator="." decimalPlaces="0" required="true"
+								readonly="#{!cc.attrs.addOffice and !utils.isAdmin()}" />
+							<label>#{msg['addOffice.count_user']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputNumber value="#{officeMB.actualUserCount}"
+								thousandSeparator="" decimalSeparator="." decimalPlaces="0"
+								readonly="true" />
+							<label>#{msg['addOffice.actual_user']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputNumber value="#{officeMB.remaningUserCount}"
+								thousandSeparator="" decimalSeparator="." decimalPlaces="0"
+								readonly="true" />
+							<label>#{msg['addOffice.remaning_user']}</label>
+						</h:panelGroup>
+						
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputNumber value="#{officeMB.office.countCompany}"
+								thousandSeparator=""
+								requiredMessage="#{msg['addOffice.count_user']} #{msg['required']}"
+								decimalSeparator="." decimalPlaces="0" required="true"
+								readonly="#{!cc.attrs.addOffice and !utils.isAdmin()}" />
+							<label>#{msg['addOffice.count_company']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputNumber value="#{officeMB.actualCompanyCount}"
+								thousandSeparator="" decimalSeparator="." decimalPlaces="0"
+								readonly="true" />
+							<label>#{msg['addOffice.actual_company']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputNumber value="#{officeMB.remaningCompanyCount}"
+								thousandSeparator="" decimalSeparator="." decimalPlaces="0"
+								readonly="true" />
+							<label>#{msg['addOffice.remaning_company']}</label>
+						</h:panelGroup>
+						
+						<ui:remove>
+							<h:panelGroup styleClass="md-inputfield">
+								<p:inputNumber thousandSeparator="" decimalSeparator="."
+									decimalPlaces="1" value="#{officeMB.office.officeHour}">
+									<f:validateLength minimum="1" maximum="24"></f:validateLength>
+								</p:inputNumber>
+
+								<label>#{msg['addOffice.office_hour']}</label>
+							</h:panelGroup>
+						</ui:remove>
+						<p:spacer />
+						<p:outputLabel value="#{msg['office.logo']}:" />
+						<p:spacer />
+						<p:fileUpload
+							fileUploadListener="#{officeMB.handleLogoFileUpload}"
+							mode="advanced" dragDropSupport="false"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+							update="view deleteLogo" multiple="false" auto="true"
+							label="#{msg['select']}">
+						</p:fileUpload>
+						<p:spacer />
+						<h:panelGroup layout="block" id="view" styleClass="posRelative">
+							<p:graphicImage cache="false"
+								rendered="#{not empty officeMB.office.logoName}"
+								url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/file-sheet/image/#{officeMB.office.logoName}"
+								width="200" height="200">
+							</p:graphicImage>
+							<p:commandButton styleClass="btn-del-image" id="deleteLogo"
+								icon="ui-icon-delete" action="#{officeMB.deleteLogo}"
+								process="@this" update="@parent"
+								rendered="#{not empty officeMB.office.logoName}" />
+						</h:panelGroup>
+					</p:panelGrid>
+
+				</p:panel>
+			
+				<div class="card card-w-title">
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+						style="width:auto" action="#{officeMB.save()}" process="@form"
+						update="@form" rendered="#{cc.attrs.addOffice}" />
+
+					<p:commandButton value="#{msg['edit_btn']}" icon="ui-icon-edit"
+						style="width:auto" action="#{officeMB.save()}" process="@form"
+						update="@form" rendered="#{!cc.attrs.addOffice}" />
+
+					<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel"
+						style="width:auto" process="@this" update="@this"
+						action="#{officeMB.cancelAction()}" />
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

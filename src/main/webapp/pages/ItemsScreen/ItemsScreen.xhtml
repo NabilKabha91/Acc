@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add" value="#{msg['add_item']}" action="#{itemsScreenMB.init()}" actionListener="#{itemsScreenDetailsMB.redirectToServicesAndProductsAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{itemsScreenMB.addItemsScreen}" />
+				</p:commandButton>
+					<p:fileUpload  fileUploadListener="#{itemsScreenMB.listener}" mode="advanced" label="تحميل اكسل "
+		 auto="true" uploadLabel="تحميل اكسل" cancelLabel="الغاء" />
+		
+									<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="customerDetails" var="det" styleClass="txt-center" value="#{itemsScreenDetailsMB.itemsScreenList}">
+					
+						<p:column filterBy="#{det.codeProductOrService}"  headerText="#{msg['ItemCode_'+=utils.getVersion()]}  ">
+						<p:outputLabel value="#{det.codeItem}" />
+					</p:column>
+					
+					<p:column filterBy="#{det.nameItemEn}"  headerText="اسم الصنف انجليزى"  rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.nameItemEn}" />
+					</p:column>
+				 
+               	<p:column filterBy="#{det.nameProductOrService}"  headerText="#{msg['Item_Name']}">
+						<p:outputLabel value="#{utils.isArabic() ?det.nameItem:det.nameItemEn}" />
+					</p:column>
+					
+				<p:column headerText="المجموعات">
+						<p:outputLabel value="#{det.grpDesc1}" />
+
+					</p:column>
+					
+					<p:column filterBy="#{det.finishType}"  headerText="  نوع التشطيب"  rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.finishType}" />
+					</p:column>
+					<p:column filterBy="#{det.color}"  headerText="اللون"  rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.color}" />
+					</p:column>
+					<p:column filterBy="#{det.unitNameTotal}"  headerText="الوحدة"  rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.unitNameTotal}" />
+					</p:column>
+					<p:column filterBy="#{det.quantity}"  headerText="الكمية"  rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.quantity}" />
+					</p:column>
+						<p:column filterBy="#{det.itemCost}"  headerText="تكلفة الوحدة"  rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.itemCost}" />
+					</p:column>
+					<p:column filterBy="#{det.salesPrice}"  headerText="سعر بيع الوحدة"  rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.salesPrice}" />
+					</p:column>
+					<p:column filterBy="#{det.taxAmountTotal}"  headerText=" نسبة الضريبة "  rendered="#{utils.getVersion() eq 'KSA' and utils.isSallon() ne  true}">
+						<p:outputLabel value="#{det.taxAmountTotal}" />
+					</p:column>
+					<p:column filterBy="#{det.ref}"  headerText=" مرجع "  rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.ref}" />
+					</p:column>
+					<p:column headerText="المخزن"  rendered="#{utils.isSallon() ne  true}">
+						<p:outputLabel value="#{det.grpDesc}" />
+
+					</p:column>
+<p:column headerText="مجموعه الصنف "  rendered="#{utils.isSallon() ne  true}" >
+						<p:outputLabel value="#{det.itemGroup}" />
+
+					</p:column>
+					
+					<p:column   headerText="الكمية النهائيه "   >
+						<p:outputLabel value="#{det.quantityTotal}" >
+							 <f:convertNumber pattern="###,###.##"/>
+						
+						</p:outputLabel>
+						
+					</p:column>
+
+                	<p:column   headerText=" القيمة  النهائيه "  >
+						<p:outputLabel value="#{det.totalAverage}" >
+							 <f:convertNumber pattern="###,###.##"/>
+						
+						</p:outputLabel>
+						
+					</p:column>
+                <p:column   headerText="   weightedAverage "  rendered="#{utils.isSallon() ne  true}" >
+						<p:outputLabel value="#{det.weightedAverage}" >
+							 <f:convertNumber pattern="###,###.##"/>
+						
+						</p:outputLabel>
+						
+					</p:column>
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{itemsScreenMB.init()}" actionListener="#{itemsScreenDetailsMB.redirectToServicesAndProductsEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{itemsScreenMB.itemsScreen}" />
+							<f:setPropertyActionListener value="false" target="#{itemsScreenMB.addItemsScreen}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_agent']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{itemsScreenDetailsMB.deleteItemsScreen(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

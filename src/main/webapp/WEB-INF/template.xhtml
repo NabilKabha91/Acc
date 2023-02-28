@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html" locale="#{localeMB.locale}">
+
+	<h:head>
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+			<meta name="apple-mobile-web-app-capable" content="yes" />
+			<meta name="theme-color" content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
+		</f:facet>
+		<title>ACC</title>
+		<h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
+		<h:outputScript name="js/layout.js" library="ultima-layout" />
+		<h:outputScript name="js/ripple.js" library="ultima-layout" />
+		<h:outputScript name="js/swipe.js" library="ultima-layout" />
+		<h:outputScript name="custom.js" library="js" />
+		<link rel="shortcut icon" href="#{resource['images/logo.png']}" />
+
+		<ui:insert name="head" />
+	</h:head>
+
+	<h:body dir="#{localeMB.dir}" styleClass="main-body #{guestPreferences.compact ? 'layout-compact' : null}">
+
+		<div class="layout-wrapper #{guestPreferences.menuLayout} #{localeMB.orientationRTL ? 'layout-rtl' : null}">
+			<ui:include src="./topbar.xhtml" />
+			<ui:include src="./menu.xhtml" />
+			
+
+			<div class="layout-main">
+				<ui:insert name="content" />
+
+				<ui:include src="./footer.xhtml" />
+			</div>
+		</div>
+
+		<p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" closable="false" showHeader="false" position="right bottom">
+			<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+		</p:dialog>
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="#{msg['glopal.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="#{msg['glopal.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+		<h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
+		<h:outputStylesheet name="#{localeMB.dir}.css" library="css" />
+		<h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+		<h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+		<h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+		<h:outputStylesheet name="custom.css" library="css" />
+	</h:body>
+
+</f:view>
+</html>

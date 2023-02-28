@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+		<ui:define name="head">
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+	</ui:define>
+	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add" value="اضافة عميل" action="#{customerMB.init()}" actionListener="#{customerDetailsMB.redirectToCustomerAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{customerMB.addCustomer}" />
+				</p:commandButton>
+				
+				        
+      <p:inputText  value="#{customerDetailsMB.searchCustomer}"  onkeydown=" console.log(event.keyCode); if(event.keyCode === 13){ return false;}" id="searchC"> 
+      <p:ajax event="change" update="customerDetails" process="@this" global="false"></p:ajax>
+      <p:ajax event="keyup" update="customerDetails" process="@this" global="false"></p:ajax>
+       <h:graphicImage value="/resources/images/analyssymbol.png" width="20" height="20" style="border:0"  /> 
+      </p:inputText> 
+<f:event listener="#{customerDetailsMB.getCstumerOntable()}" type="preRenderView" ></f:event>
+				
+				<p:fileUpload  fileUploadListener="#{customerMB.listener}" mode="advanced" label="تحميل اكسل "
+		 auto="true" uploadLabel="تحميل اكسل" cancelLabel="الغاء" />
+								<p:outputLabel value="#{det.paymentMethod}" />
+		
+		
+						<p:commandButton value="اصدار الى اكسل "   id="exportEx"  style="width:auto" action="#{customerDetailsMB.exportToExcel}">
+			</p:commandButton>
+											<p:outputLabel  />
+												<div  class="topbar-left">
+			
+<h:outputLabel value="الرصيد=" >			
+<h:outputLabel style="color: Black;font-size: 20px;"
+						value="#{customerDetailsMB.customerList.stream().map(s->s.balance).sum()}">
+					 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>	
+					</h:outputLabel>
+					</div>
+					
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="customerDetails" var="det" styleClass="txt-center" value="#{customerDetailsMB.customerList}"
+			 rowIndexVar="index"	rowStyleClass="#{det.balance lt 0 ? 'redcell' : ''} row#{index}" 
+			 stripedRows="true" >
+				<p:column filterBy="#{det.previousCode}"  headerText="كود العميل"  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.previousCode}" />
+					</p:column>
+					<p:column filterBy="#{ det.customerNameEn}" headerText="اسم العميل بالانجليزي " width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{ det.customerNameEn}" />
+					</p:column>
+
+	<p:column filterBy="#{ det.customerNameAr }" headerText="#{msg['addCustomer.customerName']}" width="7%">
+						<p:outputLabel value="#{utils.isArabic() ? det.customerNameAr : det.customerNameEn}" />
+					</p:column>
+						<p:column filterBy="#{det.ref}"  headerText="المرجع "  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.ref}" />
+					</p:column>
+               	<p:column filterBy="#{det.taxNumber}"  headerText="#{msg['addCustomer.taxNumber_'+=utils.getVersion()]}"  width="7%" rendered="#{utils.getVersion() ne 'KSA' and utils.isSallon() ne true}">
+						<p:outputLabel value="#{det.taxNumber}" />
+					</p:column>
+					
+					<p:column filterBy="#{det.saleTaxNumber}"  headerText="رقم ضريبة القيمة المضافة "  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.saleTaxNumber}" />
+					</p:column>
+					<p:column filterBy="#{det.customerIdNumber}"  headerText="#{msg['addCustomer.customerIdNumber_'+=utils.getVersion()]}" width="7%" rendered="#{utils.isSallon() ne true}" >
+						<p:outputLabel value="#{det.customerIdNumber}" />
+					</p:column>
+					
+                   <p:column filterBy="#{det.responsiblePerson}"  headerText="#{msg['addCustomer.responsiblePerson_'+=utils.getVersion()]}" width="9%" rendered="#{utils.isSallon() ne true}" >
+						<p:outputLabel value="#{det.responsiblePerson}" />
+					</p:column>
+	                  <p:column  filterBy="#{det.address}" headerText="#{msg['addCompany.address']}" width="7%">
+						<p:outputLabel value="#{det.address}" />
+					</p:column>
+					<p:column  filterBy="#{det.phoneNumber}" headerText="#{msg['addAgent.agent_phone']}" width="7%">
+						<p:outputLabel value="#{det.phoneNumber}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.faxNumber}" headerText="#{msg['addAgent.agent_fax']}" width="7%">
+						<p:outputLabel value="#{det.faxNumber}" />
+					</p:column>
+
+
+					<p:column  filterBy="#{det.email}" headerText="#{msg['addAgent.agent_email']}" width="7%">
+						<p:outputLabel value="#{det.email}" />
+					</p:column>
+					 	<p:column filterBy="#{det.delegateCoding.delegateCoding}"  headerText=" المندوب"  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.delegateCoding.delegateCoding}" />
+					</p:column>
+					
+					 <p:column  filterBy="#{det.paymentMethod}" headerText="#{msg['addCustomer.paymentMethod_'+=utils.getVersion()]}" width="7%">
+						<p:outputLabel value="#{det.paymentMethod}" />
+					</p:column>
+					
+                   <p:column  filterBy="#{det.creditLimit}" headerText="#{msg['addCustomer.creditLimit']}" width="7%">
+						<p:outputLabel value="#{det.creditLimit}" />
+					</p:column>
+				
+                    <p:column  headerText="الارصدة الافتتاحية " width="7%" >
+						<p:outputLabel value="#{det.openingBalances}" >
+													                <f:convertNumber pattern="###,###.##"/>
+						
+						</p:outputLabel>
+					</p:column>	
+						<p:column filterBy="#{det.grpDesc}"  headerText=" المجموعات"  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.grpDesc}" />
+					</p:column>
+						<p:column  headerText="#{msg['Balance']} " width="7%" >
+						<p:outputLabel value="#{det.balance}" >
+													                <f:convertNumber pattern="###,###.##"/>
+						
+						</p:outputLabel>
+					</p:column>	
+						
+					
+							
+					<p:column headerText="#{msg['global.options']}" width="20%">
+					<p:commandButton id="Btn" icon="ui-icon-document"  action="#{customerDetailsMB.redirectToCustomerSelect()}" process="@this" >
+		                <f:setPropertyActionListener value="#{det}" target="#{customerMB.customer}" />
+						</p:commandButton>
+						<p:tooltip for="Btn" value="#{msg['Account_statement']} " trackMouse="true" />
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{customerMB.init()}" actionListener="#{customerDetailsMB.redirectToCustomerEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{customerMB.customer}" />
+							<f:setPropertyActionListener value="false" target="#{customerMB.addCustomer}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_agent']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{customerDetailsMB.deleteCustomer(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

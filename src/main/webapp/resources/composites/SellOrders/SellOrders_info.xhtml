@@ -1,0 +1,1270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addBills" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+
+</composite:interface>
+
+</head>
+<body>
+	<composite:implementation>
+
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card">
+					<div>
+						<h1 align="center" style="font-weight: bolder">#{sellOrderMB.sellOrder.documentType}</h1>
+
+						<div
+							style="box-shadow: 3px 3px 3px 3px #888888; width: 150px; display: grid; float: left;">
+							<table cellpadding="4" cellspacing="0"
+								style="border: none; border-collapse: collapse;">
+								<tr
+									style="background-color: #e0e0e0; padding: 0.5em; font-weight: bolder">
+									<td><h:outputLabel value="#{msg['Balance']}"
+											style=";font-size: 20px;font-weight:bold;">
+										</h:outputLabel></td>
+								</tr>
+								<tr>
+									<td><h:outputLabel style="color:black;font-size: 20px;"
+											value="#{sellOrderMB.sellOrder.total}">
+											<f:convertNumber pattern="###,###.##" />
+										</h:outputLabel></td>
+								</tr>
+
+							</table>
+						</div>
+						<div
+							style="box-shadow: 3px 3px 3px 3px #888888; float: right; width: auto; hight: auto">
+							<h:graphicImage
+								style="boarder;object-fit:fill;background-size:cover;border-radius:1px; width:auto; height:100px"
+								rendered="#{not empty sellOrderMB.sellOrder.company.picName}"
+								title="logo"
+								url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/#{utils.getReportPath()}/image/#{companyMB.company.picName}" />
+							<p:panelGrid columns="3" id="pnl38" styleClass="no-border">
+
+								<p:outputLabel
+									value="#{msg['addCompany.legalCompanyName_'+=utils.getVersion()]}:"
+									rendered="#{ sellOrderMB.sellOrder.legalCompanyName != '' }">
+									<h:outputText value="#{sellOrderMB.sellOrder.legalCompanyName}" />
+								</p:outputLabel>
+
+								<p:outputLabel value="#{msg['addCompany.address']}:"
+									rendered="#{sellOrderMB.sellOrder.address != '' }">
+									<h:outputText value="#{sellOrderMB.sellOrder.address}" />
+								</p:outputLabel>
+								<p:outputLabel value="#{msg['addCompany.phone_number']}:"
+									rendered="#{sellOrderMB.sellOrder.phoneNumber != '' }">
+									<h:outputText value="#{sellOrderMB.sellOrder.phoneNumber}" />
+								</p:outputLabel>
+								<p:outputLabel value="#{msg['addCompany.email']}:"
+									rendered="#{ sellOrderMB.sellOrder.email != '' }">
+									<h:outputText value="#{sellOrderMB.sellOrder.email}" />
+								</p:outputLabel>
+								<p:outputLabel
+									value="#{msg['Sales_Tax_Number_'+=utils.getVersion()]}:"
+									rendered="#{utils.getVersion() ne 'EGY' and sellOrderMB.sellOrder.saleTaxNumber ne null}">
+									<h:outputText value="#{sellOrderMB.sellOrder.saleTaxNumber}"
+										rendered="#{utils.getVersion() ne 'EGY'}" />
+								</p:outputLabel>
+
+								<p:outputLabel
+									value="#{msg['addCompany.companyId_'+=utils.getVersion()]}:"
+									rendered="#{ sellOrderMB.sellOrder.nationalCompanyNumber != '' }">
+									<h:outputText
+										value="#{sellOrderMB.sellOrder.nationalCompanyNumber}" />
+								</p:outputLabel>
+
+
+
+							</p:panelGrid>
+						</div>
+					</div>
+					<br></br> <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
+					<br></br> <br></br>
+
+
+
+					<p:panelGrid columns="2" styleClass="ui-noborder Wid120">
+						<label style="font-weight: bolder;">#{msg['addCustomer.customerName']}*:</label>
+						<div></div>
+						<p:selectOneMenu id="bonusesList3"
+							value="#{sellOrderMB.sellOrder.customer}"
+							style="margin-bottom:10px;width:180px"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="#{msg['addCustomer.customerName']} #{msg['required']}"
+							filter="true" filterMatchMode="contains" multiple="true">
+							<p:ajax event="change" process="@this"
+								update="@parent:a,b,c,d,e,f" />
+
+							<f:selectItem itemLabel="#{msg['Choose_customer']} " itemValue="" />
+							<f:selectItem itemLabel="addNew +"
+								itemValue="#{sellOrderMB.newItem}" />
+
+							<f:selectItems value="#{sellOrderDetailsMB.customerList}"
+								var="customer"
+								itemLabel="#{utils.isArabic() ? customer.customerNameAr:customer.customerNameEn}"
+								itemValue="#{customer}" />
+							<p:ajax event="itemSelect" listener="#{sellOrderMB.addValue}">
+							</p:ajax>
+
+						</p:selectOneMenu>
+						<label style="font-weight: bolder;">#{msg['Currency']}</label>
+						<p:selectOneMenu id="definitionOfCurrencie3s"
+							value="#{sellOrderMB.sellOrder.definitionOfCurrencies}"
+							style="margin-top:8px;"
+							converter="omnifaces.SelectItemsConverter" filter="true"
+							filterMatchMode="contains" multiple="true">
+							<f:selectItem itemLabel=" " itemValue="" />
+
+							<f:selectItem itemLabel="addNew +"
+								itemValue="#{sellOrderMB.addDefinitionOfCurrencies}" />
+
+							<f:selectItems
+								value="#{sellOrderDetailsMB.definitionOfCurrenciesList}"
+								var="definitionOfCurrenciesList"
+								itemLabel="#{utils.isArabic() ? definitionOfCurrenciesList.definitionOfCurrenciesName : definitionOfCurrenciesList.definitionOfCurrenciesNameEn} "
+								itemValue="#{definitionOfCurrenciesList}" />
+							<p:ajax event="itemSelect"
+								listener="#{sellOrderMB.addDefinitionOfCurrencie}">
+							</p:ajax>
+
+						</p:selectOneMenu>
+
+
+					</p:panelGrid>
+					<br></br>
+
+					<div style="box-shadow: 3px 3px 3px 3px #888888; display: grid;">
+
+						<table cellpadding="4" cellspacing="0"
+							style='border-collapse: collapse; border: none'>
+							<tr
+								style="background-color: #e0e0e0; padding: 0.5em; font-weight: bolder">
+								<td>#{msg['customerCode']}</td>
+								<td>#{msg['customerName']}</td>
+								<td>#{msg['addCompany.address']}</td>
+								<td>#{msg['addCompany.phone_number']}</td>
+								<td>#{msg['Sales_Tax_Number_'+=utils.getVersion()]}</td>
+								<td>#{msg['addCustomer.customerIdNumber_'+=utils.getVersion()]}</td>
+							</tr>
+
+							<tr>
+								<td><h:outputLabel
+										value="#{sellOrderMB.sellOrder.customer.previousCode eq null?0:sellOrderMB.sellOrder.customer.previousCode}"
+										id="a">
+
+									</h:outputLabel></td>
+								<td><h:outputLabel
+										value="#{sellOrderMB.sellOrder.customer.delegate eq null?'':sellOrderMB.sellOrder.customer.delegate}"
+										id="b">
+									</h:outputLabel></td>
+								<td><h:outputLabel
+										value="#{sellOrderMB.sellOrder.customer.address eq null?'':sellOrderMB.sellOrder.customer.address}"
+										id="c">
+									</h:outputLabel></td>
+								<td><h:outputLabel
+										value="#{sellOrderMB.sellOrder.customer.phoneNumber eq null?0:sellOrderMB.sellOrder.customer.phoneNumber}"
+										id="d">
+									</h:outputLabel></td>
+								<td><h:outputLabel
+										value="#{sellOrderMB.sellOrder.customer.saleTaxNumber eq null?0:sellOrderMB.sellOrder.customer.saleTaxNumber}"
+										id="e">
+									</h:outputLabel></td>
+								<td><h:outputLabel
+										value="#{sellOrderMB.sellOrder.customer.customerIdNumber eq null?0:sellOrderMB.sellOrder.customer.customerIdNumber }"
+										id="f">
+									</h:outputLabel></td>
+							</tr>
+
+
+						</table>
+
+					</div>
+
+					<br></br> <br></br>
+					<div style="box-shadow: 3px 3px 3px 3px #888888; display: grid">
+						<table cellpadding="4" cellspacing="0"
+							style='border-collapse: collapse; border: none'>
+							<tr
+								style="background-color: #e0e0e0; padding: 0.5em; font-weight: bolder;">
+								<td width="100">#{msg['saleNum']}</td>
+								<td width="150">تاريخ امر البيع</td>
+								<td width="150">#{msg['Due_date']}*</td>
+							</tr>
+							<tr style="padding: 20px">
+								<td><h:outputText
+										value="#{sellOrderMB.sellOrder.billsNumber}" /></td>
+								<td><p:calendar value="#{sellOrderMB.sellOrder.todayDate}"
+										pattern="yyyy/MM/dd" required="true" /></td>
+								<td><p:calendar required="true" id="date1"
+										pattern="dd/MM/yyyy" effect="fold"
+										value="#{sellOrderMB.sellOrder.dueDate}"
+										rendered="#{utils.getVersion() ne 'EGY'}" /></td>
+
+							</tr>
+
+						</table>
+
+					</div>
+					<br></br>
+
+					<div>
+						<p:panelGrid columns="3" styleClass="ui-noborder Wid120">
+							<h:selectOneRadio id="batchtype"
+								value="#{sellOrderMB.sellOrder.commodityServices}"
+								style="margin-bottom:20px;margin-top:20px;font-weight:bolder"
+								filter="true" filterMatchMode="contains" required="true">
+								<f:selectItem itemLabel="#{msg['goods']} " itemValue="1" />
+								<f:selectItem itemLabel="#{msg['services']}" itemValue="2" />
+							</h:selectOneRadio>
+							<p:commandButton value="#{msg['search']}" icon="ui-icon-search"
+								action="#{sellOrderMB.refresh()}"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								process="@form" update="@form" />
+						</p:panelGrid>
+
+					</div>
+
+
+
+					<div style="box-shadow: 3px 3px 3px 3px #888888;">
+						<p:panelGrid columns="1" id="pnl2" styleClass="ui-noborder"
+							rendered="#{sellOrderMB.sellOrder.commodityServices eq 2 and sellOrderMB.sellOrder.closeMonth eq 0}">
+
+							<p:commandButton action="#{sellOrderMB.addNewDetails()}"
+								oncomplete="PF('bui').hide()" onstart="PF('bui').show()"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								value="#{msg['Add_Row']} " process="@this" icon="ui-icon-plus"
+								 />
+
+							<p:commandButton value="#{msg['Calculation']}"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								action="#{sellOrderMB.saveBills2()}" process="@form"
+								update="@form">
+
+							</p:commandButton>
+
+
+							<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet"
+								rowIndexVar="index" var="det" styleClass="txt-center"
+								value="#{sellOrderMB.addSellOrderList}" style="border:hidden;">
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column colspan="1" headerText="#" style="border:hidden;" />
+										<p:column colspan="1" headerText="#{msg['Item']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Descreption']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Unit_Price']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Quantity']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="Ø§Ù„Ù‚ÙŠÙ…Ø©"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											rendered="false" />
+										<p:column colspan="1" headerText="Ø§Ù„Ù‚ÙŠÙ…Ø©"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											rendered="false" />
+										<p:column colspan="1" headerText="#{msg['discAmount']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="Ù‚ÙŠÙ…Ø© Ø§Ù„Ø®ØµÙ…"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											rendered="false" />
+										<p:column colspan="1" headerText="Ù‚ÙŠÙ…Ø© Ø§Ù„Ø®ØµÙ…"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											rendered="false" />
+
+										<p:column colspan="1" headerText="#{msg['Amount_before_tax']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Amount_before_tax']}"
+											style="border:hidden; font-size: 12px ;font-weight:bold" />
+
+										<p:column colspan="1" headerText="#{msg['Tax_Rate']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Tax_amount']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Tax_amount']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+
+										<p:column colspan="1" headerText="#{msg['Gross_Total']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Total']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+
+									</p:row>
+									<p:row>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+										<ui:repeat
+											value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+											var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+										<ui:repeat
+											value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+											var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: #888888;" />
+										</ui:repeat>
+
+										<ui:repeat value="#{sellOrderMB.main}" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: #888888;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+										<ui:repeat
+											value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+											var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+
+										<ui:repeat value="#{sellOrderMB.main}" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+										<ui:repeat
+											value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+											var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+
+										<ui:repeat value="#{sellOrderMB.main}" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color:#888888;" />
+										</ui:repeat>
+
+									</p:row>
+								</p:columnGroup>
+
+
+
+								<p:column headerText="#" width="20" style="border:hidden;">
+
+									<h:outputText value="#{index+1}" />
+
+
+
+								</p:column>
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column colspan="#{index+1}" headerText="#"
+											style="border:hidden;" />
+									</p:row>
+									<p:row>
+										<ui:repeat value="#{index+1}" var="year">
+											<p:column style="border:hidden;" />
+										</ui:repeat>
+									</p:row>
+								</p:columnGroup>
+
+								<p:column headerText="#{msg['Item']}" width="90"
+									style="border:hidden;">
+									<p:selectOneMenu required="true"
+										converter="omnifaces.SelectItemsConverter" filter="true"
+										filterMatchMode="contains" id="agents"
+										value="#{det.servicesProducts}" style="margin-bottom:10px;"
+										styleClass="Wid100">
+										<p:ajax event="change" process="@this" update="tblSheet" />
+										<f:selectItem itemLabel="#{msg['select']}" />
+										<f:selectItems
+											value="#{sellOrderDetailsMB.servicesProductsList}"
+											var="servicesProducts"
+											itemLabel="#{utils.isArabic() ? servicesProducts.nameProductOrService:servicesProducts.nameProductOrServiceEn}"
+											itemValue="#{servicesProducts}" />
+									</p:selectOneMenu>
+								</p:column>
+								<p:column headerText="#{msg['Descreption']}" width="100"
+									style="border:hidden;">
+									<p:inputTextarea escape="false" value="#{det.description}"
+										autoResize="false" styleClass="Wid100" rows="3">
+									</p:inputTextarea>
+								</p:column>
+
+								<p:column id="price" headerText="#{msg['Unit_Price']}"
+									width="50" style="border:hidden;">
+									<p:inputNumber value="#{det.price}" />
+
+
+								</p:column>
+								<p:column headerText="#{msg['Quantity']}" width="50"
+									style="border:hidden;">
+									<p:inputNumber value="#{det.quantity}" required="true" />
+								</p:column>
+
+								<p:column headerText="#{msg['Quantity']}" width="50"
+									style="border:hidden;" rendered="false">
+									<p:inputNumber value="#{det.initialAmount}" />
+								</p:column>
+								<p:column headerText="#{msg['Quantity']}" width="50"
+									style="border:hidden;" rendered="false">
+									<p:inputNumber value="#{det.amount}" />
+								</p:column>
+
+
+								<p:column headerText="#{msg['Tax_Rate']} " width="100"
+									style="border:hidden;">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+										filter="true" filterMatchMode="contains" id="agents128"
+										value="#{det.comercialDiscount}" style="margin-bottom:10px;">
+										<f:selectItem itemLabel="#{msg['select']}" />
+
+										<f:selectItems value="#{sellOrderMB.comercialDiscountList}"
+											var="comercialDiscount"
+											itemLabel="#{comercialDiscount.taxAmount}"
+											itemValue="#{comercialDiscount}">
+
+										</f:selectItems>
+									</p:selectOneMenu>
+
+								</p:column>
+								<p:column headerText="#{msg['Quantity']}" width="50"
+									style="border:hidden;" rendered="false">
+									<p:inputNumber value="#{det.initalamountdiscount}" />
+								</p:column>
+
+
+								<p:column headerText="#{msg['Quantity']}" width="50"
+									style="border:hidden;" rendered=" false">
+									<p:inputNumber value="#{det.amountdiscount}" />
+								</p:column>
+
+								<p:column headerText="#{msg['Amount_before_tax']}" width="70"
+									style="border:hidden;">
+									<h:outputText value="#{det.initialValueBeforeTax}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+
+								</p:column>
+
+								<p:column headerText="#{msg['Amount_before_tax']} " width="70"
+									style="border:hidden;">
+									<h:outputText value="#{det.valueBeforeTax}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+
+								</p:column>
+								<p:column headerText="#{msg['Tax_Rate']} " width="100"
+									style="border:hidden;">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+										filter="true" filterMatchMode="contains" id="agents12"
+										value="#{det.definitionOfTax}" style="margin-bottom:10px;">
+										<f:selectItem itemLabel="#{msg['select']}" />
+
+										<f:selectItems
+											value="#{sellOrderDetailsMB.definitionOfTaxList}"
+											var="definitionOfTax"
+											itemLabel="#{definitionOfTax.taxAmount}"
+											itemValue="#{definitionOfTax}">
+
+										</f:selectItems>
+									</p:selectOneMenu>
+
+								</p:column>
+
+								<p:column headerText=" #{msg['Tax_amount']} " width="50"
+									style="border:hidden;">
+									<h:outputText value="#{det.initialTaxAmount}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+
+								</p:column>
+								<p:column headerText=" #{msg['Tax_amount']} " width="50"
+									style="border:hidden;">
+									<h:outputText value="#{det.taxAmount}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+
+								</p:column>
+								<p:column headerText="#{msg['Gross_Total']}   " width="50"
+									style="border:hidden;">
+									<h:outputText value="#{det.initialTotal}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="#{msg['Total']}" width="50"
+									style="border:hidden;">
+									<h:outputText value="#{det.total}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+								</p:column>
+
+
+								<p:column headerText="#{msg['Delete']}" width="30"
+									style="border:hidden;">
+
+									<p:commandButton styleClass="red-btn"
+										action="#{sellOrderMB.delete(det)}" process="@this"
+										update="@form" icon="ui-icon-delete">
+										<p:confirm header="#{msg['glopal.confirmation']}"
+											message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+									</p:commandButton>
+
+								</p:column>
+
+
+							</p:dataTable>
+						</p:panelGrid>
+<p:commandButton action="#{sellOrderMB.addNewDetails()}"
+								oncomplete="PF('bui').hide()" onstart="PF('bui').show()"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								value="#{msg['Add_Row']} " process="@this" icon="ui-icon-plus" />
+
+							<p:commandButton value="#{msg['Calculation']}"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								action="#{sellOrderMB.saveBills2()}" process="@form"
+								update="@form">
+
+							</p:commandButton>
+<div style="overflow-x: scroll" >
+
+						<p:panelGrid columns="20" id="pnl2Bill"
+							styleClass="ui-noborder Wid120" style="width:200%"
+							rendered="#{sellOrderMB.sellOrder.commodityServices eq 1 and sellOrderMB.sellOrder.closeMonth eq 0}">
+
+							
+
+
+							<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet8"
+								rowIndexVar="index" var="det" styleClass="txt-center" 
+								 scrollable="true" value="#{sellOrderMB.addSellOrderList}" style="border:hidden">
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column colspan="1" headerText="#" style="border:hidden;" />
+											<p:column colspan="1" headerText="كود الصنف"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											rendered="#{ utils.getVersion() eq 'KSA'}" />
+										<p:column colspan="1" headerText="#{msg['Item']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+									
+									<p:column colspan="1" headerText="Th/h"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"/>
+											<p:column colspan="1" headerText="width"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"/>
+											<p:column colspan="1" headerText="length"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"/>
+											<p:column colspan="1" headerText="Pcs"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"/>
+											<p:column colspan="1" headerText="LM"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"/>
+											<p:column colspan="1" headerText="M2"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"/>
+											<p:column colspan="1" headerText="M3"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"/>
+											
+										<p:column colspan="1" headerText="#{msg['Unit_Price']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Quantity']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+											<p:column colspan="1" headerText="#{msg['unitPrice']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+											
+										<p:column colspan="1" headerText="القيمة"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											rendered="false" />
+										<p:column colspan="1" headerText="القيمة"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											rendered="false" />
+										<p:column colspan="1" headerText="#{msg['discountRate']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="قيمة الخصم"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											rendered="false" />
+										<p:column colspan="1" headerText="قيمة الخصم"
+											style="border:hidden;font-size: 12px ;font-weight:bold"
+											 />
+
+										<p:column colspan="1" headerText="#{msg['Amount_before_tax']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="false"/>
+										<p:column colspan="1" headerText="#{msg['Amount_before_tax']}"
+											style="border:hidden; font-size: 12px ;font-weight:bold" />
+
+										<p:column colspan="1" headerText="#{msg['Tax_Rate']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Tax_amount']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{ utils.getVersion() ne 'KSA'}" />
+										<p:column colspan="1" headerText="#{msg['Tax_amount']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+
+										<p:column colspan="1" headerText="#{msg['Gross_Total']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" />
+										<p:column colspan="1" headerText="#{msg['Total']}"
+											style="border:hidden;font-size: 12px ;font-weight:bold" rendered="#{ utils.getVersion() ne 'KSA'}"/>
+<p:column headerText="#{msg['Delete']}" style="border:hidden;font-size: 12px ;font-weight:bold"></p:column>
+
+									</p:row>
+									<p:row>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year" rendered="#{selectCompany.id eq 2  and utils.getVersion() eq 'KSA'}">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year" rendered="#{selectCompany.id eq 2  and utils.getVersion() eq 'KSA'}">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year" rendered="#{selectCompany.id eq 2  and utils.getVersion() eq 'KSA'}">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year" rendered="#{selectCompany.id eq 2  and utils.getVersion() eq 'KSA'}">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat
+											value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+											var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat
+											value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+											var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+
+										<ui:repeat value="#{sellOrderMB.main}" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat value="" var="year" rendered="#{ utils.getVersion() ne 'KSA'}">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat
+											value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+											var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+
+										<ui:repeat value="#{sellOrderMB.main}" var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+										<ui:repeat rendered="#{ utils.getVersion() ne 'KSA'}"
+											value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+											var="year">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+
+										<ui:repeat value="#{sellOrderMB.main}" var="year" rendered="#{ utils.getVersion() ne 'KSA'}">
+											<p:column headerText="#{year}"
+												style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+										</ui:repeat>
+
+									</p:row>
+								</p:columnGroup>
+
+
+
+								<p:column headerText="#" width="20" style="border:hidden;">
+
+									<h:outputText value="#{index+1}" />
+
+
+
+								</p:column>
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column colspan="#{index+1}" headerText="#"
+											style="border:hidden;" />
+									</p:row>
+									<p:row>
+										<ui:repeat value="#{index+1}" var="year">
+											<p:column style="border:hidden;" />
+										</ui:repeat>
+									</p:row>
+								</p:columnGroup>
+
+								<p:column headerText="#{msg['Item']}" width="90"
+									style="border:hidden;"
+									rendered="#{utils.getVersion() eq 'KSA'}">
+									<p:selectOneMenu required="true"
+										converter="omnifaces.SelectItemsConverter" filter="true"
+										filterMatchMode="contains" id="agents33"
+										value="#{det.itemsScreen2}" style="margin-bottom:10px;"
+										styleClass="Wid100" rendered="#{utils.getVersion() eq 'KSA'}">
+										<p:ajax event="change" process="@this" update="tblSheet8" />
+										<f:selectItem itemLabel="#{msg['select']}" />
+										<f:selectItems value="#{sellOrderDetailsMB.itemsScreenList}"
+											var="itemsScreen" itemLabel="#{itemsScreen.codeItem}"
+											itemValue="#{itemsScreen}" />
+									</p:selectOneMenu>
+								</p:column>
+								<p:column headerText="#{msg['Item']}" width="90"
+									style="border:hidden;">
+									<p:selectOneMenu required="true"
+										converter="omnifaces.SelectItemsConverter" filter="true"
+										filterMatchMode="contains" id="agents"
+										value="#{det.itemsScreen}" style="margin-bottom:10px;"
+										styleClass="Wid100">
+										<p:ajax event="change" process="@this" update="tblSheet8" />
+										<f:selectItem itemLabel="#{msg['select']}" />
+										<f:selectItems value="#{sellOrderDetailsMB.itemsScreenList}"
+											var="itemsScreen" itemLabel="#{itemsScreen.nameItem}"
+											itemValue="#{itemsScreen}" />
+									</p:selectOneMenu>
+								</p:column>
+
+<p:column  width="20" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA' }"
+									style="border:hidden;">
+									<p:inputNumber value="#{det.th}"  />
+								</p:column>
+								<p:column width="20" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"
+									style="border:hidden;">
+									<p:inputNumber value="#{det.width}" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}" />
+								</p:column>
+								<p:column  width="20" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"
+									style="border:hidden;">
+									<p:inputNumber value="#{det.length}" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}" />
+								</p:column>
+								<p:column width="20" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}"
+									style="border:hidden;">
+									<p:inputNumber value="#{det.pcs}" rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}" />
+								</p:column>
+								<p:column headerText="LM" width="50"
+									style="border:hidden;"
+									rendered="#{selectCompany.id eq 2  and utils.getVersion() eq 'KSA'}">
+									<h:outputText value="#{det.lM}" >
+									<f:convertNumber pattern="###,###.###" />
+									</h:outputText>
+								</p:column>
+									<p:column headerText="M2" width="50"
+									style="border:hidden;"
+									rendered="#{selectCompany.id eq 2  and utils.getVersion() eq 'KSA'}">
+									<h:outputText value="#{det.m2}" >
+									<f:convertNumber pattern="###,###.###" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="M3" width="50"
+									style="border:hidden;"
+									rendered="#{selectCompany.id eq 2  and  utils.getVersion() eq 'KSA'}">
+									<h:outputText value="#{det.m3}" >
+									<f:convertNumber pattern="###,###.###" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="#{msg['Unit_Price']}" width="100"
+									style="border:hidden;">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+										filter="true" filterMatchMode="contains" id="unit"
+										value="#{det.unit}" style="margin-bottom:10px;">
+										<f:selectItem itemLabel="#{msg['select']}" />
+
+										<f:selectItems value="#{sellOrderDetailsMB.unitList}"
+											var="unit" itemLabel="#{unit.unitName}" itemValue="#{unit}">
+
+										</f:selectItems>
+									</p:selectOneMenu>
+
+								</p:column>
+								
+								
+								<p:column headerText="#{msg['Quantity']}" width="50"
+									style="border:hidden;">
+									<p:inputNumber value="#{det.quantity}" />
+								</p:column>
+								<p:column headerText="#{msg['Unit_cost']}" width="50"
+									style="border:hidden;">
+									<p:inputNumber value="#{det.costUnit}" />
+								</p:column>
+							
+								<p:column headerText="#{msg['Tax_Rate']} " width="100"
+									style="border:hidden;">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+										filter="true" filterMatchMode="contains" id="agents128"
+										value="#{det.comercialDiscount}" style="margin-bottom:10px;">
+										<f:selectItem itemLabel="#{msg['select']}" />
+
+										<f:selectItems value="#{sellOrderMB.comercialDiscountList}"
+											var="comercialDiscount"
+											itemLabel="#{comercialDiscount.taxAmount}"
+											itemValue="#{comercialDiscount}">
+
+										</f:selectItems>
+									</p:selectOneMenu>
+
+								</p:column>
+								<p:column headerText="#{msg['Quantity']}" width="50"
+									style="border:hidden;"
+									rendered="#{ utils.getVersion() eq 'KSA'}">
+									<h:outputText value="#{det.initalamountdiscount}" >
+									<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+								</p:column>
+
+
+								<p:column headerText="#{msg['Gross_cost_before_tax']}"
+									width="70" style="border:hidden;">
+									<h:outputText value="#{det.initialValueBeforeTax}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+
+								</p:column>
+
+								<p:column headerText="#{msg['Gross_cost_before_tax']}"
+									width="70" style="border:hidden;"
+									rendered="#{ utils.getVersion() ne 'KSA'}">
+									<h:outputText value="#{det.valueBeforeTax}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+
+								</p:column>
+								<p:column headerText="#{msg['Tax_Rate']}" width="100"
+									style="border:hidden;">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+										filter="true" filterMatchMode="contains" id="agents12"
+										value="#{det.definitionOfTax}" style="margin-bottom:10px;">
+										<f:selectItem itemLabel="#{msg['select']}" />
+
+										<f:selectItems
+											value="#{sellOrderDetailsMB.definitionOfTaxList}"
+											var="definitionOfTax"
+											itemLabel="#{definitionOfTax.taxAmount}"
+											itemValue="#{definitionOfTax}">
+
+										</f:selectItems>
+									</p:selectOneMenu>
+
+								</p:column>
+
+
+								<p:column headerText="#{msg['Tax_amount']}" width="50"
+									style="border:hidden;">
+									<h:outputText value="#{det.initialTaxAmount}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+
+								</p:column>
+								<p:column headerText="#{msg['Tax_amount']}" width="50"
+									style="border:hidden;"
+									rendered="#{ utils.getVersion() ne 'KSA'}">
+									<h:outputText value="#{det.taxAmount}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+
+								</p:column>
+								<p:column headerText="#{msg['Gross_cost']}" width="50"
+									style="border:hidden;">
+									<h:outputText value="#{det.initialTotal}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="#{msg['Gross_cost']}" width="50"
+									style="border:hidden;"
+									rendered="#{ utils.getVersion() ne 'KSA'}">
+									<h:outputText value="#{det.total}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+								</p:column>
+
+
+								<p:column headerText="#{msg['Delete']}" width="30"
+									style="border:hidden;">
+
+									<p:commandButton styleClass="red-btn"
+										action="#{purchaseBillsMB.delete(det)}" process="@this"
+										update="@form" icon="ui-icon-delete">
+										<p:confirm header="#{msg['glopal.confirmation']}"
+											message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+									</p:commandButton>
+
+								</p:column>
+
+							</p:dataTable>
+
+						</p:panelGrid>
+						</div>
+					</div>
+
+					<br></br> <br></br>
+
+
+					<div style="display: flex; justify-content: space-between;">
+
+						<div
+							style="box-shadow: 3px 3px 3px 3px #888888; display: grid; width: 460">
+							<table cellpadding="4" cellspacing="0"
+								style='border-collapse: collapse; border: none'>
+								<tr
+									style="background-color: #e0e0e0; padding: 0.5em; font-weight: bolder;">
+									<td width="200">#{msg['Bank_Name']}:</td>
+									<td width="200"><p:selectOneMenu id="bankData"
+											value="#{sellOrderMB.sellOrder.bankData}"
+											style="margin-bottom:10px;"
+											converter="omnifaces.SelectItemsConverter" filter="true"
+											filterMatchMode="contains" multiple="true">
+											<p:ajax event="change" process="@this"
+												update="@parent:g,h,i,j,k" />
+											<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+
+											<f:selectItem itemLabel="addNew +"
+												itemValue="#{sellOrderMB.newItemBank}" />
+
+											<f:selectItems value="#{sellOrderDetailsMB.bankDataList}"
+												var="bankData"
+												itemLabel="#{utils.isArabic() ?bankData.nameBankAr:bankData.nameBankEn}"
+												itemValue="#{bankData}" />
+											<p:ajax event="itemSelect"
+												listener="#{sellOrderMB.addValueBank}">
+											</p:ajax>
+										</p:selectOneMenu></td>
+								</tr>
+								<tr>
+									<td>#{msg['Branch']}:</td>
+									<td><h:outputLabel
+											value="#{sellOrderMB.sellOrder.bankData.branch}" id="g">
+										</h:outputLabel></td>
+								</tr>
+								<tr>
+									<td>#{msg['Beneficiary_Name']} :</td>
+									<td><h:outputText
+											value="#{sellOrderMB.sellOrder.legalCompanyName}" id="h" /></td>
+								</tr>
+								<tr>
+									<td>#{msg['Swift_Code']} :</td>
+									<td><h:outputLabel
+											value="#{sellOrderMB.sellOrder.bankData.swift}" id="i">
+										</h:outputLabel></td>
+								</tr>
+								<tr>
+									<td>IBAN:</td>
+									<td><h:outputLabel
+											value="#{sellOrderMB.sellOrder.bankData.iban}" id="j">
+
+										</h:outputLabel></td>
+								</tr>
+								<tr>
+									<td>#{msg['Account_Number']} :</td>
+									<td><h:outputLabel
+											value="#{sellOrderMB.sellOrder.bankData.accountNum}" id="k">
+										</h:outputLabel></td>
+								</tr>
+							</table>
+						</div>
+
+						<p:panelGrid columns="6" id="pnl1233" styleClass="no-border"
+							rendered="#{sellOrderMB.sellOrder.commodityServices eq 1 or sellOrderMB.sellOrder.commodityServices eq 2 }">
+							<div
+								style="box-shadow: 3px 3px 3px 3px #888888; display: grid; width: 510px">
+								<table cellpadding="4" cellspacing="0"
+									style='border-collapse: collapse; border: none'>
+
+									<tr>
+										<td style="font-weight: bolder;">#{msg['totalBeforeDiscAndTax']}
+											:</td>
+										<td><h:outputLabel
+												value="#{sellOrderMB.addSellOrderList.stream().map(s->s.valueBeforeTax).sum()}">
+												<f:convertNumber pattern="###,###.##" />
+												<p:spacer width="20" height="20" />
+
+												<h:outputLabel value="#{sellOrderMB.main}">
+
+												</h:outputLabel>
+
+											</h:outputLabel></td>
+
+									</tr>
+
+
+									<tr>
+										<td style="font-weight: bolder;">#{msg['Tax2_'+=utils.getVersion()]}</td>
+										<td><h:outputLabel
+												value="#{sellOrderMB.addSellOrderList.stream().map(s->s.taxAmount).sum()}">
+
+												<f:convertNumber pattern="###,###.##" />
+
+
+
+												<h:outputLabel value="#{sellOrderMB.main}">
+
+
+												</h:outputLabel>
+
+											</h:outputLabel></td>
+									</tr>
+									<tr>
+										<td style="font-weight: bolder;"><h:outputLabel
+												rendered="#{utils.getVersion() eq 'EGY'}">
+
+												<label><b>
+														#{msg['discountTax_'+=utils.getVersion()]} </b> :</label>
+											</h:outputLabel></td>
+										<td><p:selectOneMenu
+												converter="omnifaces.SelectItemsConverter" filter="true"
+												filterMatchMode="contains" id="agents"
+												value="#{sellOrderMB.sellOrder.discountTax}"
+												style="margin-bottom:10px;" styleClass="Wid40"
+												rendered="#{utils.getVersion() eq 'EGY'}">
+												<f:selectItem itemLabel="   نسبة ضريبة     " />
+
+												<f:selectItems value="#{sellOrderMB.discountTaxList}"
+													var="comercialProfitTax"
+													itemLabel="#{comercialProfitTax.taxAmount}"
+													itemValue="#{comercialProfitTax}" />
+
+											</p:selectOneMenu></td>
+
+									</tr>
+
+
+
+									<tr>
+										<td style="font-weight: bolder;">#{msg['discAmount']}</td>
+										<td><h:outputLabel
+												value="#{sellOrderMB.addSellOrderList.stream().map(s->s.initalamountdiscount).sum()}">
+
+												<f:convertNumber pattern="###,###.##" />
+
+
+
+												<h:outputLabel value="#{sellOrderMB.main}">
+
+
+												</h:outputLabel>
+
+											</h:outputLabel></td>
+
+									</tr>
+
+									<tr>
+										<td style="font-weight: bolder;"><h:outputLabel
+												rendered="#{utils.getVersion() eq 'EGY'}"
+												value="#{sellOrderMB.sellOrder.totaldiscountTax}">
+
+												<h:outputLabel value="#{sellOrderMB.main}">
+												</h:outputLabel>
+											</h:outputLabel></td>
+
+									</tr>
+
+									<tr>
+										<td style="font-weight: bolder;">#{msg['total1']}</td>
+										<td><h:outputLabel
+												value="#{sellOrderMB.sellOrder.totalFinal eq null?0:sellOrderMB.sellOrder.totalFinal}">
+												<f:convertNumber pattern="###,###.##" />
+												<h:outputLabel value="#{sellOrderMB.main}">
+												</h:outputLabel>
+
+											</h:outputLabel></td>
+									</tr>
+									<tr>
+										<td style="font-weight: bolder;">#{msg['totalWritten']}</td>
+										<td><h:inputText value="#{sellOrderMB.sellOrder.totalCharacters}"
+												style=" border: 2px solid #888888;">
+											</h:inputText></td>
+
+									</tr>
+								</table>
+							</div>
+						</p:panelGrid>
+					</div>
+
+
+
+					<br></br> <br></br>
+					<div
+						style="box-shadow: 3px 3px 3px 3px #888888; width: 460px; display: grid">
+						<table cellpadding="4" cellspacing="0"
+							style='border-collapse: collapse; border: none'>
+							<tr
+								style="background-color: #e0e0e0; padding: 0.5em; font-weight: bolder;">
+								<td width="200">#{msg['addText']}</td>
+
+								<td><p:selectOneMenu id="billManagement1"
+										value="#{sellOrderMB.sellOrder.billManagement}"
+										style="margin-bottom:10px;"
+										converter="omnifaces.SelectItemsConverter" filter="true"
+										filterMatchMode="contains" multiple="true">
+										<p:ajax event="change" process="@this"
+											update="@parent:billManagement" />
+
+
+										<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+										<f:selectItem itemLabel="addNew +"
+											itemValue="#{sellOrderMB.newItemBillManagement}" />
+
+										<f:selectItems
+											value="#{sellOrderDetailsMB.billManagementList}"
+											var="billManagement"
+											itemLabel="#{utils.isArabic() ?billManagement.noteBillManagementAr:billManagement.noteBillManagementEn}" />
+										<p:ajax event="itemSelect"
+											listener="#{sellOrderMB.addValueBillManagement}">
+										</p:ajax>
+
+									</p:selectOneMenu></td>
+
+							</tr>
+
+							<tr>
+								<td>#{msg['text']}:</td>
+
+								<td><h:outputLabel id="billManagement"
+										value="#{utils.isArabic() ?sellOrderMB.sellOrder.billManagement.noteBillManagementAr:sellOrderMB.sellOrder.billManagement.noteBillManagementEn}">
+									</h:outputLabel></td>
+							</tr>
+
+						</table>
+
+					</div>
+
+
+					<br></br> <br></br>
+					<p:panelGrid columns="3" styleClass="ui-noborder Wid120">
+
+						<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+							style="width:auto; border-radius:20px;background-color:#888888"
+							action="#{sellOrderMB.saveBills()}" process="@form"
+							update="@form"
+							disabled="#{sellOrderMB.sellOrder.closeMonth eq 1 or sellOrderMB.checkCaritLimit eq false}">
+
+						</p:commandButton>
+						<p:commandButton id="esrr" styleClass="printBtn disNone"
+							icon="ui-icon-print"
+							style="width:auto;border-radius:20px;background-color:#888888"
+							value="#{msg['print']}" onclick="PF('Panel').hide()"
+							oncomplete="$('.printBtn').click()">
+							<p:printer target="print" />
+						</p:commandButton>
+						<p:commandButton value="#{msg['Main_list']}" icon="ui-icon-cancel"
+							style="width:auto;border-radius:20px;background-color:#888888"
+							process="@this" update="@this"
+							action="#{sellOrderMB.cancelAction()}" />
+
+						<p:dialog resizable="false" height="45vh" width="450px"
+							modal="true" showHeader="false" widgetVar="uploadDocument"
+							closeOnEscape="true" dynamic="true">
+
+							<p:spacer height="10" width="100%"></p:spacer>
+							<center>
+								<h:panelGroup columns="2" id="p" layout="block"
+									styleClass="no-border Wid70 MarAuto">
+
+									<p:outputLabel style="font-size: 17px;"
+										value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+									<p:spacer height="10" width="100%"></p:spacer>
+
+									<p:fileUpload rendered="#{sellOrderMB.sellOrder.id ne null}"
+										fileUploadListener="#{sellOrderMB.uploadDocument}"
+										mode="advanced" label="#{msg['attached']}" auto="true"
+										allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+										uploadLabel="#{msg['attached']}"
+										cancelLabel="#{msg['Cancel']}">
+									</p:fileUpload>
+
+									<p:commandButton value="#{msg['no']}" style="width:auto"
+										action="#{sellOrderMB.cancelAction()}" process="@form"
+										update="@form">
+
+									</p:commandButton>
+
+
+								</h:panelGroup>
+							</center>
+						</p:dialog>
+						<p:dataTable rendered="#{sellOrderMB.sellOrder.id ne null}"
+							reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+							var="doc" styleClass="txt-center"
+							value="#{sellOrderMB.documentList}">
+
+							<p:column>
+								<p:link value="#{doc.documentName}" type="button"
+									onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+									
+									<p:commandButton id="delteBtn" icon="ui-icon-delete" action="#{sellOrderMB.deleteDoucment()}" process="@this" update="@this" >
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+							</p:column>
+
+
+						</p:dataTable>
+					</p:panelGrid>
+					<h:panelGroup id="cc" layout="block"
+						styleClass="no-border Wid70 MarAuto">
+
+
+						<p:dialog header="edit" width="800" height="600" widgetVar="Panel">
+							<ui:include src="review/SellOrders_info_review.xhtml" />
+						</p:dialog>
+					</h:panelGroup>
+				</div>
+				<div></div>
+			</div>
+		</div>
+
+
+
+
+	</composite:implementation>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="title">#{msg['Statement_of_account']}  </ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+
+		<h:form id="customerSheetReport">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px">Expense Sheet Report</h1>
+						<p:panelGrid id="pnlReport" columns="1" layout="grid"
+							styleClass="ui-panelgrid-blank form-group">
+
+							
+						<p:column headerText="Items" width="90"
+								style="border:hidden;">
+								<p:selectOneMenu 
+									converter="omnifaces.SelectItemsConverter" filter="true"
+									filterMatchMode="contains" id="agents"
+									value="#{customerSheetReport.itemsScreen}" style="margin-bottom:10px;"
+									styleClass="Wid100">
+									<f:selectItem itemLabel="items name" />
+									
+									<f:selectItems
+										value="#{customerSheetReport.itemsScreenList}"
+										var="itemsScreen"
+										itemLabel="#{utils.isArabic() ?itemsScreen.nameItem:itemsScreen.nameItemEn}"
+										itemValue="#{itemsScreen}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+
+
+								<p:selectOneMenu value="#{customerSheetReport.servicesProducts}"
+									style="margin-bottom:10px;"
+									converter="omnifaces.SelectItemsConverter" filter="true"
+									filterMatchMode="contains" multiple="true">
+
+									<f:selectItem itemLabel=" services name" itemValue="" />
+
+									<f:selectItems
+										value="#{customerSheetReport.servicesProductsList}"
+										var="servicesProducts"
+										itemLabel="#{utils.isArabic() ? servicesProducts.nameProductOrService:servicesProducts.nameProductOrServiceEn}"
+										itemValue="#{servicesProducts}" />
+
+								</p:selectOneMenu>
+							</p:column>
+							
+							<p:column headerText="Suppliers" width="30"
+								style="border:hidden;">
+				<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" 
+									value="#{customerSheetReport.suppliers}" style="margin-bottom:10px;"
+									styleClass="Wid100" >
+							  	<f:selectItem itemLabel="suppliers name" />
+									
+									<f:selectItems
+										value="#{customerSheetReport.suppliersList}"
+										var="suppliers"
+										itemLabel="#{utils.isArabic() ?suppliers.suppliersNameAr:suppliers.suppliersNameEn}"
+										itemValue="#{suppliers}" />
+		               </p:selectOneMenu>
+							</p:column>
+							<p:row>
+								<p:column>
+									<h:panelGroup>
+										<label>#{msg['report.from_date']}:</label>
+
+										<p:calendar value="#{customerSheetReport.fromDate}"
+											pattern="yyyy/MM/dd">
+											<p:ajax event="dateSelect" process="@form" update="@form"></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+								<p:column>
+								</p:column>
+								<p:column>
+									<h:panelGroup>
+										<label>#{msg['report.to_date']}:</label>
+
+										<p:calendar value="#{customerSheetReport.toDate}"
+											pattern="yyyy/MM/dd">
+											<p:ajax process="@form" update="@form"></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+
+							<p:spacer />
+
+						</p:panelGrid>
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save"
+							style="width:auto" action="#{customerSheetReport.initSuppliers()}"
+							process="@form" update="@form" />
+
+
+						<br />
+					</div>
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+									<common:printHeader target="@form:print"
+										office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['Statement_of_account']}">
+
+									</common:printHeader>
+									<p:panelGrid styleClass="no-border"
+										style="width :100%;  direction:#{localeMB.dir}">
+
+
+
+
+
+
+										<center>
+											<p:outputLabel
+												style="color: red;font-size: 20px;font-weight:bold;"
+												id="emp" value="#{selectCompany.legalCompanyName}" />
+										</center>
+									</p:panelGrid>
+
+
+
+
+
+									<br />
+
+
+									<p:dataTable var="det"
+										value="#{customerSheetReport.valueTaxList}"
+										id="customerSheetReport">
+									
+					<p:column headerText="Items">
+						<p:outputLabel value="#{det.description}" />
+
+
+					</p:column>
+
+
+					<p:column headerText="Date ">
+						<p:outputLabel value="#{det.date}" />
+
+
+					</p:column>
+
+					<p:column headerText="QT">
+						<p:outputLabel value="#{det.qT}" />
+					</p:column>
+
+					<p:column headerText="Price">
+						<p:outputLabel value="#{det.price}" />
+					</p:column>
+
+					<p:column headerText="Cost">
+						<p:outputLabel value="#{det.cost}" />
+						<f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{customerSheetReport.valueTaxList.stream().map(s->s.cost).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+					</p:column>
+
+					<p:column headerText="Invoice">
+						<p:outputLabel value="#{det.invoice}" />
+					</p:column>
+
+					<p:column headerText="Suppliers">
+						<p:outputLabel value="#{det.documentType}" />
+					</p:column>
+					<p:column headerText="service">
+											
+											<h:outputLabel 
+												value="#{utils.isArabic() ? det.servicesProducts.nameProductOrService:det.servicesProducts.nameProductOrServiceEn}">
+											</h:outputLabel>
+										</p:column>
+
+									</p:dataTable>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>

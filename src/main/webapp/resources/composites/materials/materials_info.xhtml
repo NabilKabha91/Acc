@@ -1,0 +1,475 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:common="http://java.sun.com/jsf/composite/composites/common" >
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addBills" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+</composite:interface>
+</head>
+<body>
+	<h:outputStylesheet library="css" name="custom-v2.8.css" />
+	<h:outputStylesheet rendered="#{cc.attrs.addWordCss}" library="css" name="word.css" />
+	<composite:implementation>
+					<center>
+	<h:outputLabel 	style="color: Gray;font-size: 25px;font-weight:bold;"	value="#{materialsMB.materials.documentType}"  >
+							</h:outputLabel>
+							</center>
+							
+									<div  class="topbar-left">
+						<h:outputLabel
+						value="#{msg['Balance']}=" style="color: Orange;font-size: 25px;font-weight:bold;">
+						<h:outputLabel
+								style="color: Orange;font-size: 25px;font-weight:bold;" value="#{materialsMB.materials.total}" >
+															                <f:convertNumber pattern="###,###.##"/>
+								
+										</h:outputLabel>	
+										</h:outputLabel>
+</div>				  
+					
+	
+	<div class="ui-g">
+		
+							
+<div class="ui-g-12 ui-md-12 ui-lg-6 table-g-6">				
+				<div class="card card-w-title">
+				
+			
+							
+							
+								
+								<p:panelGrid columns="2" id="pnl" styleClass="no-border Wid100 MarAuto">
+				
+				
+          <p:outputLabel value=" #{msg['Supplier_Name']} "/>
+	<p:selectOneMenu id="bonusesList" value="#{materialsMB.materials.suppliers}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter" required="true"
+									
+									 filter="true" filterMatchMode="contains" multiple="true">
+									<p:ajax event="change" process="@this" update="@parent:customer" />
+									 
+									<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+									 										<f:selectItem itemLabel="addNew +" itemValue="#{materialsMB.newItem}" />
+									 
+									<f:selectItems value="#{materialsDetailsMB.suppliersList}" var="suppliers" itemLabel="#{utils.isArabic() ? suppliers.suppliersNameAr : suppliers.suppliersNameEn}" itemValue="#{suppliers}" />
+									
+							   <p:ajax event="itemSelect" listener="#{materialsMB.addValue}" ></p:ajax>
+									
+								</p:selectOneMenu>
+								<h:panelGrid columns="1" id="customer"  styleClass="no-border Wid100 MarAuto" >
+								
+				
+							<h:outputLabel value=" #{msg['addCompany.address']} :">
+				<h:outputLabel
+						value="#{materialsMB.materials.suppliers.address}" >
+						</h:outputLabel>
+						</h:outputLabel>
+								<h:outputLabel value=" #{msg['addCompany.phone_number']}:">
+						
+							<h:outputLabel
+						value="#{materialsMB.materials.suppliers.phoneNumber}" >
+						</h:outputLabel>
+						</h:outputLabel>
+																																				<h:outputLabel value="#{msg['addCompany.email']}:">
+						
+						<h:outputLabel
+						value="#{materialsMB.materials.suppliers.email}" >
+						</h:outputLabel>
+						</h:outputLabel>
+						
+						
+						
+						
+                            </h:panelGrid>
+								
+								</p:panelGrid>
+								                </div>
+								                								                </div>
+								                
+								                <br></br>
+								                <div class="ui-g-12 ui-md-12 ui-lg-6 table-g-6">				
+								                
+																<div class="card card-w-title">
+								
+								
+																<p:panelGrid columns="3" id="pnl3" styleClass="no-border Wid80 MarAuto">
+								
+                <p:outputLabel value=" #{msg['Invoice_date']}"/>
+	                       <p:calendar   value="#{materialsMB.materials.todayDate}" pattern="yyyy/MM/dd" required="true" />
+       
+       <p:column></p:column>
+       
+              <p:outputLabel value="#{msg['Due_date']} "/>
+	                       <p:calendar required="true" id="date1" pattern="dd/MM/yyyy" effect="fold" value="#{materialsMB.materials.dueDate}" />
+	                      <p:column></p:column>
+	               
+	           <p:outputLabel value="#{msg['Invoice_number']}"/>
+	                      		<h:outputText value="#{materialsMB.materials.materialsNumber}" />         
+                     	                      <p:column></p:column>
+                     											<label>#{msg['Currency']}  :</label>
+                     
+              <p:selectOneMenu id="definitionOfCurrencies" value="#{materialsMB.materials.definitionOfCurrencies}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter" 
+									
+									 filter="true" filterMatchMode="contains" multiple="true">
+									 		<f:selectItem itemLabel=" " itemValue="" />
+									<p:ajax event="change" process="@this" update="@parent:pnl2" />
+										<f:selectItem itemLabel="addNew +" itemValue="#{materialsMB.addDefinitionOfCurrencies}" />
+									 
+									<f:selectItems value="#{materialsDetailsMB.definitionOfCurrenciesList}" var="definitionOfCurrenciesList" itemLabel="#{utils.isArabic() ? definitionOfCurrenciesList.definitionOfCurrenciesName : definitionOfCurrenciesList.definitionOfCurrenciesNameEn}" itemValue="#{definitionOfCurrenciesList}" />
+								 <p:ajax event="itemSelect" listener="#{materialsMB.addDefinitionOfCurrencie}"> </p:ajax>
+									
+								</p:selectOneMenu>
+            
+            			  </p:panelGrid>
+                </div>
+                
+                                </div>
+                <br></br>
+                 <p:commandButton action="#{materialsMB.addNewDetails()}" oncomplete="PF('bui').hide()" onstart="PF('bui').show()" style="width:auto" value="اضافه سطر" 
+												process="@this" icon="ui-icon-plus" />
+                
+                  <p:commandButton value="#{msg['Calculation']}"  style="width:auto" action="#{materialsMB.saveMaterials2()}"
+						process="@form" update="@form" >
+						
+						</p:commandButton>	
+						
+                
+                   <div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">				
+								                
+																<div class="card card-w-title">
+								
+            		<p:panelGrid columns="8" id="pnl2" styleClass="ui-noborder Wid120" >
+            			      
+            			                
+            				
+					<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet" rowIndexVar="index" var="det" styleClass="txt-center" 
+											value="#{materialsMB.addMaterialsList}" style="border:hidden;" >
+								
+								 <p:columnGroup type="header">
+                <p:row>
+                    <p:column colspan="1" headerText="#" style="border:hidden;"/>
+                    <p:column colspan="1" headerText="#{msg['Item']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                                        <p:column colspan="1" headerText="#{msg['Quantity']}"  style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                                        <p:column colspan="1" headerText="#{msg['Unit_Price']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    <p:column colspan="1" headerText="#{msg['Unit_cost']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    <p:column colspan="1" headerText="#{msg['Gross_cost_before_tax']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                                        <p:column colspan="1" headerText="#{msg['Gross_cost_before_tax']}" style="border:hidden; font-size: 12px ;font-weight:bold"/>
+                    
+                     <p:column colspan="1" headerText="#{msg['Tax_Rate']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    <p:column colspan="1" headerText="#{msg['Tax_amount']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    <p:column colspan="1" headerText="#{msg['Tax_amount']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    
+                      <p:column colspan="1" headerText="#{msg['Gross_cost']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                 <p:column colspan="1" headerText="#{msg['Gross_cost']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    
+                </p:row>
+                <p:row>
+                 <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+                     <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;"/>
+                    </ui:repeat>
+                     <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+                 <ui:repeat value=""
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>        
+	  <ui:repeat value="#{utils.isArabic() ? materialsMB.materials.definitionOfCurrencies.definitionOfCurrenciesName : materialsMB.materials.definitionOfCurrencies.definitionOfCurrenciesNameEn}" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+	  <ui:repeat value="#{utils.isArabic() ? materialsMB.materials.definitionOfCurrencies.definitionOfCurrenciesName : materialsMB.materials.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat> 
+                   
+                 <ui:repeat value="#{materialsMB.main}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>    
+                     <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+	  <ui:repeat value="#{utils.isArabic() ? materialsMB.materials.definitionOfCurrencies.definitionOfCurrenciesName : materialsMB.materials.definitionOfCurrencies.definitionOfCurrenciesNameEn}" var="year">
+
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat> 
+                          
+                 <ui:repeat value="#{materialsMB.main}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>    
+     	  <ui:repeat value="#{utils.isArabic() ? materialsMB.materials.definitionOfCurrencies.definitionOfCurrenciesName : materialsMB.materials.definitionOfCurrencies.definitionOfCurrenciesNameEn}" var="year">
+
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>           
+                          
+                 <ui:repeat value="#{materialsMB.main}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>    
+                    
+                </p:row>
+            </p:columnGroup>
+								
+								
+											   
+                    <p:column headerText="#" width="20" style="border:hidden;" >
+					
+												<h:outputText value="#{index+1}" />
+									
+               						
+					
+											</p:column>
+				
+											 <p:columnGroup type="header">
+                <p:row>
+                    <p:column colspan="#{index+1}" headerText="#" style="border:hidden;"/>
+                </p:row>
+                <p:row>
+                    <ui:repeat value="#{index+1}" var="year">
+                        <p:column  style="border:hidden;"/>
+                    </ui:repeat>
+                </p:row>
+            </p:columnGroup>
+											
+					<p:column headerText="#{msg['Item']}" width="90" style="border:hidden;"  >
+												<p:selectOneMenu  required="true"
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents" value="#{det.itemsScreen}"
+													style="margin-bottom:10px;" styleClass="Wid100">
+														<p:ajax event="change" process="@this" update="tblSheet" />
+													<f:selectItem  itemLabel="#{msg['select']}" />
+													<f:selectItems value="#{materialsDetailsMB.itemsScreenList}" 
+													var="itemsScreen" itemLabel="#{itemsScreen.nameItem}" itemValue="#{itemsScreen}"/>
+												</p:selectOneMenu>
+											</p:column>
+								
+										
+							
+							<p:column headerText="#{msg['Quantity']}" width="70" style="border:hidden;" >
+							<p:inputNumber value="#{det.quantity}"/>
+							</p:column>	
+							
+						<p:column headerText="#{msg['Unit_Price']}" width="100" style="border:hidden;" >
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="unit" value="#{det.units}"
+													style="margin-bottom:10px;" >
+													<f:selectItem  itemLabel="#{msg['select']}" />
+													
+													<f:selectItems value="#{materialsDetailsMB.unitList}" 
+													var="unit" itemLabel="#{unit.unitName}" itemValue="#{unit}"  >
+													
+													</f:selectItems>
+												</p:selectOneMenu>
+											
+							</p:column>	
+							<p:column headerText="#{msg['Unit_cost']}" width="50" style="border:hidden;" >
+							<p:inputNumber value="#{det.costUnit}"/>
+							</p:column>
+							
+								
+								<p:column headerText="#{msg['Gross_cost_before_tax']}" width="70" style="border:hidden;" >
+							<h:outputText value="#{det.initialValueBeforeTax}">
+														 <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+							
+							</p:column>	
+								
+									<p:column headerText="#{msg['Gross_cost_before_tax']}" width="70" style="border:hidden;" >
+							<h:outputText value="#{det.valueBeforeTax}">
+														 <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+							
+							</p:column>	
+							<p:column headerText="#{msg['Tax_Rate']}" width="100" style="border:hidden;" >
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents12" value="#{det.definitionOfTax}"
+													style="margin-bottom:10px;" >
+													<f:selectItem  itemLabel="#{msg['select']}" />
+													
+													<f:selectItems value="#{materialsDetailsMB.definitionOfTaxList}" 
+													var="definitionOfTax" itemLabel="#{definitionOfTax.taxAmount}" itemValue="#{definitionOfTax}"  >
+													
+													</f:selectItems>
+												</p:selectOneMenu>
+											
+							</p:column>	
+							
+						<p:column headerText="#{msg['Tax_amount']}" width="50" style="border:hidden;" >
+							<h:outputText value="#{det.initialTaxAmount}">
+							 <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+									
+							</p:column>	
+							<p:column headerText="#{msg['Tax_amount']}" width="50" style="border:hidden;" >
+							<h:outputText value="#{det.taxAmount}">
+							 <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+									
+							</p:column>	
+									<p:column headerText="#{msg['Gross_cost']}" width="50" style="border:hidden;" >
+							<h:outputText value="#{det.initialTotal}">
+							                <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+							</p:column>
+								<p:column headerText="#{msg['Gross_cost']}" width="50" style="border:hidden;" >
+							<h:outputText value="#{det.total}">
+							                <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+							</p:column>
+							
+					
+								<p:column   headerText="#{msg['Delete']}"  width="30" style="border:hidden;" >
+								
+												<p:commandButton  styleClass="red-btn" action="#{materialsMB.delete(det)}"  process="@this" update="@form" icon="ui-icon-delete">
+													<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+												</p:commandButton>
+
+											</p:column >	
+										
+								
+					</p:dataTable>
+					</p:panelGrid>
+					</div>
+					</div>
+ 		
+						
+						
+  <div class="ui-g-12 ui-md-12 ui-lg-6 table-g-6">				
+								                
+																<div class="card card-w-title">			
+																  	<p:panelGrid columns="2" id="pnl12" styleClass="no-border Wid100 MarAuto">
+			  							<label><b> #{msg['Total_before_tax']}    </b>:</label>
+			  	
+				<h:outputLabel												value="#{materialsMB.addMaterialsList.stream().map(s->s.valueBeforeTax).sum()}" >
+				<f:convertNumber pattern="###,###.##"/>
+			<p:spacer   width="20"
+                                                                              height="20"/>	
+			
+				<h:outputLabel value="#{materialsMB.main}">
+						
+						</h:outputLabel   >	
+						
+						</h:outputLabel>
+						
+						
+					<p:column>
+					</p:column>
+				<p:column>
+					</p:column>
+					<label><b>   #{msg['Tax']}  :</b></label>
+			  	
+				<h:outputLabel						value="#{materialsMB.addMaterialsList.stream().map(s->s.taxAmount).sum()}" >
+				
+											 <f:convertNumber pattern="###,###.##"/>
+				
+							<p:spacer  width="20"
+                                                                              height="20" />	
+				
+						<h:outputLabel  value="#{materialsMB.main}" >
+						
+						
+						</h:outputLabel>
+						
+						</h:outputLabel>
+			<p:column>
+					</p:column>
+				<p:column>
+					</p:column>
+					<label><b>  #{msg['Total']}   :</b></label>
+			  	
+				<h:outputLabel
+										value="#{materialsMB.addMaterialsList.stream().map(s->s.total).sum()}" >
+										 <f:convertNumber pattern="###,###.##"/>
+							<p:spacer width="20"
+                                                                              height="20" />	
+							<p:spacer />
+				
+										<h:outputLabel  value="#{materialsMB.main}" >
+				
+						</h:outputLabel>
+						
+						</h:outputLabel>
+							<p:column>
+					</p:column>
+				<p:column>
+					</p:column>
+										<label><b>    #{msg['Total_written']}    :</b></label>
+					<h:inputText
+					value="#{materialsMB.materials.totalCharacters}">
+					</h:inputText>
+					
+			</p:panelGrid>
+									</div>	
+						</div>
+						
+  
+					<br />			
+<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">								<div class="card card-w-title">		
+				  	<p:panelGrid columns="3" id="pnl30" styleClass="ui-noborder Wid120">
+				
+								<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{materialsMB.saveMaterials()}"
+						process="@form" update="@form" >
+						
+						</p:commandButton>	
+						
+                <p:commandButton value=" #{msg['print']}" onclick="window.print();" type="button" icon="ui-icon-print" >
+						</p:commandButton>
+						  <p:commandButton value=" #{msg['Main_list']} " icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{materialsMB.cancelAction()}" />
+					
+						<p:dialog   resizable="false" height="45vh" width="450px" modal="true" showHeader="false" widgetVar="uploadDocument" closeOnEscape="true" dynamic="true">
+		
+			<p:spacer height="10" width="100%"></p:spacer>
+				<center>
+				<h:panelGroup columns="2" id="p" layout="block" styleClass="no-border Wid70 MarAuto">
+
+						<p:outputLabel style="font-size: 17px;" value="#{msg['Do_you_want_to_download_an_attachment']}   "></p:outputLabel>
+						<p:spacer height="10" width="100%"></p:spacer>
+						
+						  <p:fileUpload  rendered="#{materialsMB.materials.id ne null}"  fileUploadListener="#{materialsMB.uploadDocument}" mode="advanced"
+								label="#{msg['attached']}" auto="true" allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+								uploadLabel="#{msg['attached']}" cancelLabel="#{msg['Cancel']}"
+								
+							>
+											</p:fileUpload>
+							
+						<p:commandButton value="لا"  style="width:auto" action="#{materialsMB.cancelAction()}"
+						process="@form" update="@form" >
+						
+						</p:commandButton>	
+				
+									
+					</h:panelGroup>
+					</center>
+		</p:dialog>			
+				<p:dataTable  rendered="#{materialsMB.materials.id ne null}" reflow="true" emptyMessage="#{msg['noRecord']}" id="document" var="doc" styleClass="txt-center" value="#{materialsMB.documentList}">
+					
+						<p:column >
+				      	<p:link value="#{doc.documentName}" type="button"
+	onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />			
+			</p:column>
+					
+					
+					</p:dataTable>					
+						</p:panelGrid>
+						</div>
+						</div>
+				
+				
+				
+<br></br>			
+	<br></br>			
+		            			               							
+										</div>
+										
+										
+										
+										
+	</composite:implementation>
+</body>
+</html>

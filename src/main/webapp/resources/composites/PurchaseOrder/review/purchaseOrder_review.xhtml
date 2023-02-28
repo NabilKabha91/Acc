@@ -1,0 +1,897 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:common="http://java.sun.com/jsf/composite/composites/common" >
+<head>
+<composite:interface>
+	<composite:attribute name="addBill" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+</composite:interface>
+
+</head>
+<f:view contentType="text/html" locale="#{languageDetails.locale}">
+
+	<h:body>
+
+		<h:form>
+
+	
+	<composite:implementation>
+		<p:panel id="print" >
+					<div class="WordSection1" align="center" dir="#{languageDetails.dir}">
+	
+		<p:spacer Height="180px"/>
+		
+								<h:panelGroup styleClass=" FLeft left20  " id="header">
+
+
+							<p:graphicImage cache="false"
+								value="/resources/images/Quote.png"
+								width="80" height="80">
+							</p:graphicImage>
+
+
+
+						</h:panelGroup>
+
+							
+		<p:spacer width="60"/>
+	
+	<div class="ui-g">
+	
+		          
+								<h:panelGrid columns="1" id="c14"  styleClass="no-border Wid80 MarAuto"  >
+								  <h:outputLabel 	 style="font-size: 25px;font-weight:bold;"	value="#{purchaseOrderMB.purchaseOrder.documentType}" styleClass=" FLeft   ">
+							</h:outputLabel>
+						
+						<p:graphicImage width="80" rendered="#{not empty purchaseOrderMB.purchaseOrder.company.picName}" title="logo"
+												url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/file-sheet/image/#{purchaseOrderMB.purchaseOrder.company.picName}" 
+ />
+				    	                      		<br></br>      
+
+				     	                      		<h:outputText value="#{purchaseOrderMB.purchaseOrder.company.legalCompanyName}" style="font-size: 20px;font-weight:bold;"/>        
+				     
+				    	                      		<h:outputText value="#{purchaseOrderMB.purchaseOrder.company.address}" style="font-size: 15px;font-weight:bold;" />  
+				    	                      		<br></br>      
+																			<h:outputLabel value="امر الشراء  ل:"/>
+												<h:outputLabel>
+					
+						<h:outputLabel 						value="#{utils.isArabic() ?purchaseBillsMB.purchaseBills.suppliers.suppliersNameAr:purchaseBillsMB.purchaseBills.suppliers.suppliersNameEn}" >
+						 
+						
+						</h:outputLabel>
+						
+	                      		<h:outputText value="#{purchaseOrderMB.purchaseOrder.purchaseBillsNumber}" styleClass=" FLeft left50  "/>    
+	                      								   <p:outputLabel value="رقم امر الشراء:" styleClass=" FLeft left20  "/>
+	                      		
+						</h:outputLabel>
+						
+					<h:outputLabel >
+						
+				<h:outputLabel
+						value="#{purchaseOrderMB.purchaseOrder.suppliers.address}" >
+						</h:outputLabel>
+						
+							<h:outputText value="#{purchaseOrderMB.purchaseOrder.billsSuppliersNumber}" styleClass=" FLeft left50  "/>    
+	                      								   <p:outputLabel value="رقم فاتورة المورد " styleClass=" FLeft left20  "/>
+	                      		
+						
+	                    
+						</h:outputLabel>
+							<h:outputLabel>
+						
+							<h:outputLabel
+						value="#{purchaseOrderMB.purchaseOrder.suppliers.phoneNumber}" >
+						</h:outputLabel>
+	                       <h:outputLabel    value="#{purchaseOrderMB.purchaseOrder.dueDate}" rendered="#{utils.getVersion() ne 'EGY'}"  styleClass=" FLeft left50  "
+>
+ <f:convertDateTime pattern="dd/MM/yyyy"/>
+</h:outputLabel>
+	         		  <p:outputLabel value="#{msg['Due_date']}: " rendered="#{utils.getVersion() ne 'EGY'}"  styleClass=" FLeft left50  "/>
+	         
+                     	                      	                      										                <br></br>
+                     	  
+						</h:outputLabel>
+						
+			<h:outputLabel value="#{msg['Sales_Tax_Number_'+=utils.getVersion()]} :">
+					
+						<h:outputLabel
+						value="#{purchaseOrderMB.purchaseOrder.suppliers.saleTaxNumber}" >
+						</h:outputLabel>
+                     
+               <h:outputLabel   value="#{purchaseOrderMB.purchaseOrder.todayDate}"   styleClass=" FLeft left50  " >
+	                      				 <f:convertDateTime pattern="dd/MM/yyyy"/>
+	                       </h:outputLabel>
+	                       
+       						    <p:outputLabel value=" #{msg['Invoice_date']}:" styleClass=" FLeft left50  ">
+       						    	   
+       						    </p:outputLabel>
+       
+						</h:outputLabel>
+						
+					
+							        			
+                            </h:panelGrid>
+								
+								                								                                <br></br>
+								                								                
+								               
+								                <br></br>
+								                
+								            	                                  <br></br>
+					<p:spacer width="100"/>
+			
+								                            		<p:panelGrid  id="p7" styleClass="ui-noborder Wid120" rendered="#{purchaseOrderMB.purchaseOrder.commodityServices eq 2}" >
+			
+			<table border="1" style='margin-left: 5.4pt; border-collapse: collapse;'>
+					<tr>
+					
+						<td width="522" valign="top" style='width: 320.7pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<p class="MsoCommentText">#{msg['Item']}</p>
+						</td>
+						<td width="60" valign="top" style='width: 45.0pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Descreption']}</span>
+							</h6>
+						</td>
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Unit_Price']}</span>
+								<br></br>
+								<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Quantity']} </span>
+							</h6>
+						</td>
+						
+							<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Amount_before_tax']} </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						
+						
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Tax_amount']}  </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+							
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Gross_Total']}   </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						
+						
+					</tr>
+
+					
+						<c:forEach items="#{purchaseOrderMB.addPurchaseOrderList}" var="det">
+							<tr >
+							
+								<td width="200" style='width: 200pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoNormal" align="right" style='text-align: right'>
+										<span dir="#{languageDetails.dir}" style='font-size: 12.0pt'> 
+										<h:outputText value="#{det.clause}" />
+										</span>
+									</p>
+								</td>
+								<td width="60" style='width: 45.0pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+										<h:outputText value="#{det.description}" />
+									</p>
+								</td>
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.unitPrice}" />
+									</p>
+								</td>
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.quantity}" />
+									</p>
+								</td>
+								
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialValueBeforeTax}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+									</p>
+								</td>
+								
+								
+									<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialTaxAmount}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+									</p>
+								</td>
+								
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialTotal}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+							
+									</p>
+								</td>
+								
+							</tr>
+						</c:forEach>
+				</table>
+				</p:panelGrid>
+				
+				
+				
+ 		<p:panelGrid  id="p8" styleClass="ui-noborder Wid120" rendered="#{purchaseOrderMB.purchaseOrder.commodityServices eq 1}" >
+			
+			<table border="1" style='margin-left: 5.4pt; border-collapse: collapse;'>
+					<tr>
+					
+						<td width="522" valign="top" style='width: 320.7pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<p class="MsoCommentText">#{msg['Item']}</p>
+						</td>
+						<td width="60" valign="top" style='width: 45.0pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Quantity']}</span>
+							</h6>
+						</td>
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Unit_Price']}</span>
+								<br></br>
+								<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Unit_cost']} </span>
+							</h6>
+						</td>
+						
+							<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Gross_cost_before_tax']} </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						
+						
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Tax_amount']}  </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+							
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Gross_Total']}   </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						
+						
+					</tr>
+
+					
+						<c:forEach items="#{purchaseOrderMB.addPurchaseOrderList}" var="det">
+							<tr >
+							
+								<td width="200" style='width: 200pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoNormal" align="right" style='text-align: right'>
+										<span dir="#{languageDetails.dir}" style='font-size: 12.0pt'> 
+										<h:outputText value="#{det.itemsScreen.nameItem}" />
+										</span>
+									</p>
+								</td>
+								<td width="60" style='width: 45.0pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+										<h:outputText value="#{det.costUnit}" />
+									</p>
+								</td>
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.units.unitName}" />
+									</p>
+								</td>
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.quantity}" />
+									</p>
+								</td>
+								
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialValueBeforeTax}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+									</p>
+								</td>
+								
+								
+									<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialTaxAmount}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+									</p>
+								</td>
+								
+								<td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialTotal}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+							
+									</p>
+								</td>
+								
+							</tr>
+						</c:forEach>
+				</table>
+				</p:panelGrid>
+				
+					<p:panelGrid  id="p989" styleClass="ui-noborder Wid120" rendered="#{purchaseOrderMB.purchaseOrder.commodityServices eq 3 }" >
+
+							<table border="1"
+								style='margin-left: 5.4pt; border-collapse: collapse;'>
+								<tr>
+
+									<td width="522" valign="top"
+										style='width: 320.7pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<p class="MsoCommentText">#{msg['Item']}</p>
+									</td>
+									<td width="60" valign="top"
+										style='width: 45.0pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Descreption']}</span>
+										</h6>
+									</td>
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Unit_Price']}</span>
+											<br></br> <span dir="#{languageDetails.dir}"
+												style='font-weight: normal'>#{utils.isArabic() ?
+												purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName
+												:
+												purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}
+											</span>
+
+										</h6>
+									</td>
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Quantity']}
+											</span>
+										</h6>
+									</td>
+
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Amount_before_tax']}
+											</span> <br></br> <span dir="#{languageDetails.dir}"
+												style='font-weight: normal'>#{utils.isArabic() ?
+												purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName
+												:
+												purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}
+											</span>
+
+										</h6>
+									</td>
+
+
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Tax_amount']}
+											</span> <br></br> <span dir="#{languageDetails.dir}"
+												style='font-weight: normal'>#{utils.isArabic() ?
+												purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName
+												:
+											purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}
+											</span>
+
+										</h6>
+									</td>
+
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Gross_Total']}
+											</span> <br></br> <span dir="#{languageDetails.dir}"
+												style='font-weight: normal'>#{utils.isArabic() ?
+												purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName
+												:
+												purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}
+											</span>
+
+										</h6>
+									</td>
+
+
+								</tr>
+
+
+								<c:forEach items="#{purchaseOrderMB.addPurchaseOrderList}" var="det">
+									<tr>
+
+										<td width="200"
+											style='width: 200pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoNormal" align="right" style='text-align: right'>
+												<span dir="#{languageDetails.dir}" style='font-size: 12.0pt'>
+													<h:outputText
+														value="#{det.servicesProducts.nameProductOrService}" />
+												</span>
+											</p>
+										</td>
+										<td width="60"
+											style='width: 45.0pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="TableText" align="center"
+												style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+												<h:outputText value="#{det.description}" />
+											</p>
+										</td>
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.price}" />
+											</p>
+										</td>
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.quantity}" />
+											</p>
+										</td>
+
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.initialValueBeforeTax}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputText>
+											</p>
+										</td>
+
+
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.initialTaxAmount}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputText>
+											</p>
+										</td>
+
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.initialTotal}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputText>
+
+											</p>
+										</td>
+
+									</tr>
+								</c:forEach>
+							</table>
+</p:panelGrid>
+
+			<p:panelGrid  id="p9" styleClass="ui-noborder Wid120" rendered="#{purchaseOrderMB.purchaseOrder.commodityServices eq 2}" >
+				
+				<table width="100%">
+								<tr>
+									<td width="30%"></td>
+									<td width="70%">
+		<table border="1"  align="left" style='width:40%; border-collapse: collapse;text-align: center'>
+  <tr >
+   <td   width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+    <span dir="#{languageDetails.dir}" style='font-weight: bold'>المجموع قبل الضريبة والخصم  </span>
+    </td>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+<h:outputLabel												value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialValueBeforeTax).sum()}" >
+				<f:convertNumber pattern="###,###.##"/>
+			<p:spacer   width="20"
+                                                                              height="20"/>	
+			
+				<h:outputLabel value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+						
+						</h:outputLabel   >	
+						
+						</h:outputLabel>									</p>
+								</td> 
+  </tr>
+    <tr>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+    <span dir="#{languageDetails.dir}" style='font-weight: bold'>  #{msg['Tax']} </span>
+    </td>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+	<h:outputLabel						value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialTaxAmount).sum()}" >
+				
+											 <f:convertNumber pattern="###,###.##"/>
+				
+							<p:spacer  width="20"
+                                                                              height="20" />	
+				
+						<h:outputLabel  value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}" >
+						
+						
+						</h:outputLabel>
+						
+						</h:outputLabel>									</p>
+								</td> 
+  </tr>
+  
+  
+  <tr>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+        <span dir="#{languageDetails.dir}" style='font-weight: bold'>   #{msg['Total']} </span>
+  </td>
+ <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+<h:outputLabel
+									value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialTotal).sum()}" >
+										 <f:convertNumber pattern="###,###.##"/>
+							<p:spacer width="20"
+                                                                              height="20" />	
+							<p:spacer />
+				
+										<h:outputLabel  value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}" >
+				
+						</h:outputLabel>
+						
+						</h:outputLabel>
+											</p>
+								</td> 
+  </tr>
+  <tr>
+    <td>        <span dir="#{languageDetails.dir}" style='font-weight: bold'>    #{msg['Total_written']}</span>
+   </td>
+  <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+	<h:outputLabel
+					value="#{purchaseOrderMB.purchaseOrder.totalCharacters}">
+					</h:outputLabel>
+					
+											</p>
+								</td>  
+  </tr>
+</table>
+</td>
+</tr>
+</table>
+</p:panelGrid>
+
+
+	<p:panelGrid  id="p10" styleClass="ui-noborder Wid120" rendered="#{purchaseOrderMB.purchaseOrder.commodityServices eq 1}" >
+				<table width="100%">
+								<tr>
+									<td width="30%"></td>
+									<td width="70%">
+		<table border="1"  align="left" style='width:40%; border-collapse: collapse;text-align: center'>
+  <tr >
+   <td   width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+    <span dir="#{languageDetails.dir}" style='font-weight: bold'>المجموع قبل الضريبة والخصم  </span>
+    </td>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+<h:outputLabel												value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialValueBeforeTax).sum()}" >
+				<f:convertNumber pattern="###,###.##"/>
+			<p:spacer   width="20"
+                                                                              height="20"/>	
+			
+				<h:outputLabel value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+						
+						</h:outputLabel   >	
+						
+						</h:outputLabel>									</p>
+								</td> 
+  </tr>
+    <tr>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+    <span dir="#{languageDetails.dir}" style='font-weight: bold'>  #{msg['Tax']} </span>
+    </td>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+	<h:outputLabel						value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialTaxAmount).sum()}" >
+				
+											 <f:convertNumber pattern="###,###.##"/>
+				
+							<p:spacer  width="20"
+                                                                              height="20" />	
+				
+						<h:outputLabel  value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}" >
+						
+						
+						</h:outputLabel>
+						
+						</h:outputLabel>									</p>
+								</td> 
+  </tr>
+  
+  
+  <tr>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+        <span dir="#{languageDetails.dir}" style='font-weight: bold'>   #{msg['Total']} </span>
+  </td>
+ <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+<h:outputLabel
+									value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialTotal).sum()}" >
+										 <f:convertNumber pattern="###,###.##"/>
+							<p:spacer width="20"
+                                                                              height="20" />	
+							<p:spacer />
+				
+										<h:outputLabel  value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}" >
+				
+						</h:outputLabel>
+						
+						</h:outputLabel>
+											</p>
+								</td> 
+  </tr>
+  <tr>
+    <td>        <span dir="#{languageDetails.dir}" style='font-weight: bold'>    #{msg['Total_written']}</span>
+   </td>
+  <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+	<h:outputLabel
+					value="#{purchaseOrderMB.purchaseOrder.totalCharacters}">
+					</h:outputLabel>
+					
+											</p>
+								</td>  
+  </tr>
+</table>
+</td>
+</tr>
+</table>
+
+</p:panelGrid>
+
+
+<p:panelGrid  id="p7555" styleClass="ui-noborder Wid120" rendered="#{purchaseOrderMB.purchaseOrder.commodityServices eq 3  }" >
+
+							<table width="100%">
+								<tr>
+									<td width="30%"></td>
+									<td width="70%">
+										<table border="1" align="left"
+											style='width: 40%; border-collapse: collapse; text-align: center'>
+											<tr>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<span dir="#{languageDetails.dir}"
+													style='font-weight: bold'>المجموع قبل الضريبة والخصم 
+												</span>
+												</td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel
+															value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialAmount).sum()}">
+															<f:convertNumber pattern="###,###.##" />
+															<p:spacer width="20" height="20" />
+
+															<h:outputLabel
+																value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+
+															</h:outputLabel>
+
+														</h:outputLabel>
+													</p>
+												</td>
+											</tr>
+											<tr>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<span dir="#{languageDetails.dir}"
+													style='font-weight: bold'> #{msg['Tax']} </span>
+												</td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel
+															value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialTaxAmount).sum()}">
+
+															<f:convertNumber pattern="###,###.##" />
+
+															<p:spacer width="20" height="20" />
+
+															<h:outputLabel
+																value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+
+
+															</h:outputLabel>
+
+														</h:outputLabel>
+													</p>
+												</td>
+											</tr>
+
+											<tr>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<span dir="#{languageDetails.dir}"
+													style='font-weight: bold'>قيمة الخصم</span>
+												</td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel
+															value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initalamountdiscount).sum()}">
+
+															<f:convertNumber pattern="###,###.##" />
+
+															<p:spacer width="20" height="20" />
+
+															<h:outputLabel
+																value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+
+
+															</h:outputLabel>
+
+														</h:outputLabel>
+													</p>
+												</td>
+											</tr>
+											<tr>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<span dir="#{languageDetails.dir}"
+													style='font-weight: bold'> #{msg['Total']} </span>
+												</td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel
+															value="#{purchaseOrderMB.addPurchaseOrderList.stream().map(s->s.initialTotal).sum()}">
+															<f:convertNumber pattern="###,###.##" />
+															<p:spacer width="20" height="20" />
+															<p:spacer />
+
+															<h:outputLabel
+																value="#{utils.isArabic() ? purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesName : purchaseOrderMB.purchaseOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+
+															</h:outputLabel>
+
+														</h:outputLabel>
+													</p>
+												</td>
+											</tr>
+											<tr>
+												<td><span dir="#{languageDetails.dir}"
+													style='font-weight: bold'> #{msg['Total_written']}</span></td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel value="#{purchaseOrderMB.purchaseOrder.totalCharacters}">
+														</h:outputLabel>
+
+													</p>
+												</td>
+											</tr>
+										</table>
+
+									</td>
+								</tr>
+							</table>
+</p:panelGrid>
+
+
+		   		<p:spacer Height="180px"/>
+
+				
+         			               							
+										</div>
+											<br></br>			
+																 	<h:panelGrid columns="1" id="bank5"  styleClass="no-border Wid100 MarAuto" rendered="#{purchaseOrderMB.purchaseOrder.bankData ne null}">
+										
+											<h:outputLabel   style="font-size: 20px;font-weight:bold;"
+						 value=" فیما يلي معلومات التحويل البنكي:
+						 " />
+						 
+							<h:outputLabel value=" #{msg['Bank_Name']} :">
+					<h:outputLabel 
+					
+						value="#{utils.isArabic() ?purchaseOrderMB.purchaseOrder.bankData.nameBankAr:purchaseOrderMB.purchaseOrder.bankData.nameBankEn}" >
+						</h:outputLabel>
+						</h:outputLabel>
+													<h:outputLabel value="#{msg['Branch']} :">
+						
+					<h:outputLabel
+						value="#{purchaseOrderMB.purchaseOrder.bankData.branch}" >
+						</h:outputLabel>
+						</h:outputLabel>
+																			<h:outputLabel value="#{msg['Beneficiary_Name']} :">
+						
+					<h:outputLabel
+						value="#{purchaseOrderMB.purchaseOrder.bankData.accountBeneficiary}" >
+						</h:outputLabel>
+												</h:outputLabel>
+																									<h:outputLabel value="#{msg['Swift_Code']} :">
+						
+					<h:outputLabel
+						value="#{purchaseOrderMB.purchaseOrder.bankData.swift}" >
+						</h:outputLabel>
+									</h:outputLabel>
+														<h:outputLabel  	dir="#{languageDetails.dir}" value="IBAN:">
+									
+					<h:outputLabel
+					
+						value="#{purchaseOrderMB.purchaseOrder.bankData.iban}" >
+						
+						</h:outputLabel>
+						
+						
+							</h:outputLabel>
+															<h:outputLabel value=" #{msg['Account_Number']} :">
+							
+					<h:outputLabel
+						value="#{purchaseOrderMB.purchaseOrder.bankData.accountNum}" >
+						</h:outputLabel>	
+						</h:outputLabel>
+						
+						
+						
+						
+						
+                           
+						 </h:panelGrid>
+						<br></br>
+												<br></br>
+						
+											<h:outputLabel style="font-size: 20px;font-weight:bold;"
+						 value="#{utils.isArabic() ?purchaseOrderMB.purchaseOrder.billManagement.noteBillManagementAr:purchaseOrderMB.purchaseOrder.billManagement.noteBillManagementEn}" >
+						 
+						</h:outputLabel>	
+						</div>	
+					</p:panel>
+										
+	</composite:implementation>
+</h:form>
+</h:body>
+</f:view>
+</html>

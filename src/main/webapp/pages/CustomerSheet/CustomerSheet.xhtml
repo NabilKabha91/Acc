@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head">
+		<style>
+.ui-datatable * {
+	border: 0px !important;
+}
+
+th {
+	color: #6495ED !important;
+}
+</style>
+	</ui:define>
+	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+				<p:commandButton onclick="window.print();" type="button"
+					icon="ui-icon-print">
+				</p:commandButton>
+				<p:commandButton icon="ui-icon-add" value="CustomerSheet"
+					action="#{customerSheetMB.init()}"
+					actionListener="#{customerSheetDetailsMB.redirectToCustomerSheetAddition()}">
+					<f:setPropertyActionListener value="true"
+						target="#{customerSheetMB.addcustomerSheet}" />
+				</p:commandButton>
+
+
+
+
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}"
+					id="billsDetails" var="det" styleClass="txt-center"
+					value="#{customerSheetDetailsMB.customerSheetList}">
+					<p:column headerText="#{msg['addCustomer.customerName']} ">
+
+						<p:outputLabel
+							value="#{utils.isArabic() ? det.customer.customerNameAr:det.customer.customerNameEn}" />
+
+					</p:column>
+
+
+
+					<p:column headerText="التاريخ   ">
+						<p:outputLabel value="#{det.todayDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3" />
+						</p:outputLabel>
+
+
+					</p:column>
+
+					<p:column headerText=" السعر ">
+						<p:outputLabel value="#{det.total}">
+							<f:convertNumber pattern="###,###.##" />
+
+						</p:outputLabel>
+
+
+					</p:column>
+					<p:column headerText="كاش/فيزا ">
+						<p:outputLabel
+							value="#{utils.isArabic() ?det.user.nameAr:det.user.nameEn}" />
+					</p:column>
+
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit"
+							action="#{customerSheetMB.init()}"
+							actionListener="#{customerSheetDetailsMB.redirectToCustomerSheetEdit()}"
+							process="@this">
+							<f:setPropertyActionListener value="#{det}"
+								target="#{customerSheetMB.customerSheet}" />
+							<f:setPropertyActionListener value="false"
+								target="#{customerSheetMB.addcustomerSheet}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value=" #{msg['Edit_invoice']} "
+							trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete"
+							action="#{customerSheetMB.delete(det)}" process="@this"
+							update="@this" rendered="false">
+							<p:confirm header="#{msg['glopal.confirmation']}"
+								message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}"
+							trackMouse="true" />
+
+					</p:column>
+				</p:dataTable>
+
+
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

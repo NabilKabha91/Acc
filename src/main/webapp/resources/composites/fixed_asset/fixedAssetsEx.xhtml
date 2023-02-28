@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="fixedAssetsEx" required="true"
+		default="true" type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<h:form>
+
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<center>
+							<h1 style="font-weight: bold">إستبعاد</h1>
+						</center>
+						<div class="card card-w-title"
+							style="box-shadow: 3px 3px 3px 3px #888888">
+
+	<p:selectOneRadio id="console"
+										value="#{exclusionMB.exclusion.disposalOrSale}"
+										unselectable="true">
+										<f:selectItem itemLabel="بيع" itemValue="1" />
+										<f:selectItem itemLabel="اتلاف" itemValue="2" />
+										<p:ajax event="change" process="@this" update="@parent:a,g" />
+									</p:selectOneRadio>
+									<br></br>
+							<p:panelGrid id="a" columns="3" layout="grid"
+								styleClass="ui-panelgrid-blank form-group">
+
+								<p:column>
+
+									<h:panelGroup styleClass="md-inputfield">
+										<p:calendar value="#{exclusionMB.exclusion.date1}" pattern="yyyy/MM/dd"
+											required="true" />
+										<label>التاريخ</label>
+									</h:panelGroup>
+								</p:column>
+								<p:column></p:column>
+								<p:column></p:column>
+
+								<p:column>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+										value="#{exclusionMB.exclusion.asset}" filter="true"
+										filterMatchMode="contains" id="group333"
+										style="margin-bottom:10px;" styleClass="Wid100"
+										required="true">
+										<f:selectItem itemLabel="الاصل" />
+										<f:selectItems value="#{exclusionMB.assetsList}"
+											var="grouping" itemLabel="#{grouping.assetName}"
+											itemValue="#{grouping}" />
+										<!--  <p:ajax event="change" process="@this"
+											update="@parent:b,c,d,e" />-->
+
+									</p:selectOneMenu>
+								</p:column>
+								<p:column rendered="#{exclusionMB.exclusion.disposalOrSale eq 1}" ></p:column>
+								<p:column rendered="#{exclusionMB.exclusion.disposalOrSale eq 1}" ></p:column>
+							<p:column  >
+							
+									<p:selectOneMenu
+										rendered="#{exclusionMB.exclusion.disposalOrSale eq 1}" 
+										value="#{exclusionMB.exclusion.groupingId2}"
+										converter="omnifaces.SelectItemsConverter" filter="true"
+										filterMatchMode="contains" id="group3334"
+										style="margin-bottom:10px;" styleClass="Wid100"
+										required="true">
+										<f:selectItem itemLabel="#{msg['Group_'+=utils.getVersion()]}" />
+										<f:selectItems value="#{exclusionMB.groupList}" var="grouping"
+											itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}"
+											itemValue="#{grouping.grpId}" />
+
+									</p:selectOneMenu>
+								</p:column>
+								<p:column rendered="#{exclusionMB.exclusion.disposalOrSale eq 1 }" ></p:column>
+								<p:column rendered="#{exclusionMB.exclusion.disposalOrSale eq 1 }"></p:column>
+								<p:column rendered="#{exclusionMB.exclusion.disposalOrSale eq 1 }">
+									<h:panelGroup styleClass="md-inputfield">
+										<p:inputText id="g"
+		
+											value="#{exclusionMB.exclusion.theValueObtainedFromTheSale}"
+											required="true" />
+										<label>القيمة المتحصلة من البيع</label>
+
+									</h:panelGroup>
+								</p:column>
+								<p:column></p:column>
+								<p:column></p:column>
+								
+								<p:column>
+									<p:commandButton value="احتساب" icon="ui-icon-add"
+										style="width:auto; border-radius:20px;background-color:#888888"
+										action="#{exclusionMB.refresh()}" process="@form" update="@form"/>
+								</p:column>
+								<p:column></p:column>
+								<p:column></p:column>
+									<p:column></p:column>
+								<p:column></p:column><p:column></p:column>
+								
+								<p:column rendered="#{exclusionMB.hidden}">
+									<h:panelGroup styleClass="md-inputfield">
+										<p:inputText id="b"   readonly="true"
+										style="border-width:0px;
+border:none;
+outline:none;"
+											value="#{exclusionMB.exclusion.assetValue}" required="true" />
+										<label>قيمة الأصل التاريخية</label>
+									</h:panelGroup>
+								</p:column>
+								<p:column></p:column>
+								<p:column></p:column>
+								<p:column rendered="#{exclusionMB.hidden}">
+									<h:panelGroup styleClass="md-inputfield">
+										<p:inputText id="c"  readonly="true"
+										style="border-width:0px;
+border:none;
+outline:none;"
+											value="#{exclusionMB.exclusion.accumlatedDepreciation}"
+											required="true" />
+										<label>الإستهلاك المتراكم لتاريخه</label>
+									</h:panelGroup>
+								</p:column>
+								<p:column></p:column>
+								<p:column></p:column>
+								<p:column rendered="#{exclusionMB.hidden}">
+									<h:panelGroup styleClass="md-inputfield">
+										<p:inputText id="d" style="border-width:0px;
+border:none;
+outline:none;"
+ readonly="true" value="#{exclusionMB.exclusion.netBookValue}"
+											required="true" />
+										<label>صافي القيمة الدفترية </label>
+									</h:panelGroup>
+								</p:column>
+								<p:column></p:column>
+								<p:column></p:column>
+								<p:column rendered="#{exclusionMB.hidden}">
+
+									<h:panelGroup styleClass="md-inputfield">
+										<p:inputText id="e" style="border-width:0px;
+border:none;
+outline:none;" readonly="true" value="#{exclusionMB.exclusion.gainAndLoss}"
+											required="true" />
+										<label>ربح/خسارة </label>
+									</h:panelGroup>
+								</p:column>
+								<p:column></p:column>
+								<p:column></p:column>
+								<p:column rendered="#{exclusionMB.hidden}">
+									<p:commandButton   value="استبعاد" icon="ui-icon-save"
+										style="width:auto; border-radius:20px;background-color:#888888"
+										action="#{exclusionMB.saveExclusion()}" />
+								</p:column>
+								<p:column></p:column>
+								<p:column></p:column>
+							</p:panelGrid>
+
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</composite:implementation>
+</body>
+</html>

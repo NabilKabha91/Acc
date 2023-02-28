@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+<head>
+<title>Not present in rendered output</title>
+</head>
+<body>
+	<composite:interface>
+		<composite:attribute name="office"></composite:attribute>
+		<composite:attribute name="reportName"></composite:attribute>
+		<composite:attribute name="target" default="print"></composite:attribute>
+	</composite:interface>
+	<composite:implementation>
+
+		<div>
+
+			<p:commandButton value="#{msg['print']}"
+			 styleClass="no-print green-btn" type="button" icon="ui-icon-print" style="width:auto;float:left">
+				<p:printer target="#{cc.attrs.target}" />
+			</p:commandButton>
+			<p:spacer width="100%" height="10"></p:spacer>
+			<h:panelGrid columns="1" styleClass="txt-center MarAuto	show-on-print">
+			
+			</h:panelGrid>
+		</div>
+	</composite:implementation>
+
+</body>
+</html>

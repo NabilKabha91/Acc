@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addUser" required="true" default="true" type="java.lang.Boolean"
+		shortDescription="true for add user, false for edit " />
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>#{cc.attrs.title}</h1>
+					<p:panelGrid id="pnlUser" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						<p:selectOneMenu id="userList" value="#{userMB.user}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter"
+							rendered="#{!cc.attrs.addUser and (utils.isAdmin())}">
+							<p:ajax update="@form" process="@this" listener="#{userMB.fillUserType}" />
+							<f:selectItem itemLabel="#{msg['user.select_user']}" noSelectionOption="true" />
+							<f:selectItems value="#{userMB.userList}" var="user" itemLabel="#{user.userName}" itemValue="#{user}" />
+						</p:selectOneMenu>
+						<p:spacer rendered="#{!cc.attrs.addUser and (utils.isAdmin() )}" />
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{userMB.user.nameAr}" required="true" />
+							<label>#{msg['addUser.name_ar']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{userMB.user.nameEn}" required="true" />
+							<label>#{msg['addUser.name_en']}</label>
+						</h:panelGroup>
+
+						<p:column>
+							<input type="password" class="he1" tabindex="-1" />
+							<input type="text" class="he1" tabindex="-1" />
+
+							<h:panelGroup styleClass="md-inputfield">
+								<p:inputText value="#{userMB.user.userName}" required="true" />
+								<label>#{msg['addUser.user_name']}</label>
+							</h:panelGroup>
+						</p:column>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:password value="#{userMB.user.password}" required="true" autocomplete="false" redisplay="true" feedback="true" />
+							<label>#{msg['addUser.password']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{userMB.user.email}" required="true" />
+							<label>#{msg['addUser.email']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{userMB.user.phoneNumber}" required="true" />
+							<label>#{msg['addUser.phone_number']}</label>
+						</h:panelGroup>
+
+						<p:selectOneMenu id="officeList" value="#{userMB.user.office}" style="margin-bottom:10px;"
+						 required="true"	converter="omnifaces.SelectItemsIndexConverter" rendered="#{utils.isAdmin()}" filter="true" filterMatchMode="contains">
+							<f:selectItem itemLabel="#{msg['addUser.office']}" noSelectionOption="true" />
+							<f:selectItems value="#{userMB.officeList}" var="office" itemLabel="#{office.nameAr}" itemValue="#{office}" />
+						</p:selectOneMenu>
+						
+												
+
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.isAdmin()}">
+							<p:calendar required="true" id="date" pattern="dd/MM/yyyy" effect="fold" value="#{userMB.user.expire}" />
+							<label> #{msg['user.expired-date']} </label>
+						</h:panelGroup>
+						
+
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.isAdmin()}">
+							<p:inputSwitch value="#{userMB.user.admin}" />
+							<label>#{msg['addUser.is_admin']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.isAdmin()}">
+							<p:inputSwitch value="#{userMB.user.superUser}" />
+							<label>#{msg['addUser.is_super']}</label>
+						</h:panelGroup>
+						
+					<p:panelGrid columns="8" rendered="#{utils.isAdmin()}">
+												
+												<p:selectBooleanCheckbox id="accounting" value="#{userMB.user.accounting}" 
+									 />
+									
+							<p:outputLabel value="محاسبه"  /> 
+
+							
+							<p:selectBooleanCheckbox id="fixedAsset" value="#{userMB.user.fixedAsset}" 
+									/>
+
+							<p:outputLabel value="موجودات ثابته" /> 
+
+							
+							<p:selectBooleanCheckbox id="hr" value="#{userMB.user.hr}" 
+									/>
+
+							<p:outputLabel value="hr"  /> 
+
+							
+							<p:selectBooleanCheckbox id="patient" value="#{userMB.user.patient}" 
+									/>
+
+							<p:outputLabel value="patient"/> 
+								<p:outputLabel value="المخزون " /> 
+
+							
+							<p:selectBooleanCheckbox id="inventory" value="#{userMB.user.inventory}" 
+									/>
+									
+									<p:outputLabel value="saloon"  /> 
+
+							
+							<p:selectBooleanCheckbox id="saloon" value="#{userMB.user.sallon}" 
+									/>
+						</p:panelGrid>
+								
+					
+					
+											<p:panelGrid id="Data" columns="8" layout="grid"  styleClass="showcase-text-align-center"
+                 columnClasses=" ui-lg-3,  ui-lg-10, ui-lg-3,ui-lg-10,ui-lg-3,  ui-lg-10, ui-lg-3, ui-lg-10" rendered="#{utils.isSuperUser()}">
+						
+						
+							<p:selectBooleanCheckbox   id="bankDataPermissions" value="#{userMB.user.bankDataPermissions}" 
+									 />
+							<p:outputLabel value="#{msg['Bank_Details']}"  /> 
+
+							
+							<p:selectBooleanCheckbox id="billManagementPermissions" value="#{userMB.user.billManagementPermissions}" 
+									/>
+
+							<p:outputLabel value="#{msg['Invoice_management']}" /> 
+
+							
+							<p:selectBooleanCheckbox id="definitionOfCurrenciesPermissions" value="#{userMB.user.definitionOfCurrenciesPermissions}" 
+									/>
+
+							<p:outputLabel value="#{msg['Currency']}"  /> 
+
+							
+							<p:selectBooleanCheckbox id="definitionOfTaxPermissions" value="#{userMB.user.definitionOfTaxPermissions}" 
+									/>
+
+							<p:outputLabel value="#{msg['Tax_'+=utils.getVersion()]} "/> 
+
+							
+							<p:selectBooleanCheckbox id="comericalDiscountPermissions" value="#{userMB.user.comericalDiscountPermissions}" 
+									/>
+
+							<p:outputLabel value="#{msg['ComercialDiscount_'+=utils.getVersion()]} " /> 
+							
+
+	
+							<p:selectBooleanCheckbox rendered="#{utils.isAccounting() eq   true}"  id="customerPermissions" value="#{userMB.user.customerPermissions}" 
+									/>
+						   
+	
+							<p:outputLabel  rendered="#{utils.isAccounting() eq   true}" value="#{msg['Customers_List']}" /> 
+							
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="servicesAndProductsPermissions" value="#{userMB.user.servicesAndProductsPermissions}" 
+									/>
+ 
+							<p:outputLabel  rendered="#{utils.isAccounting() eq   true}" value="#{msg['Services_Product_list']}" /> 
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="billPermissions" value="#{userMB.user.billPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isAccounting() eq   true}" value="#{msg['Invoices']} "  /> 
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="suppliersPermissions" value="#{userMB.user.suppliersPermissions}" 
+									/>
+
+							<p:outputLabel  rendered="#{utils.isAccounting() eq   true}" value="#{msg['Suppliers_List']} " /> 
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="purchasebillsPermissions" value="#{userMB.user.purchasebillsPermissions}" 
+									/>
+
+							<p:outputLabel value="#{msg['Bills']} " rendered="#{utils.isAccounting() eq   true}"/> 
+							
+
+							
+
+								<p:selectBooleanCheckbox  rendered="#{utils.isInventory() eq   true}"  id="unitPermissions" value="#{userMB.user.unitPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isInventory() eq   true}" value="#{msg['Units_List']} " /> 
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isInventory() eq   true}" id="itemsScreenPermissions" value="#{userMB.user.itemsScreenPermissions}" 
+									/>
+
+							<p:outputLabel  rendered="#{utils.isInventory() eq   true}" value="#{msg['Items_List']}  "/> 
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isInventory() eq   true}" id="orderItemPermissions" value="#{userMB.user.orderItemPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isInventory() eq   true}" value="#{msg['Orders']}" /> 
+
+							
+							<p:selectBooleanCheckbox rendered="#{utils.isInventory() eq   true}" id="warehouseReleaseDocumentPermissions" value="#{userMB.user.warehouseReleaseDocumentPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isInventory() eq   true}" value="#{msg['ItemsTransfervoucher_'+=utils.getVersion()]} "  /> 
+							
+						
+
+							
+
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="chartOfAccountsPermissions" value="#{userMB.user.chartOfAccountsPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isAccounting() eq   true}" value="#{msg['Chart_of_Accounts']}" /> 
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="entriesPermissions" value="#{userMB.user.entriesPermissions}" 
+									/>
+
+							<p:outputLabel value="#{msg['Entries']}" rendered="#{utils.isAccounting() eq   true}" /> 
+						
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="ReciptVoucherPermissions" value="#{userMB.user.reciptVoucherPermissions}" 
+									/>
+
+							<p:outputLabel  rendered="#{utils.isAccounting() eq   true}" value="#{msg['Recipt_Voucher']}" /> 
+
+							
+							<p:selectBooleanCheckbox rendered="#{utils.isAccounting() eq   true}" id="paymentVoucherPermissions" value="#{userMB.user.paymentVoucherPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isAccounting() eq   true}" value="#{msg['Payment_Voucher']}" /> 
+
+							
+							<p:selectBooleanCheckbox rendered="#{utils.isAccounting() eq   true}" id="debitNotePermissions" value="#{userMB.user.debitNotePermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isAccounting() eq   true}"  value="#{msg['Debit_Note']}"  /> 
+
+							
+							
+								<p:selectBooleanCheckbox rendered="#{utils.isAccounting() eq   true}"  id="creditNotePermissions" value="#{userMB.user.creditNotePermissions}" 
+									/>
+
+							<p:outputLabel  rendered="#{utils.isAccounting() eq   true}" value="#{msg['Credit_Note']}" /> 
+
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="bankDepositPermissions" value="#{userMB.user.bankDepositPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isAccounting() eq   true}" value="#{msg['Bank_Deposit_voucher']}" /> 
+
+							
+							<p:selectBooleanCheckbox  rendered="#{utils.isAccounting() eq   true}" id="StatementOfAccountPermissions" value="#{userMB.user.statementOfAccountPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isAccounting() eq   true}" value="#{msg['Statement_of_account']}" /> 
+							
+
+							
+							<p:selectBooleanCheckbox rendered="#{utils.isAccounting() eq   true}" id="trialBalancePermissions" value="#{userMB.user.trialBalancePermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isAccounting() eq   true}" value="#{msg['Trial_Balance']}"  /> 
+							
+						
+						
+
+						
+						
+						<p:selectBooleanCheckbox rendered="#{utils.isHr() eq  true}" id="employeesPermissions" value="#{userMB.user.employeesPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isHr() eq  true}" value="#{msg['Employees_details']}" /> 
+
+							
+							<p:selectBooleanCheckbox rendered="#{utils.isHr() eq true}" id="allowancesPermissions" value="#{userMB.user.allowancesPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isHr() eq  true}" value="#{msg['Allowances']}" /> 
+							
+
+							
+
+								<p:selectBooleanCheckbox rendered="#{utils.isHr() eq  true}" id="deductionsPermissions" value="#{userMB.user.deductionsPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isHr() eq  true}" value="#{msg['Deductions']}" /> 
+
+							
+							<p:selectBooleanCheckbox rendered="#{utils.isHr() eq true}" id="salariesStatementsPermissions" value="#{userMB.user.salariesStatementsPermissions}" 
+									/>
+
+							<p:outputLabel rendered="#{utils.isHr() eq  true}" value="#{msg['Salaries_statements']}"/> 
+							
+
+							
+							<p:selectBooleanCheckbox id="incomeStatementPermissions" value="#{userMB.user.incomeStatementPermissions}" 
+									/>
+
+							<p:outputLabel value=" قائمة الدخل    "   /> 
+
+							
+							<p:selectBooleanCheckbox id="statementOfFinancialPositionPermissions" value="#{userMB.user.statementOfFinancialPositionPermissions}" 
+									/>
+
+							<p:outputLabel value=" قائمة المركز المالي     " /> 
+								
+						
+						</p:panelGrid>
+						
+					</p:panelGrid>
+
+					<p:panelGrid id="uploadImage" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						<p:outputLabel value="#{msg['user.pic']}:" />
+						<p:spacer />
+						<p:fileUpload fileUploadListener="#{userMB.handlePicFileUpload}" mode="advanced" dragDropSupport="false"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this" update="view deletePic" auto="true" label="#{msg['select']}">
+						</p:fileUpload>
+						<p:spacer />
+						<h:panelGroup layout="block" id="view" styleClass="posRelative">
+							<p:graphicImage cache="false" rendered="#{not empty userMB.user.picName}"
+								url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/file-sheet/image/#{userMB.user.picName}" width="200"
+								height="200">
+							</p:graphicImage>
+							<p:commandButton styleClass="btn-del-image" id="deletePic" icon="ui-icon-delete" action="#{userMB.deletePic}" process="@this"
+								update="uploadImage" rendered="#{not empty userMB.user.picName}" />
+						</h:panelGroup>
+					</p:panelGrid>
+
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{userMB.saveUser()}" process="@form"
+						update="@form :profile" rendered="#{cc.attrs.addUser}" />
+
+					<p:commandButton value="#{msg['edit_btn']}" icon="ui-icon-edit" style="width:auto" action="#{userMB.saveUser()}" process="@form"
+						update="@form :profile" rendered="#{!cc.attrs.addUser}" />
+
+					<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this" update="@this"
+						action="#{userMB.cancelAction()}" />
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

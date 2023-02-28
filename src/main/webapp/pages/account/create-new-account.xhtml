@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+				xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Dashboard</ui:define>
+    <ui:define name="head"/>
+    <ui:define name="content">
+
+        <h:form>
+            <p:growl autoUpdate="true" globalOnly="true"/>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <!-- Left Side -->
+                    <div class="card card-w-title">
+						<f:facet name="header">
+							<p:outputLabel value="#{accountsMBean.currentCompany.legalCompanyName}"/>
+						</f:facet>
+
+						<p:panelGrid id="pnlAcc" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+							<p:panelGrid    columns="1"  >
+								<label style="font-weight: bold;">رقم الحساب </label>
+
+								<p:inputText value="#{accountsMBean.finAccount.account_number}"    />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1">
+								<label style="font-weight: bold;">الاسم بالعربي </label>
+
+								<p:inputText value="#{accountsMBean.finAccount.grpDesc}" required="true"/>
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" >
+								<label style="font-weight: bold;">الاسم بالانجليزي </label>
+
+								<p:inputText value="#{accountsMBean.finAccount.grpDescEn}" required="true" />
+							</p:panelGrid>
+
+
+							<p:panelGrid columns="1"   >
+								<label style="font-weight: bold;">فئة الحساب  </label>
+
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+												 filter="true" filterMatchMode="contains" id="groupto"
+												 value="#{accountsMBean.finAccount.accType}"
+												 >
+ 									<f:selectItems value="#{accountsMBean.accTypes}" var="type"
+												   itemLabel="#{msg['accType.'.concat(type)]}" itemValue="#{type}" />
+
+								</p:selectOneMenu>
+
+							</p:panelGrid>
+
+							<p:panelGrid columns="1"   >
+								<label style="font-weight: bold;">رصيد الدائن الافتتاحي   </label>
+
+								<p:inputText value="#{accountsMBean.finAccount.openingCreditBalance}" required="true" />
+							</p:panelGrid>
+
+
+							<p:panelGrid columns="1"   >
+								<label style="font-weight: bold;">رصيد المدين الافتتاحي   </label>
+
+								<p:inputText value="#{accountsMBean.finAccount.openingDebitBalance}" required="true" />
+							</p:panelGrid>
+
+
+
+
+						</p:panelGrid>
+						<p:panelGrid columns="2"   >
+						<p:commandButton value="#{msg['add']}" icon="ui-icon-save" style="width:auto" action="#{accountsMBean.addnewAccount()}"
+									ajax="true"	 process="@form" update="@form" />
+
+						<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-save" style="width:auto" action="#{accountsMBean.cancel()}"
+										 immediate="true"/>
+						</p:panelGrid>
+					</div>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

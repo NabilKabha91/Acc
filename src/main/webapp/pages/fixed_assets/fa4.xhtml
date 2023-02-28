@@ -1,0 +1,245 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">سجل الموجودات الثابتة</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form id="officeInfo">
+			<p:growl autoUpdate="true"  />
+			
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px"> سجل الموجودات الثابتة</h1>
+											<p:panelGrid id="pnlAssets2" columns="3" layout="grid"
+			styleClass="ui-panelgrid-blank form-group">
+
+
+			<h:panelGroup styleClass="md-inputfield">
+				<p:calendar value="#{assetsMB.financialStatementDate}" pattern="yyyy/MM/dd"
+					required="true" />
+				<label>تاريخ القوائم المالية</label>
+			</h:panelGroup>
+			<h:column></h:column>
+			<h:column></h:column>
+
+
+			<h:panelGroup styleClass="md-inputfield">
+				<p:calendar value="#{assetsMB.financialStatementDateForPreviouseYear}" pattern="yyyy/MM/dd"
+					required="true" />
+				<label>تاريخ القوائم الماليه للسنه السابقه</label>
+			</h:panelGroup>
+			<h:column></h:column>
+			<h:column></h:column>
+			<p:commandButton value="بحث" icon="ui-icon-search" style="width:auto; border-radius:20px;background-color:#888888"
+				action="#{assetsMB.getTree()}" process="@form" update="@form" />
+		</p:panelGrid>
+		<br></br>
+		<br></br>
+			<div style ="overflow-x:scroll;box-shadow: 3px 3px 3px 3px #888888;">
+			<p:panelGrid columns="10" id="pnl2" styleClass="ui-noborder" style="width:300%">
+		<p:dataTable var="record" value="#{assetsMB.assetsTreeList}" id="groupList" sortBy="#{record.groupingIdLong}" > 
+
+					<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="الاصل"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.asset}" >
+					</h:outputLabel>
+				</p:column>
+				
+					<p:column width="12%"  sortBy="#{record.categoryAsset}">
+					<f:facet name="header">
+						<h:outputText value="مجموعة الاصل"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.categoryAsset}" >
+					</h:outputLabel>
+				</p:column>
+					<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ الشراء"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.purchaseDate}" >
+					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3"/>
+					
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="الكلفة التاريخية للاصل"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.valueAsset}" >
+					</h:outputLabel>
+				</p:column>
+					<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="نسبة الاستهلاك"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.deprectiation}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="العمر الانتاجي"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.usefulLife}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ بداية الاستهلاك"/>
+							
+					</f:facet>
+					<h:outputLabel  value="#{record.deprectiationStartDate}" >
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3"/>
+					
+					</h:outputLabel>
+				</p:column>
+				
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ نهاية السنة السابقة"/>
+							
+					</f:facet>
+					<h:outputLabel  value="#{record.endPreviousYear}" >
+					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3"/>
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="الاستهلاك المتراكم بداية السنة"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.accumulatedDepreciation}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ بداية السنة المالية "/>
+						
+					</f:facet>
+					<h:outputLabel  value="#{record.fiscalYearStart}" >
+					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3"/>
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="تاريخ القوائم المالية"/>
+						
+					</f:facet>
+					<h:outputLabel  value="#{record.financialStatemnetYear}" >
+					<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3"/>
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="فترة الاستخدام"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.usingDuration}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="اساس الاحتساب"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.basisOfCalculation}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="استهلاك الفترة"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.deprectiationDuration}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="الاستهلاك المتراكم في نهاية السنة"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.accumulatedDeperciationEndYear}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="12%" >
+					<f:facet name="header">
+						<h:outputText value="صافي القيمة الدفترية"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.netBookValue}" >
+					</h:outputLabel>
+				</p:column>
+														<p:summaryRow >
+										<p:column>
+										<h:outputText style="color: Black;font-size: 17px;font-weight: bold;"
+				
+										value="المجموع">
+										</h:outputText>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+										</p:column>
+										
+														<p:column>
+				<h:outputText style="color: Black;font-size: 15px;font-weight: bold;"
+				
+										value="#{assetsMB.getSum(record)}">
+									</h:outputText>
+									</p:column>
+									<p:column>
+										</p:column>										
+										<p:column>
+										</p:column>
+										<p:column>
+										
+									
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText style="color: Black;font-size: 15px;font-weight: bold;"
+				
+										value="#{assetsMB.getSum2(record)}">
+										</h:outputText>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputText style="color: Black;font-size: 15px;font-weight: bold;"
+				
+										value="#{assetsMB.getSum3(record)}">
+										</h:outputText>
+										</p:column>
+										
+										
+				</p:summaryRow>
+					</p:dataTable>
+					</p:panelGrid>
+								
+		
+		<br />
+					</div>
+					</div>
+					</div>
+					
+					
+
+				
+			
+		
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui"
+	xmlns:pu="http://primefaces.org/ultima">
+	<div class="topbar clearfix">
+		<div class="topbar-left">
+			<div >
+			
+			<p  align="center" dir="#{languageDetails.dir}" style='text-align: center'>
+					<p:graphicImage width="40" rendered="#{not empty companyMB.company.picName}" title="logo"
+									url="/resources/logos/image/#{companyMB.company.picName}" 
+					
+ />
+  <br></br>
+						<span style="color: white;font-size: 20px;font-weight:bold;">"#{utils.isArabic() ? selectCompany.legalCompanyName : selectCompany.legalCompanyNameEn}"</span>
+					</p>
+			</div>
+		</div>
+
+		<div class="topbar-right">
+
+			<a id="menu-button" href="#"> <i></i>
+
+			</a>
+			
+							
+			
+			<p:clock displayMode="analog" pattern=" dd/MM/yyyy hh:mm:ss a" />
+			<a id="topbar-menu-button" href="#"> <i class="material-icons">&#xE5D2;</i>
+			</a>
+			
+			<ul class="topbar-items fadeInDown animated">
+
+				<li><a href="#"> <i class="topbar-icon material-icons">&#xe927;</i> <span class="topbar-item-name">Settings</span>
+				</a>
+				
+				
+					<ul class="ultima-menu animated">
+						<h:form>
+
+							<li role="menuitem">
+								<p:commandLink oncomplete="location.reload()" href="#" action="#{localeMB.changeLang()}">
+									<f:setPropertyActionListener value="ar" target="#{localeMB.lang}" />
+									<i class="material-icons">&#xe927;</i> <span>العربية</span>
+								</p:commandLink>
+
+
+							</li>
+							<li role="menuitem">
+								<p:commandLink oncomplete="location.reload()" href="#" action="#{localeMB.changeLang()}">
+									<f:setPropertyActionListener value="en" target="#{localeMB.lang}" />
+									<i class="material-icons">&#xe927;</i> <span>English</span>
+								</p:commandLink>
+
+
+							</li>
+
+
+						</h:form>
+					</ul>
+				</li>
+					<ui:fragment
+						rendered="#{guestPreferences.profileMode == 'overlay'||guestPreferences.menuLayout == 'menu-layout-static menu-layout-horizontal'}">
+						<li class="profile-item"><a href="#">
+								<h:panelGroup id="profile" layout="block" styleClass="profile-image">
+									<p:graphicImage styleClass="imgUser hide" cache="true" rendered="#{not empty utils.getCurrentUser().picName}"
+										url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/file-sheet/image/#{utils.getCurrentUser().picName}" 
+										 width="150" height="150" />
+								 <h:outputScript rendered="#{not empty utils.getCurrentUser().picName}">
+							var imh='url('+$('.imgUser').attr('src')+')';
+							console.log(imh)
+								$('.profile-image').css('background',imh);
+								$('.profile-image').css('background-size',' contain');
+								$('.profile-image').css('border-radius',' 50%');
+								</h:outputScript>
+								
+								</h:panelGroup>
+								 <span class="topbar-item-name">#{utils.isArabic() ? utils.getCurrentUser().nameAr : utils.getCurrentUser().nameEn}</span>
+						</a>
+
+							<ul class="ultima-menu animated">
+								<li role="menuitem">
+								 <p:commandLink action="#{userMB.goToUserPage(false)}">
+										<i class="material-icons">&#xE7FD;</i>
+										<span>#{msg['glopal.profile']}</span>
+									</p:commandLink>
+								</li>
+
+
+								<ui:remove>
+									<li role="menuitem"><a href="#"> <i class="material-icons">&#xE32A;</i> <span>Privacy</span>
+									</a></li>
+									<li role="menuitem"><a href="#"> <i class="material-icons">&#xE8B9;</i> <span>Settings</span>
+									</a></li>
+								</ui:remove>
+								<li role="menuitem"><p:commandLink action="#{loginMB.logout()}" styleClass="ripplelink">
+										<i class="material-icons">&#xE8AC;</i>
+										<span>#{msg['Logout']}</span>
+									</p:commandLink></li>
+							</ul></li>
+					</ui:fragment>
+
+					<ui:remove>
+						<li><a href="#"> <i class="topbar-icon material-icons">&#xE8B8;</i> <span class="topbar-item-name">Settings</span>
+						</a>
+							<ul class="ultima-menu animated">
+								<li role="menuitem"><a href="#"> <i class="material-icons">&#xE40A;</i> <span>Change Theme</span>
+								</a></li>
+								<li role="menuitem"><a href="#"> <i class="material-icons">&#xE87E;</i> <span>Favorites</span>
+								</a></li>
+								<li role="menuitem"><a href="#"> <i class="material-icons">&#xE897;</i> <span>Lock Screen</span>
+								</a></li>
+								<li role="menuitem"><a href="#"> <i class="material-icons">&#xE1BC;</i> <span>Wallpaper</span>
+								</a></li>
+							</ul></li>
+						<li><a href="#"> <i class="topbar-icon material-icons animated swing">&#xE0C9;</i> <span
+								class="topbar-badge animated rubberBand">5</span> <span class="topbar-item-name">Messages</span>
+						</a>
+							<ul class="ultima-menu animated">
+								<li role="menuitem"><a href="#" class="topbar-message"> <p:graphicImage name="images/avatar1.png" library="ultima-layout"
+											width="35" /> <span>Give me a call</span>
+								</a></li>
+								<li role="menuitem"><a href="#" class="topbar-message"> <p:graphicImage name="images/avatar2.png" library="ultima-layout"
+											width="35" /> <span>Sales reports attached</span>
+								</a></li>
+								<li role="menuitem"><a href="#" class="topbar-message"> <p:graphicImage name="images/avatar3.png" library="ultima-layout"
+											width="35" /> <span>About your invoice</span>
+								</a></li>
+								<li role="menuitem"><a href="#" class="topbar-message"> <p:graphicImage name="images/avatar2.png" library="ultima-layout"
+											width="35" /> <span>Meeting today at 10pm</span>
+								</a></li>
+								<li role="menuitem"><a href="#" class="topbar-message"> <p:graphicImage name="images/avatar4.png" library="ultima-layout"
+											width="35" /> <span>Out of office</span>
+								</a></li>
+							</ul></li>
+						<li><a href="#"> <i class="topbar-icon material-icons">&#xE425;</i> <span class="topbar-badge animated rubberBand">4</span> <span
+								class="topbar-item-name">Notifications</span>
+						</a>
+							<ul class="ultima-menu animated">
+								<li role="menuitem"><a href="#"> <i class="material-icons">&#xE868;</i> <span>Pending tasks</span>
+								</a></li>
+								<li role="menuitem"><a href="#"> <i class="material-icons">&#xE878;</i> <span>Meeting today at 3pm</span>
+								</a></li>
+								<li role="menuitem"><a href="#"> <i class="material-icons">&#xE2C4;</i> <span>Download documents</span>
+								</a></li>
+								<li role="menuitem"><a href="#"> <i class="material-icons">&#xE539;</i> <span>Book flight</span>
+								</a></li>
+							</ul></li>
+						<li class="search-item"><h:panelGroup styleClass="md-inputfield">
+								<p:inputText />
+								<label>Search</label>
+								<i class="topbar-icon material-icons">&#xE8B6;</i>
+							</h:panelGroup></li>
+					</ui:remove>
+			</ul>
+		</div>
+		<div>
+
+		</div>
+	</div>
+
+
+</ui:composition>

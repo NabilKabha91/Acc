@@ -1,0 +1,775 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+<head>
+<composite:interface>
+	<composite:attribute name="addBill" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+</composite:interface>
+
+
+</head>
+<f:view contentType="text/html" locale="#{languageDetails.locale}">
+
+	<h:body>
+
+		<h:form>
+
+
+			<composite:implementation>
+				<p:panel id="print">
+					<div class="WordSection1" align="center"
+						dir="#{languageDetails.dir}">
+
+						<p:spacer Height="180px" />
+
+						<h:panelGroup styleClass=" FLeft left20  " id="header">
+
+
+							<p:graphicImage cache="false"
+								value="/resources/images/Quote.png"
+								width="80" height="80">
+							</p:graphicImage>
+
+
+
+						</h:panelGroup>
+
+
+						<p:spacer width="60" />
+
+						<div class="ui-g">
+
+
+							<h:panelGrid columns="1" id="c14"
+								styleClass="no-border Wid80 MarAuto">
+								<h:outputLabel style="font-size: 25px;font-weight:bold;"
+									value="#{sellOrderMB.sellOrder.documentType}" styleClass=" FLeft   ">
+								</h:outputLabel>
+
+
+								<br></br>
+								<p:graphicImage width="80"
+									rendered="#{not empty billsMB.bills.company.picName}"
+									title="logo"
+									url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/file-sheet/image/#{billsMB.bills.company.picName}" />
+								<h:outputText value="#{sellOrderMB.sellOrder.legalCompanyName}"
+									style="font-size: 20px;font-weight:bold;" />
+
+								<h:outputText value="#{billsMB.bills.address}"
+									style="font-size: 15px;font-weight:bold;" />
+								<h:outputLabel value="#{msg['Sales_Tax_Number']}:"
+									rendered="#{sellOrderMB.sellOrder.saleTaxNumber ne null}">
+
+									<h:outputText value="#{sellOrderMB.sellOrder.saleTaxNumber}"
+										style="font-size: 15px;font-weight:bold;" />
+								</h:outputLabel>
+								<h:outputLabel
+									value="#{msg['addCompany.companyId_'+=utils.getVersion()]}:"
+									rendered="#{sellOrderMB.sellOrder.nationalCompanyNumber ne null}">
+
+									<h:outputText value="#{sellOrderMB.sellOrder.nationalCompanyNumber}"
+										style="font-size: 15px;font-weight:bold;" />
+								</h:outputLabel>
+								<br></br>
+								<h:outputLabel value="الفاتورة ل" />
+								<h:outputLabel>
+
+									<h:outputLabel
+										value="#{utils.isArabic() ?sellOrderMB.sellOrder.customer.customerNameAr:sellOrderMB.sellOrder.customer.customerNameEn}">
+
+
+									</h:outputLabel>
+
+									<h:outputText value="#{sellOrderMB.sellOrder.billsNumber}"
+										styleClass=" FLeft left50  " />
+									<p:outputLabel value="رقم امر البيع :"
+										styleClass=" FLeft left20  " />
+
+								</h:outputLabel>
+
+								<h:outputLabel>
+
+									<h:outputLabel value="#{sellOrderMB.sellOrder.customer.address}">
+									</h:outputLabel>
+
+									<h:outputLabel value="#{sellOrderMB.sellOrder.todayDate}"
+										styleClass=" FLeft left50  ">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputLabel>
+
+									<p:outputLabel value=" تاريخ امر البيع:"
+										styleClass=" FLeft left50  ">
+
+
+									</p:outputLabel>
+
+								</h:outputLabel>
+								<h:outputLabel>
+
+									<h:outputLabel value="#{sellOrderMB.sellOrder.customer.phoneNumber}">
+									</h:outputLabel>
+									<h:outputLabel value="#{sellOrderMB.sellOrder.dueDate}"
+										rendered="#{utils.getVersion() ne 'EGY'}"
+										styleClass=" FLeft left50  ">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputLabel>
+									<p:outputLabel value="#{msg['Due_date']}: "
+										rendered="#{utils.getVersion() ne 'EGY'}"
+										styleClass=" FLeft left50  " />
+
+									<br></br>
+
+								</h:outputLabel>
+
+								<h:outputLabel value="#{msg['Sales_Tax_Number_'+=utils.getVersion()]} :">
+
+									<h:outputLabel value="#{sellOrderMB.sellOrder.customer.saleTaxNumber}">
+									</h:outputLabel>
+
+
+								</h:outputLabel>
+								<h:outputLabel
+									value="#{msg['addCustomer.customerIdNumber_'+=utils.getVersion()]} :">
+
+									<h:outputLabel
+										value="#{sellOrderMB.sellOrder.customer.customerIdNumber}">
+									</h:outputLabel>
+								</h:outputLabel>
+
+
+
+							</h:panelGrid>
+
+							<br></br> <br></br> <br></br>
+							<p:spacer width="100" />
+
+								                            		<p:panelGrid  id="p7" styleClass="ui-noborder Wid120" rendered="#{sellOrderMB.sellOrder.commodityServices eq 2 or sellOrderMB.sellOrder.commodityServices eq 3 }" >
+
+							<table border="1"
+								style='margin-left: 5.4pt; border-collapse: collapse;'>
+								<tr>
+
+									<td width="522" valign="top"
+										style='width: 320.7pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<p class="MsoCommentText">#{msg['Item']}</p>
+									</td>
+									<td width="60" valign="top"
+										style='width: 45.0pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Descreption']}</span>
+										</h6>
+									</td>
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Unit_Price']}</span>
+											<br></br> <span dir="#{languageDetails.dir}"
+												style='font-weight: normal'>#{utils.isArabic() ?
+												sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName
+												:
+												sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}
+											</span>
+
+										</h6>
+									</td>
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Quantity']}
+											</span>
+										</h6>
+									</td>
+
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Amount_before_tax']}
+											</span> <br></br> <span dir="#{languageDetails.dir}"
+												style='font-weight: normal'>#{utils.isArabic() ?
+												sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName
+												:
+												sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}
+											</span>
+
+										</h6>
+									</td>
+
+
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Tax_amount']}
+											</span> <br></br> <span dir="#{languageDetails.dir}"
+												style='font-weight: normal'>#{utils.isArabic() ?
+												sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName
+												:
+											sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}
+											</span>
+
+										</h6>
+									</td>
+
+									<td width="60" valign="top"
+										style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+										<h6>
+											<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Gross_Total']}
+											</span> <br></br> <span dir="#{languageDetails.dir}"
+												style='font-weight: normal'>#{utils.isArabic() ?
+												sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName
+												:
+												sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}
+											</span>
+
+										</h6>
+									</td>
+
+
+								</tr>
+
+
+								<c:forEach items="#{sellOrderMB.addSellOrderList}" var="det">
+									<tr>
+
+										<td width="200"
+											style='width: 200pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoNormal" align="right" style='text-align: right'>
+												<span dir="#{languageDetails.dir}" style='font-size: 12.0pt'>
+													<h:outputText
+														value="#{det.servicesProducts.nameProductOrService}" />
+												</span>
+											</p>
+										</td>
+										<td width="60"
+											style='width: 45.0pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="TableText" align="center"
+												style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+												<h:outputText value="#{det.description}" />
+											</p>
+										</td>
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.price}" />
+											</p>
+										</td>
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.quantity}" />
+											</p>
+										</td>
+
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.initialValueBeforeTax}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputText>
+											</p>
+										</td>
+
+
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.initialTaxAmount}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputText>
+											</p>
+										</td>
+
+										<td width="60"
+											style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+											<p class="MsoHeader" align="center"
+												style='text-align: center'>
+												<h:outputText value="#{det.initialTotal}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputText>
+
+											</p>
+										</td>
+
+									</tr>
+								</c:forEach>
+							</table>
+</p:panelGrid>
+<p:panelGrid  id="p8"  rendered="#{sellOrderMB.sellOrder.commodityServices eq 1}" >
+			
+			<table border="1" style='width:100% ;margin-left: 5.4pt; border-collapse: collapse;'>
+					<tr>
+					
+						
+						<td  valign="top" style='width: 20%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt ; height:100px'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Item']}</span>
+							</h6>
+						</td>
+						<h:panelGroup  rendered="#{selectCompany.id eq 2 and  utils.getVersion() eq 'KSA'}">
+						<td  valign="top" style='width:10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>Th/h</span>
+							</h6>
+						</td>
+						</h:panelGroup>
+						<h:panelGroup  rendered="#{selectCompany.id eq 2 and  utils.getVersion() eq 'KSA'}">
+						<td valign="top" style='width:10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>width</span>
+							</h6>
+						</td>
+						</h:panelGroup>
+						<h:panelGroup  rendered="#{selectCompany.id eq 2   and utils.getVersion() eq 'KSA'}">
+						<td valign="top" style='width:10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>length</span>
+							</h6>
+						</td>
+						</h:panelGroup>
+						<h:panelGroup  rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}">
+						<td valign="top" style='width:10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>pcs</span>
+							</h6>
+						</td>
+						</h:panelGroup>
+						<td valign="top" style='width:10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Quantity']}</span>
+							</h6>
+						</td>
+						<td  valign="top" style='width:10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Unit_Price']}</span>
+								<br></br>
+								<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						<td  valign="top" style='width:10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Unit_cost']} </span>
+							</h6>
+						</td>
+						
+							<td  valign="top" style='width: 10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Gross_cost_before_tax']} </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						
+						
+						<td valign="top" style='width: 10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Tax_amount']}  </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+							
+						<td  valign="top" style='width: 10%; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: bold'>#{msg['Gross_Total']}   </span>
+								<br></br>
+									<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn} </span>
+								
+							</h6>
+						</td>
+						
+					
+					</tr>
+						<c:forEach items="#{sellOrderMB.addSellOrderList}" var="det">
+							<tr >
+							
+							
+								
+								<td style='width:20%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p >
+										<span dir="#{languageDetails.dir}"
+																style='font-size: 12.0pt'> <h:outputText
+																	value="#{det.itemsScreen.nameItem}" styleClass="Wid110" rows="3"/>
+															</span>	
+										
+									</p>
+								</td>
+								
+								<h:panelGroup  rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}">
+								<td  style='width:10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+										<h:outputText value="#{det.th}" />
+									</p>
+								</td>
+								</h:panelGroup>
+								<h:panelGroup  rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}">
+								<td  style='width:10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+										<h:outputText value="#{det.width}" />
+									</p>
+								</td>
+								</h:panelGroup>
+								<h:panelGroup  rendered="#{selectCompany.id eq 2 and utils.getVersion() eq 'KSA'}">
+						
+								<td  style='width:10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+										<h:outputText value="#{det.length}" />
+									</p>
+								</td>
+								</h:panelGroup>
+								<h:panelGroup  rendered="#{selectCompany.id eq 2 and  utils.getVersion() eq 'KSA'}">
+								<td  style='width:10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+										<h:outputText value="#{det.pcs}" />
+									</p>
+								</td> 
+								</h:panelGroup>
+								<td  style='width:10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='margin-top: 2.0pt; margin-right: 0cm; margin-bottom: 2.0pt; margin-left: 0cm; text-align: center'>
+										<h:outputText value="#{det.quantity}" />
+									</p>
+								</td>
+								<td  style='width:10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.unit.unitName}" />
+									</p>
+								</td>
+								<td  style='width:10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+										<h:outputText value="#{det.costUnit}" />
+									</p>
+								</td>
+								
+								<td  style='width: 10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialValueBeforeTax}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+									</p>
+								</td>
+								
+								
+									<td  style='width: 10%; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialTaxAmount}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+									</p>
+								</td>
+								
+								
+								<td width="10%" style=' border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="TableText" align="center" style='text-align: center'>
+										<h:outputText value="#{det.initialTotal}">
+														<f:convertNumber pattern="###,###.##"/>
+										</h:outputText>
+							
+									</p>
+								</td>
+							
+							</tr>
+						</c:forEach>
+				</table>
+				</p:panelGrid>
+							<p:spacer Height="10px" />
+
+								                            		<p:panelGrid  id="p7555" styleClass="ui-noborder Wid120" rendered="#{sellOrderMB.sellOrder.commodityServices eq 2 or sellOrderMB.sellOrder.commodityServices eq 3 }" >
+
+							<table width="100%">
+								<tr>
+									<td width="30%"></td>
+									<td width="70%">
+										<table border="1" align="left"
+											style='width: 40%; border-collapse: collapse; text-align: center'>
+											<tr>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<span dir="#{languageDetails.dir}"
+													style='font-weight: bold'>المجموع قبل الضريبة والخصم 
+												</span>
+												</td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel
+															value="#{sellOrderMB.addSellOrderList.stream().map(s->s.initialAmount).sum()}">
+															<f:convertNumber pattern="###,###.##" />
+															<p:spacer width="20" height="20" />
+
+															<h:outputLabel
+																value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+
+															</h:outputLabel>
+
+														</h:outputLabel>
+													</p>
+												</td>
+											</tr>
+											<tr>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<span dir="#{languageDetails.dir}"
+													style='font-weight: bold'> #{msg['Tax']} </span>
+												</td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel
+															value="#{sellOrderMB.addSellOrderList.stream().map(s->s.initialTaxAmount).sum()}">
+
+															<f:convertNumber pattern="###,###.##" />
+
+															<p:spacer width="20" height="20" />
+
+															<h:outputLabel
+																value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+
+
+															</h:outputLabel>
+
+														</h:outputLabel>
+													</p>
+												</td>
+											</tr>
+
+											<tr>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<span dir="#{languageDetails.dir}"
+													style='font-weight: bold'>قيمة الخصم</span>
+												</td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel
+															value="#{sellOrderMB.addSellOrderList.stream().map(s->s.initalamountdiscount).sum()}">
+
+															<f:convertNumber pattern="###,###.##" />
+
+															<p:spacer width="20" height="20" />
+
+															<h:outputLabel
+																value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+
+
+															</h:outputLabel>
+
+														</h:outputLabel>
+													</p>
+												</td>
+											</tr>
+											<tr>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+													<span dir="#{languageDetails.dir}"
+													style='font-weight: bold'> #{msg['Total']} </span>
+												</td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel
+															value="#{sellOrderMB.addSellOrderList.stream().map(s->s.initialTotal).sum()}">
+															<f:convertNumber pattern="###,###.##" />
+															<p:spacer width="20" height="20" />
+															<p:spacer />
+
+															<h:outputLabel
+																value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+
+															</h:outputLabel>
+
+														</h:outputLabel>
+													</p>
+												</td>
+											</tr>
+											<tr>
+												<td><span dir="#{languageDetails.dir}"
+													style='font-weight: bold'> #{msg['Total_written']}</span></td>
+												<td width="60"
+													style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputLabel value="#{sellOrderMB.sellOrder.totalCharacters}">
+														</h:outputLabel>
+
+													</p>
+												</td>
+											</tr>
+										</table>
+
+									</td>
+								</tr>
+							</table>
+</p:panelGrid>
+
+<p:panelGrid  id="psellOrder" styleClass="ui-noborder Wid120" rendered="#{sellOrderMB.sellOrder.commodityServices eq 1}" >
+					<table width="100%">
+								<tr>
+									<td width="30%"></td>
+									<td width="70%">
+		<table border="1"  align="left" style='width:40%; border-collapse: collapse;text-align: center'>
+  <tr >
+   <td   width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+    <span dir="#{languageDetails.dir}" style='font-weight: bold'>المجموع قبل الضريبة والخصم  </span>
+    </td>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+<h:outputLabel												value="#{sellOrderMB.addSellOrderList.stream().map(s->s.initialValueBeforeTax).sum()}" >
+				<f:convertNumber pattern="###,###.##"/>
+			<p:spacer   width="20"
+                                                                              height="20"/>	
+			
+				<h:outputLabel value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}">
+						
+						</h:outputLabel   >	
+						
+						</h:outputLabel>									</p>
+								</td> 
+  </tr>
+    <tr>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+    <span dir="#{languageDetails.dir}" style='font-weight: bold'>  #{msg['Tax']} </span>
+    </td>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+	<h:outputLabel						value="#{sellOrderMB.addSellOrderList.stream().map(s->s.initialTaxAmount).sum()}" >
+				
+											 <f:convertNumber pattern="###,###.##"/>
+				
+							<p:spacer  width="20"
+                                                                              height="20" />	
+				
+						<h:outputLabel  value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName : sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}" >
+						
+						
+						</h:outputLabel>
+						
+						</h:outputLabel>									</p>
+								</td> 
+  </tr>
+  
+  
+  <tr>
+   <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 3pt 0cm 3pt'>
+        <span dir="#{languageDetails.dir}" style='font-weight: bold'>   #{msg['Total']} </span>
+  </td>
+ <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+<h:outputLabel
+									value="#{sellOrderMB.addSellOrderList.stream().map(s->s.initialTotal).sum()}" >
+										 <f:convertNumber pattern="###,###.##"/>
+							<p:spacer width="20"
+                                                                              height="20" />	
+							<p:spacer />
+				
+										<h:outputLabel  value="#{utils.isArabic() ? sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesName :sellOrderMB.sellOrder.definitionOfCurrencies.definitionOfCurrenciesNameEn}" >
+				
+						</h:outputLabel>
+						
+						</h:outputLabel>
+											</p>
+								</td> 
+  </tr>
+  <tr>
+    <td>        <span dir="#{languageDetails.dir}" style='font-weight: bold'>    #{msg['Total_written']}</span>
+   </td>
+  <td width="60" style='width: 45.35pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoHeader" align="center" style='text-align: center'>
+	<h:outputLabel
+					value="#{sellOrderMB.sellOrder.totalCharacters}">
+					</h:outputLabel>
+					
+											</p>
+								</td>  
+  </tr>
+</table>
+</td>
+								</tr>
+							</table>
+</p:panelGrid>
+							<p:spacer Height="180px" />
+
+						</div>
+						<br></br>
+						<h:panelGrid columns="1" id="bank5"
+							styleClass="no-border Wid100 MarAuto"
+							rendered="#{sellOrderMB.sellOrder.bankData ne null}">
+
+							<h:outputLabel style="font-size: 20px;font-weight:bold;"
+								value="فيما يلي معلومات التحويل البنكي:
+						 " />
+
+							<h:outputLabel value=" #{msg['Bank_Name']} :">
+								<h:outputLabel
+									value="#{utils.isArabic() ?sellOrderMB.sellOrder.bankData.nameBankAr:sellOrderMB.sellOrder.bankData.nameBankEn}">
+								</h:outputLabel>
+							</h:outputLabel>
+							<h:outputLabel value="#{msg['Branch']} :">
+
+								<h:outputLabel value="#{sellOrderMB.sellOrder.bankData.branch}">
+								</h:outputLabel>
+							</h:outputLabel>
+							<h:outputLabel value="#{msg['Beneficiary_Name']} :">
+
+								<h:outputLabel
+									value="#{sellOrderMB.sellOrder.bankData.accountBeneficiary}">
+								</h:outputLabel>
+							</h:outputLabel>
+							<h:outputLabel value="#{msg['Swift_Code']} :">
+
+								<h:outputLabel value="#{sellOrderMB.sellOrder.bankData.swift}">
+								</h:outputLabel>
+							</h:outputLabel>
+							<h:outputLabel dir="#{languageDetails.dir}" value="IBAN:">
+
+								<h:outputLabel value="#{sellOrderMB.sellOrder.bankData.iban}">
+
+								</h:outputLabel>
+
+
+							</h:outputLabel>
+							<h:outputLabel value=" #{msg['Account_Number']} :">
+
+								<h:outputLabel value="#{sellOrderMB.sellOrder.bankData.accountNum}">
+								</h:outputLabel>
+							</h:outputLabel>
+
+
+
+
+
+
+						</h:panelGrid>
+						<br></br> <br></br>
+
+						<h:outputLabel style="font-size: 20px;font-weight:bold;"
+							value="#{utils.isArabic() ?sellOrderMB.sellOrder.billManagement.noteBillManagementAr:sellOrderMB.sellOrder.billManagement.noteBillManagementEn}">
+
+						</h:outputLabel>
+					</div>
+				</p:panel>
+
+			</composite:implementation>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

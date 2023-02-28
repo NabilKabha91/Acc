@@ -1,0 +1,114 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+<head>
+
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="ratePatient" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+</composite:interface>
+
+</head>
+<body>
+	<composite:implementation>
+	
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<div class="card card-w-title ">
+	
+						<p:tabView id="tabPanel" widgetVar="tabPanel" style="border:0px;border-bottom:0px;padding:5px"   dynamic="true" activeIndex="0" >
+				
+						  <p:tab title="Objective Examination &lt;br&gt;on observation">
+						  	
+						  <br></br>
+						  <br></br>
+               <div class="card card-w-title">
+					<h1>On observation </h1>
+				
+					<p:panelGrid id="pnlPatient3" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						
+							
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.odemea}" required="true" style="width:350px" />
+							<label>Odemea</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.bandagesAndScars}" required="true" style="width:350px"/>
+							<label>Any bandge,Scars</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.limbAttitude}" required="true" style="width:350px" />
+							<label>Attitude of the limbs </label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.bonyContours}" required="true" style="width:350px" />
+							<label>Bony contours</label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.gaitType}" required="true" style="width:350px" />
+							<label>Type of gait</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.deformities}" required="true" style="width:350px" />
+							<label>Deformities</label>
+						</h:panelGroup>
+						
+                               
+					</p:panelGrid>
+						
+				</div>
+			
+            </p:tab>
+            
+              <p:tab title="Objective Examination &lt;br&gt;on palpation">
+                <br></br>
+						  <br></br>
+               <div class="card card-w-title">
+					<h1>On palpation </h1>
+					<p:panelGrid id="pnlPatient4" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.tenderness}" required="true" style="width:350px" />
+							<label>Tenderness</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.dfTissue}" required="true" style="width:350px"/>
+							<label>D/F tissue tension and texture</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{OE1.objectiveExamination1.spasm}" required="true" style="width:350px" />
+							<label>Spasm </label>
+						</h:panelGroup>
+						
+                               <div align="left">
+                               
+						  <p:commandButton value="save" icon=" ui-icon-save" style="width:auto"
+						 action="#{OE1.saveObjectiveExamination1}"  />
+						   </div>
+						 
+					</p:panelGrid>
+						
+				</div>
+				
+            </p:tab>
+            
+            
+            
+            
+						</p:tabView>
+				
+		
+				</div>
+			</div>
+		</div>
+	
+	
+	</composite:implementation>
+	
+	
+	 </body>
+</html>

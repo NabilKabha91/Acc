@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addBills" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+</composite:interface>
+</head>
+<body>
+	<h:outputStylesheet library="css" name="custom-v2.8.css" />
+	<h:outputStylesheet rendered="#{cc.attrs.addWordCss}" library="css"
+		name="word.css" />
+	<composite:implementation>
+		<center>
+			<h:outputLabel style="color: Gray;font-size: 25px;font-weight:bold;"
+				value="#{goodsTransferReceiptProofMB.goodsTransferReceiptProof.documentType}">
+			</h:outputLabel>
+		</center>
+
+
+		<div class="ui-g">
+
+
+
+
+			<br></br>
+			<div class="ui-g-12 ui-md-12 ui-lg-6 table-g-6">
+
+				<div class="card card-w-title">
+
+
+					<p:panelGrid columns="3" id="pnl3"
+						styleClass="no-border Wid80 MarAuto">
+
+						<p:outputLabel value="تاريخ سند استلام  تحويل بضاعة  " />
+						<p:calendar
+							value="#{goodsTransferReceiptProofMB.goodsTransferReceiptProof.todayDate}"
+							pattern="yyyy/MM/dd" />
+
+						<p:column></p:column>
+
+
+
+						<p:outputLabel value="رقم سند استلام  تحويل بضاعة " />
+						<h:outputText
+							value="#{goodsTransferReceiptProofMB.goodsTransferReceiptProof.goodsTransferReceiptProofNumber}" />
+						<p:column></p:column>
+
+
+						<p:outputLabel
+							value="#{msg['fromwearhouse_'+=utils.getVersion()]}" />
+
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+							filter="true" filterMatchMode="contains" id="fromWarehouses"
+							value="#{goodsTransferReceiptProofMB.goodsTransferReceiptProof.fromWarehouses}"
+							style="margin-bottom:10px;" styleClass="Wid100" required="true">
+							<f:selectItem itemLabel="من مستودع" />
+							<f:selectItems
+								value="#{goodsTransferReceiptProofDetailsMB.warehousesList}"
+								var="warehouses"
+								itemLabel="#{utils.isArabic() ? warehouses.nameWarehouses : warehouses.nameWarehousesEn}"
+								itemValue="#{warehouses}" />
+
+						</p:selectOneMenu>
+						<p:column></p:column>
+						<p:outputLabel value="#{msg['towearhouse_'+=utils.getVersion()]}" />
+
+
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+							filter="true" filterMatchMode="contains" id="toWarehouses"
+							value="#{goodsTransferReceiptProofMB.goodsTransferReceiptProof.toWarehouses}"
+							style="margin-bottom:10px;" styleClass="Wid100" required="true">
+							<f:selectItem itemLabel="الى مستودع" />
+							<f:selectItems
+								value="#{goodsTransferReceiptProofDetailsMB.warehousesList}"
+								var="warehouses"
+								itemLabel="#{utils.isArabic() ? warehouses.nameWarehouses : warehouses.nameWarehousesEn}"
+								itemValue="#{warehouses}" />
+
+						</p:selectOneMenu>
+						<p:column></p:column>
+
+						<p:outputLabel value="سند تحويل بضاعه " />
+
+
+						<p:selectOneMenu id="esraa"
+							value="#{goodsTransferReceiptProofMB.goodsTransferReceiptProof.goodsTransferSlips}"
+							style="margin-bottom:10px;"
+							converter="omnifaces.SelectItemsConverter" filter="true"
+							filterMatchMode="contains" multiple="true">
+
+							<f:selectItem itemLabel="اختيار سند تحويل بضاعه " itemValue="" />
+
+							<f:selectItems
+								value="#{goodsTransferReceiptProofMB.goodsTransferSlipsList}"
+								var="goodsTransferSlips"
+								itemLabel="#{goodsTransferSlips.goodsTransferSlipsNumber}"
+								itemValue="#{goodsTransferSlips}" />
+
+						</p:selectOneMenu>
+
+
+					</p:panelGrid>
+				</div>
+
+			</div>
+			<br></br>
+
+
+
+			<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">
+
+				<div class="card card-w-title">
+					<p:commandButton value="#{msg['search']}" icon="ui-icon-save"
+						style="width:auto" action="#{goodsTransferReceiptProofMB.search()}"
+						process="@form" update="@form" />
+
+
+					<p:panelGrid columns="8" id="pnl2" styleClass="ui-noborder Wid120">
+
+
+
+						<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet"
+							rowIndexVar="index" var="det" styleClass="txt-center"
+							value="#{goodsTransferReceiptProofMB.addGoodsTransferReceiptProofList}"
+							style="border:hidden;">
+
+
+
+
+							<p:column headerText="#" width="20" style="border:hidden;">
+
+								<h:outputText value="#{index+1}" />
+
+
+
+							</p:column>
+
+
+
+							<p:column headerText="الصنف" width="50" style="border:hidden;">
+								<h:outputText value="#{det.item}" />
+							</p:column>
+
+							<p:column headerText="#{msg['Quantity']}" width="50"
+								style="border:hidden;">
+								<h:outputText value="#{det.quantity}" >
+								<f:convertNumber pattern="###,###.###" />
+								</h:outputText>
+							</p:column>
+
+                          <p:column headerText="الكميه المستلمة" width="50"
+								style="border:hidden;">
+								<p:inputNumber value="#{det.quantityReceived}" >
+									
+								</p:inputNumber>
+							</p:column>
+
+
+							<p:column headerText="الفرق" width="50" style="border:hidden;">
+								<p:outputLabel value="#{det.quantityTotal}" >
+									<f:convertNumber pattern="###,###.###" />
+								
+							</p:outputLabel>
+							</p:column>
+							<p:column headerText="#{msg['Delete']}" width="30"
+								style="border:hidden;">
+
+								<p:commandButton styleClass="red-btn"
+									action="#{goodsTransferReceiptProofMB.delete(det)}"
+									process="@this" update="@form" icon="ui-icon-delete">
+									<p:confirm header="#{msg['glopal.confirmation']}"
+										message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+								</p:commandButton>
+
+							</p:column>
+
+
+						</p:dataTable>
+					</p:panelGrid>
+				</div>
+			</div>
+
+
+
+
+
+			<br />
+			<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">
+				<div class="card card-w-title">
+					<p:panelGrid columns="3" id="pnl30" styleClass="ui-noborder Wid120">
+
+						<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+							style="width:auto"
+							action="#{goodsTransferReceiptProofMB.savegoodsTransferReceiptProof()}"
+							process="@form" update="@form">
+
+						</p:commandButton>
+
+						<p:commandButton value="#{msg['print']}" onclick="window.print();"
+							type="button" icon="ui-icon-print">
+						</p:commandButton>
+						<p:commandButton value="#{msg['Main_list']}" icon="ui-icon-cancel"
+							style="width:auto" process="@this" update="@this"
+							action="#{goodsTransferReceiptProofMB.cancelAction()}" />
+
+						<p:dialog resizable="false" height="45vh" width="450px"
+							modal="true" showHeader="false" widgetVar="uploadDocument"
+							closeOnEscape="true" dynamic="true">
+
+							<p:spacer height="10" width="100%"></p:spacer>
+							<center>
+								<h:panelGroup columns="2" id="p" layout="block"
+									styleClass="no-border Wid70 MarAuto">
+
+									<p:outputLabel style="font-size: 17px;"
+										value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+									<p:spacer height="10" width="100%"></p:spacer>
+
+									<p:fileUpload
+										rendered="#{goodsTransferReceiptProofMB.goodsTransferReceiptProof.id ne null}"
+										fileUploadListener="#{goodsTransferSlipsMB.uploadDocument}"
+										mode="advanced" label="#{msg['attached']}" auto="true"
+										allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+										uploadLabel="#{msg['attached']}"
+										cancelLabel="#{msg['Cancel']}">
+									</p:fileUpload>
+
+									<p:commandButton value="لا" style="width:auto"
+										action="#{goodsTransferReceiptProofMB.cancelAction()}"
+										process="@form" update="@form">
+
+									</p:commandButton>
+
+
+								</h:panelGroup>
+							</center>
+						</p:dialog>
+						<p:dataTable
+							rendered="#{goodsTransferReceiptProofMB.goodsTransferReceiptProof.id ne null}"
+							reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+							var="doc" styleClass="txt-center"
+							value="#{goodsTransferReceiptProofMB.documentList}">
+
+							<p:column>
+								<p:link value="#{doc.documentName}" type="button"
+									onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+							</p:column>
+
+
+						</p:dataTable>
+					</p:panelGrid>
+				</div>
+			</div>
+
+
+
+			<br></br> <br></br>
+
+		</div>
+
+
+
+
+	</composite:implementation>
+</body>
+</html>

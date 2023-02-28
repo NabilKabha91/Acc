@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCustomer" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+		 
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>#{addEmployee}</h1>
+					<p:panelGrid id="pnlCustomer" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						
+							
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{employeesMB.employee.employeeNameAr}" required="true" />
+							<label>#{msg['addEmployee.employeeName']} </label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{employeesMB.employee.employeeNameEn}" required="true" />
+							<label>#{msg['addEmployee.employeeName']}EN</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{employeesMB.employee.nationalEmployeeNumber}" required="true" />
+							<label>#{msg['addCustomer.customerIdNumber_'+=utils.getVersion()]}</label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{employeesMB.employee.securityNumber}" required="true" />
+							<label>#{msg['addEmployee.securityNumber']}</label>
+						</h:panelGroup>
+						 <h:panelGroup styleClass="md-inputfield">
+	                       <p:calendar  id="date2" pattern="dd/MM/yyyy" effect="fold" value="#{employeesMB.employee.dateHiring}" required="true"/>
+							<label>#{msg['addEmployee.dateHiring']}</label>
+						</h:panelGroup>
+				
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA'}">
+							<p:inputText value="#{employeesMB.employee.accountNum}"  />
+							<label>رقم حساب الموظف</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA'}">
+							<p:inputText value="#{employeesMB.employee.iban}" />
+							<label>  IBAN</label>
+						</h:panelGroup>
+<h:panelGroup styleClass="md-inputfield" >
+							<p:inputText value="#{employeesMB.employee.commission}" />
+							<label>  commission rate
+</label>
+						</h:panelGroup>
+                      <h:panelGroup styleClass="md-inputfield">
+	                       <p:calendar  id="date1" pattern="dd/MM/yyyy" effect="fold" value="#{employeesMB.employee.dateEnd}" />
+							<label>تاريخ انهاء الخدمات </label>
+						</h:panelGroup>
+                       <h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{employeesMB.employee.jobNumber}" required="true" />
+							<label>#{msg['addEmployee.JobNumber']}</label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{employeesMB.employee.basicSalary}" required="true" />
+							<label>#{msg['addEmployee.basicSalary']}</label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield">
+						<p:inputText value="#{employeesMB.employee.socialSecurityRate}"
+						 >
+						 							</p:inputText>
+							<label>#{msg['addEmployee.socialSecurityRate']}</label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{employeesMB.employee.thePercentageOfTheCompanySocialSecurity}" />
+							<label>#{msg['addEmployee.thePercentageOfTheCompanySocialSecurity']}</label>
+						</h:panelGroup>
+												<h:panelGroup styleClass="md-inputfield">
+						</h:panelGroup>
+						
+						
+					
+						
+						
+						<h:panelGroup styleClass="md-inputfield">
+						</h:panelGroup>
+												<p:column>
+						</p:column>
+						
+						<p:column>
+						
+								<h4>#{msg['addBonuses.bonusesType']}:</h4>
+						
+							<p:selectManyCheckbox id="bonusesList" value="#{employeesMB.bonusesSelectedList}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter" 
+									requiredMessage="#{msg['addDeductions.deductionsType']} #{msg['required']}"
+									 filter="true" filterMatchMode="contains" multiple="true">
+									<f:selectItems value="#{employeesMB.bonusesList}" var="bonuses" itemLabel="#{bonuses.bonusesType}" itemValue="#{bonuses}" />
+								</p:selectManyCheckbox>
+														</p:column>
+						
+							
+						
+						<p:column>
+						
+														<h4>#{msg['addDeductions.deductionsType']}:</h4>
+						
+							<p:selectManyCheckbox id="deductionsList" value="#{employeesMB.deductionsSelectedList}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter" 
+									requiredMessage="#{msg['addDeductions.deductionsType']} #{msg['required']}"
+									 filter="true" filterMatchMode="contains" multiple="true">
+									<f:selectItems value="#{employeesMB.deductionsList}" var="deductions" itemLabel="#{deductions.deductionsType}" itemValue="#{deductions}" />
+								</p:selectManyCheckbox>
+														</p:column>
+						
+							
+       
+      <h:selectOneRadio id="batchtype" value="#{employeesMB.employee.socialStatus}" style="margin-bottom:10px;"
+						  filter="true"  filterMatchMode="contains" required="true">							
+						<f:selectItem itemLabel="اعزب  " itemValue="1" />
+						<f:selectItem itemLabel="متزوج   " itemValue="2" />
+					
+						
+						</h:selectOneRadio>
+							<p:column>
+							<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="group2"
+									value="#{employeesMB.employee.costCenter}" style="margin-bottom:10px;"
+									styleClass="Wid100" required="true" rendered="#{utils.isSallon() eq true}">
+									<f:selectItem itemLabel="مراكز التكلفة " itemValue="" />
+
+									<f:selectItems
+										value="#{employeesDetailsMB.costCenterList}"
+										var="costCenter" itemLabel="#{costCenter.costCenterCoding}"
+										itemValue="#{costCenter}" />
+
+								</p:selectOneMenu>
+								</p:column>
+						
+					</p:panelGrid>
+						
+						
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{employeesMB.saveEmployee()}" process="@form"
+						update="@form" 
+						 />
+                                <p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{employeesMB.cancelAction()}" />
+					
+						
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

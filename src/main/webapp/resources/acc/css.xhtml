@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<composite:attribute name="addWordCss" default="false" />
+
+</composite:interface>
+
+<composite:implementation>
+	<h:outputStylesheet library="css" name="custom-v2.8.css" />
+	<h:outputStylesheet rendered="#{cc.attrs.addWordCss}" library="css" name="word.css" />
+
+
+</composite:implementation>
+
+</html>

@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">شجرة الحسابات</ui:define>
+    <ui:define name="head">شجرة الحسابات</ui:define>
+    <ui:define name="content">
+
+        <div class="ui-fluid" >
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+
+                        <h:form id="tree-form">
+                            <p:growl id="messages" showDetail="true" />
+                            <p:tree    animate="true"   orientation="virtic"  draggable="false" dir="#{profileMBean.direction}"
+                                       selectionMode="single" selection="#{accountsTreeMBean.selectedNode}"  id="docs" value="#{accountsTreeMBean.root}"
+                                       var="node"  filterBy="#{node}"   >
+
+                                <p:treeNode    icon="fa fa-dollar-sign" type="root">
+                                    <h:outputText value="#{node}"/>
+                                </p:treeNode>
+
+                                <c:forEach items="#{accountsTreeMBean.levels}" var="level">
+
+                                    <p:treeNode  icon="fa fa-dollar-sign" type="#{level}">
+                                        <h:outputText value="#{node.finAccount.grpName}"/>
+                                    </p:treeNode>
+
+                                </c:forEach>
+
+                            </p:tree>
+
+                            <c:forEach items="#{accountsTreeMBean.levels}" var="level">
+
+                                <p:contextMenu for="docs"   nodetype="#{level}" >
+                                    <p:menuitem  action="#{accountsTreeMBean.addAccount}"  value="#{msg['add']}" icon="fa fa-plus" />
+                                    <p:menuitem iconPos=""  action="#{accountsTreeMBean.viewAccount}" ajax="false" async="true" target="_blank" value="عرض" icon="fa fa-eye" />
+                                </p:contextMenu>
+
+                            </c:forEach>
+
+                        </h:form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>

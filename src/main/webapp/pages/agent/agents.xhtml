@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/agent" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form id="agentInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+				<p:commandButton icon="ui-icon-add" value="#{msg['title.add_agent']}" action="#{agentMB.init()}" actionListener="#{agentDetailsMB.redirectToAgentAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{agentMB.addAgent}" />
+				</p:commandButton>
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="agentDetails" var="det" styleClass="txt-center" value="#{agentDetailsMB.agentList}">
+					<p:column filterBy="#{utils.isArabic() ? det.agentNameAr : det.agentNameEn}" headerText="#{msg['addAgent.agent_name']}">
+						<p:outputLabel value="#{utils.isArabic() ? det.agentNameAr : det.agentNameEn}" />
+					</p:column>
+
+					<p:column filterBy="#{det.address}"  headerText="#{msg['addAgent.agent_address']}">
+						<p:outputLabel value="#{det.address}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.phoneNumber}" headerText="#{msg['addAgent.agent_phone']}">
+						<p:outputLabel value="#{det.phoneNumber}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.faxNumber}" headerText="#{msg['addAgent.agent_fax']}">
+						<p:outputLabel value="#{det.faxNumber}" />
+					</p:column>
+
+					<p:column filterBy="#{det.pox}" headerText="#{msg['addAgent.agent_pox']}">
+						<p:outputLabel value="#{det.pox}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.email}" headerText="#{msg['addAgent.agent_email']}">
+						<p:outputLabel value="#{det.email}" />
+					</p:column>
+
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{agentMB.init()}" actionListener="#{agentDetailsMB.redirectToAgentEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{agentMB.agentsInfo}" />
+							<f:setPropertyActionListener value="false" target="#{agentMB.addAgent}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_agent']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{agentDetailsMB.deleteAgent(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

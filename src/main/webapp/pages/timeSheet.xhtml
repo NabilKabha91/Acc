@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head">
+		<style type="text/css">
+.nba-grid {
+	width: 100%;
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+
+.ui-scrollpanel-content p:first-child {
+	margin: 0;
+}
+</style>
+	</ui:define>
+	<ui:define name="content">
+		<div class="card card-w-title">
+
+			<div class="ui-g ui-fluid">
+				<!-- Left Side -->
+
+			
+									
+	        <p:commandButton icon="ui-icon-add" value="#{msg['addCompany']}" style="width:auto" actionListener="#{companyMB.init()}" onclick="PF('addcompany').show()" >
+	        					<f:setPropertyActionListener value="true" target="#{companyMB.addCompany}" />
+	        
+				</p:commandButton>
+				
+					
+		    <p:commandButton icon="ui-icon-add" value="اختيار شركة " style="width:auto"  id="selcompany"  styleClass="secondary" onclick="PF('SelectCompany').show()" type="button"  >
+				</p:commandButton>
+				
+							
+				<p:dialog resizable="false" height="90vh" width="850px" modal="true" showHeader="false" draggable="false" visible="true"	widgetVar="SelectCompany" closeOnEscape="true" dynamic="true">
+			<p:panel id="pnlforget">
+
+				<p:spacer height="10" width="100%"></p:spacer>
+				<center>
+				
+						
+						<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="companyDetails" var="det" styleClass="txt-center" value="#{companyDetailsMB.companyList}">
+					
+
+					<p:column  styleClass="txt-center"  headerText="#{msg['addCompany.legalCompanyName_'+=utils.getVersion()]}">
+						<p:commandLink   action="#{companyMB.companyInfo}" value="#{det.legalCompanyName}"  >
+						<f:setPropertyActionListener  value="#{det}" target="#{companyMB.company}" />
+						</p:commandLink>
+					</p:column>
+						</p:dataTable>
+				</center>
+				<f:facet name="footer">
+				
+				<p:commandButton onclick="PF('addcompany').show()" icon="ui-icon-add" value="#{msg['addCompany']}" action="#{companyMB.init()}" style="width:auto" >
+					<f:setPropertyActionListener value="true" target="#{companyMB.addCompany}" />
+				</p:commandButton>
+				
+			
+								  
+				</f:facet>
+			</p:panel>
+		</p:dialog>
+					
+		<p:dialog  resizable="false" height="100vh" width="600px" modal="true" showHeader="false" widgetVar="addcompany"  closeOnEscape="true" dynamic="true">
+			
+			
+					<ui:include src="company/companyInfo.xhtml" 
+					 />
+			
+		</p:dialog>
+					
+					
+    
+       
+       	<h:outputScript>
+		
+		PrimeFacesExt.locales.TimePicker['ar'] = {  
+		        hourText: 'الساعة',  
+		        minuteText: 'الدقيقة',  
+		        amPmText: ['ص', 'م'],  
+		        closeButtonText: 'اغلاق',  
+		        nowButtonText: 'الآن',  
+		        deselectButtonText: 'عدم تحديد'  
+		    };  
+		
+			<!-- $('#menu-button').click(); -->
+			<!-- PF('pnlSearch').toggle(); -->
+		</h:outputScript>
+       
+       
+
+	
+</div>
+</div>
+<h:outputScript>
+		
+		PrimeFacesExt.locales.TimePicker['ar'] = {  
+		        hourText: 'الساعة',  
+		        minuteText: 'الدقيقة',  
+		        amPmText: ['ص', 'م'],  
+		        closeButtonText: 'اغلاق',  
+		        nowButtonText: 'الآن',  
+		        deselectButtonText: 'عدم تحديد'  
+		    };  
+		
+			<!-- $('#menu-button').click(); -->
+			<!-- PF('pnlSearch').toggle(); -->
+		</h:outputScript>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:common="http://java.sun.com/jsf/composite/composites/common" >
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addReceivePayments" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+		 
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+
+			
+				<center>
+						
+				<h:outputLabel 	style='font-size: 25.0pt '	value="#{payrollReportMB.payrollReport.documentType}"  >
+						 
+						
+						</h:outputLabel>
+						</center>
+						
+						
+						
+						
+						
+			
+			
+			
+											
+				
+	<div class="ui-g">
+		
+							
+<div class="ui-g-12 ui-md-12 ui-lg-6 table-g-6">				
+				<div class="card card-w-title">
+								<p:panelGrid columns="2" id="pnl" styleClass="no-border Wid70 MarAuto">
+				
+				      <p:outputLabel value="رقم  "/>
+	                      		<h:outputText value="#{payrollReportMB.payrollReport.payrollNumber}" />         
+                     	                      <p:column></p:column>
+                     	                                           	                      <p:column></p:column>
+                     	                    <p:outputLabel value="الشهر  "/>
+                
+                  <p:selectOneMenu value="#{payrollReportMB.payrollReport.month}" 
+                         style="width: 75px" id="casd">
+             <f:selectItem itemLabel="الشهر " itemValue="0" noSelectionOption="true" />
+            <f:selectItem itemLabel="شهر 1" itemValue="1"/>
+            <f:selectItem itemLabel="شهر 2" itemValue="2"/>
+            <f:selectItem itemLabel="شهر 3" itemValue="3"/>
+            <f:selectItem itemLabel="شهر 4" itemValue="4"/>
+              <f:selectItem itemLabel="شهر5" itemValue="5"/>
+            <f:selectItem itemLabel="شهر 6" itemValue="6"/>
+            <f:selectItem itemLabel="شهر 7" itemValue="7"/>
+            <f:selectItem itemLabel="شهر 8" itemValue="8"/>
+            
+               <f:selectItem itemLabel="شهر 9" itemValue="9"/>
+            <f:selectItem itemLabel="شهر 10" itemValue="10"/>
+            <f:selectItem itemLabel="شهر 11" itemValue="11"/>
+            <f:selectItem itemLabel="شهر 12" itemValue="12"/>
+            
+            
+            
+        </p:selectOneMenu>
+        
+                             	                   
+                             	                    
+        
+								</p:panelGrid>
+								                </div>
+								                								                </div>
+								                								                
+					
+		             	
+								                <br></br>
+								               
+                                
+                        
+                <br></br>
+                	<p:panelGrid styleClass="no-border" style="width :100%;  direction:#{localeMB.dir}" columns="8"
+										columnClasses="bold , ,bold, ,bold,,bold">
+										
+                
+                                <p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto" action="#{payrollReportMB.search()}"
+							process="@form" update="@form" />
+                									</p:panelGrid>
+                				 
+                
+
+					<p:dataTable    emptyMessage="#{msg['noRecord']}" id="tblSheet" rowIndexVar="index" var="det" styleClass="txt-center" style="border:hidden;"
+											value="#{payrollReportMB.addPayrollReportList}"   
+											  >
+											
+															<p:column filterBy="#{det.employee.securityNumber}"  headerText="#{msg['addEmployee.securityNumber']}">
+						<p:outputLabel value="#{det.addPayroll.employee.securityNumber}" />
+					</p:column>
+				
+					<p:column filterBy="#{det.employee.nationalEmployeeNumber}"  headerText="#{msg['addEmployee.nationalEmployeeNumber']}">
+						<p:outputLabel value="#{det.addPayroll.employee.nationalEmployeeNumber}" />
+					</p:column>
+				
+					<p:column filterBy="#{utils.isArabic() ? det.employee.employeeNameAr : det.employee.employeeNameEn}" headerText="#{msg['addEmployee.employeeName']}">
+						<p:outputLabel value="#{utils.isArabic() ? det.addPayroll.employee.employeeNameAr : det.addPayroll.employee.employeeNameEn}" />
+					</p:column>
+					
+
+                   <p:column filterBy="#{det.basicSalary}"  headerText="#{msg['addEmployee.basicSalary']}">
+						<p:outputLabel value="#{det.addPayroll.basicSalary}" />
+	                     
+					</p:column>
+	                
+                   <p:column filterBy="#{det.bonuseTotal}"  headerText="العلاوات">
+						<p:outputLabel value="#{det.addPayroll.bonuseTotal}" />
+						
+					</p:column>
+					    <p:column filterBy="#{det.bonuseVal}"  headerText="مجموع العلاوات">
+						<p:outputLabel value="#{det.addPayroll.bonuseVal}" />
+						   
+					</p:column>
+					
+					
+					 <p:column filterBy="#{det.basicSalary}"  headerText="الاقتطاعات">
+						<p:outputLabel value="#{det.addPayroll.deductionTotal}" />
+					</p:column>
+                       <p:column filterBy="#{det.basicSalary}"  headerText="مجموع الاقتطاعات">
+						<p:outputLabel value="#{det.addPayroll.deductionVal}" />
+						
+					</p:column>
+					 <p:column filterBy="#{det.basicSalary}"  headerText="حصة الموظف بالضمان ">
+						<p:outputLabel value="#{det.addPayroll.employeeShareOfGuarantee}" />
+						
+					</p:column>
+					 <p:column filterBy="#{det.basicSalary}"  headerText="صافي الراتب المحول على البنك   ">
+						<p:outputLabel value="#{det.addPayroll.netSalaryTransferredBank}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+						
+					</p:column>
+					 <p:column filterBy="#{det.basicSalary}"  headerText="  مساهمة ااشركة في الضمان ">
+						<p:outputLabel value="#{det.addPayroll.companyContributionToTheGuarantee}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+						
+					</p:column>
+						 <p:column filterBy="#{det.basicSalary}"  headerText=" قيمة الضمان الواجب توريدة ">
+						<p:outputLabel value="#{det.addPayroll.theValueOfTheGuaranteeThatMustBeSupplied}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+						
+					</p:column>
+				
+					
+					
+												
+					</p:dataTable>
+					
+						 <br></br>
+												 <br></br>
+												 <br></br>
+						 									<p:column></p:column>
+						 						 									<p:column></p:column>
+						 	<p:column></p:column>
+						 						 									<p:column></p:column>
+						 
+			
+	</div>
+	
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{payrollReportMB.savePayroll()}"
+						process="@form" update="@form" />
+					  <p:commandButton value="العودة للقائمة الرئيسية" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{payrollReportMB.cancelAction()}" />
+					
+	<br></br>			
+		            			               							
+										
+	</composite:implementation>
+</body>
+</html>

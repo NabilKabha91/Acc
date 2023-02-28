@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ut="http://java.sun.com/jsf/composite/composites/user" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+		<h:outputStylesheet>
+		</h:outputStylesheet>
+		<h:form id="jobDescInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+				<p:commandButton icon="ui-icon-add" value="#{msg['title.add_user_type']}" action="#{userTypeAdditionMB.init()}" actionListener="#{userTypeDetailsMB.redirectToUserTypeAddition()}">
+					<f:setPropertyActionListener value="true" target="#{userTypeAdditionMB.addUserType}" />
+				</p:commandButton>
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="jobDescDetails" var="det" styleClass="txt-center" value="#{userTypeDetailsMB.userTypeList}">
+					<p:column   filterBy="#{det.typeNameAr}" headerText="#{msg['addUserType.name_ar']}">
+						<p:outputLabel value="#{det.typeNameAr}" />
+					</p:column>
+
+					<p:column filterBy="#{det.typeNameEn}"  headerText="#{msg['addUserType.name_en']}">
+						<p:outputLabel value="#{det.typeNameEn}" />
+					</p:column>
+
+					<p:column   headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{userTypeAdditionMB.init()}" actionListener="#{userTypeDetailsMB.redirectToUserTypeEdit()}" process="@this" >
+							<f:setPropertyActionListener value="false" target="#{userTypeAdditionMB.addUserType}" />
+							<f:setPropertyActionListener value="#{det}" target="#{userTypeAdditionMB.userType}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_user_type']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{userTypeDetailsMB.deleteUserType(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

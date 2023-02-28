@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:off="http://java.sun.com/jsf/composite/composites/office"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml" xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+	<ui:define name="title">#{msg['reports.job_overtime_hours_schedule']}</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form>
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<div class="ui-g ui-fluid">
+
+				<div styleClass="ui-g-12 ui-lg-12 no-border no-padding">
+
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px">#{msg['reports.job_overtime_hours_schedule']}</h1>
+						<p:panelGrid id="pnlReport" styleClass="ui-panelgrid-blank form-group">
+							<p:row>
+								<p:column colspan="6">
+									<h:panelGroup>
+										<p:outputLabel value="#{msg['report.emp_name']} :"></p:outputLabel>
+										<p:spacer width="5"></p:spacer>
+
+										<p:outputLabel value="#{currentUser.nameAr}"></p:outputLabel>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:panelGroup styleClass="md-inputfield">
+										<p:calendar value="#{reportScheduleTimeWorkMB.fromDate}" pattern="yyyy/MM/dd">
+											<p:ajax event="dateSelect" process="@form" update="@form" listener="#{reportScheduleTimeWorkMB.search}"></p:ajax>
+										</p:calendar>
+										<label>#{msg['report.from_date']}</label>
+									</h:panelGroup>
+								</p:column>
+								<p:column>
+									<h:panelGroup styleClass="md-inputfield">
+										<p:calendar value="#{reportScheduleTimeWorkMB.toDate}" pattern="yyyy/MM/dd">
+											<p:ajax process="@form" update="@form" listener="#{reportScheduleTimeWorkMB.search}"></p:ajax>
+										</p:calendar>
+										<label>#{msg['report.to_date']}</label>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+						
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto"
+							action="#{reportScheduleTimeWorkMB.search()}" process="@form" update="@form" />
+
+						<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+							update="@this" action="#{reportScheduleTimeWorkMB.cancelAction()}" />
+					</div>
+					<div class="card card-w-title">
+
+
+						<br />
+						<div class="ui-g">
+							<div class="ui-g-12">
+
+								<h:panelGroup id="print" layout="block">
+									<common:printHeader target="@form:print" office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['reports.totalHoursCompare']} #{msg['report.overall']}">
+
+									</common:printHeader>
+
+<p:panelGrid styleClass="no-border" style="  direction:#{localeMB.dir}" columns="2"
+										columnClasses="bold , ,bold, ,bold,,bold">
+										<p:outputLabel for="emp" value="#{msg['report.emp_name']}" />
+										<p:outputLabel id="emp"
+											value="#{currentUser.name}" />
+									
+									</p:panelGrid>
+									<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="tblSheet" rowIndexVar="index" var="det" styleClass="txt-center"
+										value="#{reportScheduleTimeWorkMB.sheetDetails}">
+										<p:column headerText="#" width="20" styleClass="txt-center ">
+											<h:outputText value="#{index+1}" />
+										</p:column>
+										<p:column headerText="#{msg['agent']}" width="100" styleClass="txt-center ">
+											<h:outputText value="#{utils.isArabic() ? det.agent.agentNameAr:det.agent.agentNameEn}" />
+										</p:column>
+										<p:column headerText="#{msg['date']}" styleClass="txt-center " width="80">
+											<h:outputText id="todayDat" value="#{det.todayDate}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="#{msg['newFinancialYear.year']}" styleClass="txt-center " width="90">
+											<h:outputText id="year" value="#{det.year.toStringDate()}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+
+
+										<p:column headerText="#{msg['serviceType']}" styleClass="txt-center " width="100">
+
+											<h:outputText value="#{utils.isArabic() ? det.serviceType.serviceNameAr :det.serviceType.serviceNameEn}" />
+										</p:column>
+										<p:column headerText="#{msg['overTime']}" width="80" styleClass="txt-center ">
+											<h:outputLabel value="#{utils.toTimeString(det.totalOverTime)}">
+											</h:outputLabel>
+											<f:facet name="footer">
+												<h:outputLabel value="#{utils.toTimeString(reportScheduleTimeWorkMB.sheetDetails.stream().map(s->s.totalOverTime).sum())}" />
+											</f:facet>
+										</p:column>
+									</p:dataTable>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+		<h:outputStylesheet library="css" name="print-lanscape.css"></h:outputStylesheet>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCustomer" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+		 
+</composite:interface>
+</head>#{msg['addCustomer.taxNumber_'+=utils.getVersion()]}
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>#{cc.attrs.title}</h1>
+					<p:panelGrid id="pnlCustomer" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						
+							
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.customerNameAr}" required="true" />
+							<label>#{msg['addCustomer.customerName']} *</label>
+						</h:panelGroup>
+
+<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.customerNameEn}" required="true" />
+							<label>#{msg['customerNameEn']} *</label>
+						</h:panelGroup>
+
+<h:panelGroup rendered="false">
+	                      		 <p:outputLabel value="كود العميل :" />
+
+	                      		<h:outputText value="#{customerMB.customer.codeNumber}" />   
+	                      		 
+	                      		</h:panelGroup>
+	                      	<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA'}">
+	                      	
+	                      		<p:inputText value="#{customerMB.customer.previousCode}" />
+	                      		<label>كود العميل  </label>
+	                      		    
+	                      	</h:panelGroup>	
+	                      	
+	                      	<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA'}">
+	                      		<p:inputText value="#{customerMB.customer.ref}" />
+	                      		    	                      		<label>المرجع</label>
+	                      		    
+	                      	</h:panelGroup>	
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() ne 'KSA' and utils.isSallon() ne  true}">
+							<p:inputText value="#{customerMB.customer.taxNumber}" required="true" />
+							<label>#{msg['addCustomer.taxNumber_'+=utils.getVersion()]}*</label>
+						</h:panelGroup>
+
+                       <h:panelGroup styleClass="md-inputfield"  rendered="#{utils.isSallon() ne  true}">
+							<p:inputText value="#{customerMB.customer.customerIdNumber}" required="true"  />
+							<label>#{msg['addCustomer.customerIdNumber_'+=utils.getVersion()]}*</label>
+						</h:panelGroup>
+						
+						  <h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'EGY'}">
+							<p:inputText value="#{customerMB.customer.issuingAuthority}" required="true"  rendered="#{utils.getVersion() eq 'EGY'}"/>
+							<label>#{msg['addCustomer.Issuingauthority_'+=utils.getVersion()]}*</label>
+						</h:panelGroup>
+						
+						
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.isSallon() ne true}" >
+							<p:inputText value="#{customerMB.customer.responsiblePerson}" required="true" />
+							<label>#{msg['addCustomer.responsiblePerson_'+=utils.getVersion()]}*</label>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{utils.getVersion() eq 'KSA'}">
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents12" value="#{customerMB.customer.delegateCoding}"
+													style="margin-bottom:10px;" styleClass="Wid100">
+													
+													<f:selectItem  itemLabel=" المندوب " />
+													<f:selectItems value="#{customerDetailsMB.delegateCodingList}" 
+													var="delegateCoding" itemLabel="#{delegateCoding.delegateCoding}" itemValue="#{delegateCoding}"  />
+													
+												</p:selectOneMenu>
+											
+						</h:panelGroup>
+						
+							
+						
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.address}" />
+							<label>#{msg['addCompany.address']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.addressEN}" />
+							<label>#{msg['addCompany.address']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.phoneNumber}" />
+							<label>#{msg['addCompany.phone_number']}</label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() ne 'EGY'}">
+							<p:inputText value="#{customerMB.customer.saleTaxNumber}" rendered="#{utils.getVersion() ne 'EGY'}"/>
+							<label>#{msg['Sales_Tax_Number_'+=utils.getVersion()]}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.faxNumber}" />
+							<label>#{msg['addCompany.fax']}</label>
+						</h:panelGroup>
+							
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.email}" />
+							<label>#{msg['addCompany.email']}</label>
+						</h:panelGroup>
+						
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.creditLimit}" />
+							<label>#{msg['addCustomer.creditLimit']}</label>
+						</h:panelGroup>
+						
+							<p:selectOneMenu id="typevacationList" value="#{customerMB.customer.paymentMethod}" style="margin-bottom:10px;"
+						 required="true" filter="true"  filterMatchMode="contains">
+						<f:selectItem itemLabel="#{msg['addCustomer.paymentMethod_'+=utils.getVersion()]}*" itemValue="0" />
+							<f:selectItem itemLabel="#{msg['Cash']}" itemValue="1" />
+						<f:selectItem itemLabel="#{msg['10_days_after_invoice_date']}" itemValue="2" />
+						<f:selectItem itemLabel="#{msg['30_days_after_invoice_date']} " itemValue="3" />
+						
+						</p:selectOneMenu>
+						
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{customerMB.customer.openingBalances}" />
+							<label>الارصدة الافتتاحية</label>
+						</h:panelGroup>
+						
+						
+						   <h:panelGroup>
+							
+					<p:selectOneMenu 
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="group1" value="#{customerMB.customer.groupingId}"
+						style="margin-bottom:10px;" styleClass="Wid100" required="true">
+													<f:selectItem  itemLabel="المجموعات " />
+													<f:selectItems value="#{customerMB.groupList}" 
+													var="grouping" itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}" itemValue="#{grouping.grpId}"  />
+												
+												</p:selectOneMenu>
+						</h:panelGroup>					
+					</p:panelGrid>
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{customerMB.saveCompany()}" process="@form"
+						update="@form" >
+						</p:commandButton>
+                                <p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{customerMB.cancelAction()}" />
+					
+						
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

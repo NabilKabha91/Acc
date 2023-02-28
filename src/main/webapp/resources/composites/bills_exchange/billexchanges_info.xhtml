@@ -1,0 +1,529 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addBills" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card">
+
+				<div>
+
+						<center>
+
+							<h:outputLabel style='font-size: 25.0pt '
+								value="#{msg['PV']}">
+
+
+							</h:outputLabel>
+						</center>
+
+						<br></br> <br></br>
+						<div
+							style="box-shadow: 3px 3px 3px 3px #888888; width: 150px; display: grid; float: left;">
+							<table cellpadding="4" cellspacing="0"
+								style="border: none; border-collapse: collapse;">
+								<tr
+									style="background-color: #e0e0e0; padding: 0.5em; font-weight: bolder">
+									<td><h:outputLabel value="#{msg['Balance']}"
+											style=";font-size: 20px;font-weight:bold;">
+										</h:outputLabel></td>
+								</tr>
+								<tr>
+									<td><h:outputLabel style="color:black;font-size: 25px"
+											value="#{billExchangeMB.billsExchange.total eq null?0:billExchangeMB.billsExchange.total}">
+											<f:convertNumber pattern="###,###.##" />
+										</h:outputLabel></td>
+
+
+								</tr>
+							</table>
+						</div>
+
+						<div
+							style="box-shadow: 3px 3px 3px 3px #888888; float: right; width: 450px; hight: auto;">
+							<p:panelGrid columns="1" id="pnl38" styleClass="no-border">
+
+								<p:outputLabel value="#{msg['PV_number']}:">
+									<h:outputText
+										value="#{billExchangeMB.billsExchange.billsExchangeNumber}" />
+								</p:outputLabel>
+
+								<p:outputLabel value="#{msg['Supplier_Name']}: ">
+									<p:selectOneMenu id="customerList"
+										value="#{billExchangeMB.billsExchange.suppliers}"
+										style="margin-bottom:10px; width: 200px;"
+										converter="omnifaces.SelectItemsConverter" required="true"
+									
+										filter="true" filterMatchMode="contains" multiple="true">
+
+										<f:selectItem itemLabel="additem"
+											itemValue="#{billExchangeMB.newItem}" />
+										<f:selectItems value="#{billExchangeDetailsMB.suppliersList}"
+											var="suppliers"
+											itemLabel="#{utils.isArabic() ? suppliers.suppliersNameAr : suppliers.suppliersNameEn}"
+											itemValue="#{suppliers}" />
+										<p:ajax event="itemSelect"
+											listener="#{billExchangeMB.addValue}">
+										</p:ajax>
+
+									</p:selectOneMenu>
+								</p:outputLabel>
+							</p:panelGrid>
+						</div>
+
+
+
+
+
+
+					</div>
+
+					<br></br> <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
+
+					<div style="box-shadow: 3px 3px 3px 3px #888888; display: grid;">
+
+						<table cellpadding="4" cellspacing="0"
+							style='border-collapse: collapse; border: none'>
+							<tr
+								style="background-color: #e0e0e0; padding: 0.5em; font-weight: bolder">
+								<td>#{msg['PV_date']}</td>
+								<td>#{msg['Payment_method']}</td>
+								<td>#{msg['batch_type']}</td>
+								<td>#{msg['Group_'+=utils.getVersion()]}</td>
+								<td><p:outputLabel value="#{msg['costCenter']}"
+										rendered="#{utils.getVersion() eq 'KSA'}" /></td>
+								<td><p:outputLabel value="#{msg['analytical']}"
+										rendered="#{utils.getVersion() eq 'KSA'}" /></td>
+							</tr>
+
+							<tr>
+								<td style="width: 180px"><p:calendar
+										value="#{billExchangeMB.billsExchange.todayDate}"
+										pattern="yyyy/MM/dd" required="true" /></td>
+								<td style="width: 100px"><p:selectOneMenu
+										id="enterVacationList2211"
+										value="#{billExchangeMB.billsExchange.paymentMethod}"
+										filter="true" filterMatchMode="contains" required="true"
+										rendered="#{utils.getVersion() eq 'KSA'}">
+										<f:selectItem itemLabel="  " itemValue="0" />
+										<f:selectItem itemLabel="#{msg['Cash']} " itemValue="1" />
+										<f:selectItem itemLabel="#{msg['Check']} " itemValue="2" />
+										<f:selectItem itemLabel="#{msg['transferMethod']}" itemValue="3" />
+										<f:selectItem itemLabel="#{msg['pointOfSale']}" itemValue="4" />
+
+
+									</p:selectOneMenu> <p:selectOneMenu id="enterVacationList2222"
+										value="#{billExchangeMB.billsExchange.paymentMethod}"
+										filter="true" filterMatchMode="contains" required="true"
+										rendered="#{utils.getVersion() ne 'KSA'}">
+										<f:selectItem itemLabel="  " itemValue="0" />
+										<f:selectItem itemLabel="#{msg['Cash']} " itemValue="1" />
+										<f:selectItem itemLabel="#{msg['Check']} " itemValue="2" />
+										<f:selectItem itemLabel="#{msg['bank_transfer']} " itemValue="3" />
+
+
+									</p:selectOneMenu></td>
+								<td style="width: 250px"><h:selectOneRadio id="batchtype22"
+										value="#{billExchangeMB.billsExchange.batchType}"
+										style="margin-bottom:10px;" filter="true"
+										filterMatchMode="contains" required="true">
+										<f:selectItem itemLabel="#{msg['advancePaymnet']}" itemValue="1" />
+										<f:selectItem itemLabel="#{msg['payingTheBills']}" itemValue="2" />
+									</h:selectOneRadio></td>
+								<td style="width: 180px"><p:selectOneMenu 
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="group" value="#{billExchangeMB.billsExchange.groupingId}"
+						style="margin-bottom:10px;" styleClass="Wid100">
+													<f:selectItem  itemLabel="#{msg['Group_'+=utils.getVersion()]}" />
+													<f:selectItems value="#{billExchangeMB.groupList}" 
+													var="grouping" itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}" itemValue="#{grouping.grpId}"  />
+													
+												</p:selectOneMenu></td>
+								<td style="width: 180px"><p:selectOneMenu
+								rendered="#{utils.getVersion() eq 'KSA'}"
+										converter="omnifaces.SelectItemsConverter" filter="true"
+										filterMatchMode="contains" id="group23"
+										value="#{billExchangeMB.billsExchange.costCenter}"
+										style="margin-bottom:10px;" styleClass="Wid100">
+										<f:selectItem itemLabel="#{msg['costCenter']}" itemValue="" />
+
+										<f:selectItems value="#{billExchangeMB.costCenterList}"
+											var="costCenter" itemLabel="#{costCenter.costCenterCoding}"
+											itemValue="#{costCenter}" />
+
+									</p:selectOneMenu></td>
+								<td style="width: 180px"><p:selectOneMenu
+								rendered="#{utils.getVersion() eq 'KSA'}"
+										converter="omnifaces.SelectItemsConverter" filter="true"
+										filterMatchMode="contains" id="analytical11"
+										value="#{billExchangeMB.billsExchange.analytical}"
+										style="margin-bottom:10px;" styleClass="Wid100">
+										<f:selectItem itemLabel="#{msg['analytical']}" itemValue="" />
+
+										<f:selectItems value="#{billExchangeMB.analyticalList}"
+											var="analytical" itemLabel="#{analytical.analytical}"
+											itemValue="#{analytical}" />
+
+									</p:selectOneMenu></td>
+							</tr>
+
+
+						</table>
+
+					</div>
+					<br></br> <br></br> <br></br>
+
+
+
+					<div class="ui-g">
+
+
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save"
+								style="width:auto;border-radius:20px;background-color:#888888" action="#{billExchangeMB.search()}"
+							process="@form" update="@form" disabled="#{billExchangeMB.billsExchange.closeMonth eq 1}"/>
+						<br></br>
+						<p:panelGrid styleClass="no-border"
+							style="width :100%;  direction:#{localeMB.dir}" columns="8"
+							columnClasses="bold , ,bold, ,bold,,bold">
+
+							<p:outputLabel for="agent" value=" #{msg['Supplier_Name']} " />
+							<p:outputLabel id="agent"
+								value="#{utils.isArabic() ?billExchangeMB.billsExchange.suppliers.suppliersNameAr:billExchangeMB.billsExchange.suppliers.suppliersNameEn}" />
+						</p:panelGrid>
+
+
+
+						<p:panelGrid columns="1" id="pnl178"
+							styleClass="no-border Wid100 MarAuto"
+							rendered="#{billExchangeMB.billsExchange.batchType eq 2 and  billExchangeMB.billsExchange.closeMonth eq 0}">
+
+
+
+							<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet"
+								rowIndexVar="index" var="det" styleClass="txt-center"
+								style="border:hidden;"
+								value="#{billExchangeMB.addBillsExchangeList}">
+
+								<p:column headerText="" width="20" style="border:hidden;">
+
+									<p:selectBooleanCheckbox id="sbc" value="#{det.chekBox}">
+									</p:selectBooleanCheckbox>
+								</p:column>
+
+
+								
+<p:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg['Descreption']} " />
+									</f:facet>
+									<h:outputText value="#{det.documentName}" />
+								</p:column>
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value=" #{msg['Invoice_date']}" />
+									</f:facet>
+									<h:outputText value="#{det.date}" />
+
+								</p:column>
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg['Document_Number']} " />
+									</f:facet>
+									<h:outputText value="#{det.number}" />
+								</p:column>
+
+
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value="#{msg['Invoice_value']}  " />
+									</f:facet>
+									<h:outputText value="#{det.totalBill}">
+										<f:convertNumber pattern="###,###.##" />
+
+									</h:outputText>
+									<f:facet name="footer">
+										<h:outputLabel
+											value="#{billExchangeMB.addBillsExchangeList.stream().map(s->s.totalBill).sum()}">
+											<f:convertNumber pattern="###,###.##" />
+										</h:outputLabel>
+									</f:facet>
+								</p:column>
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg['Previous_collection']} " />
+									</f:facet>
+									<h:outputText value="#{det.paymentPreviously}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+									<f:facet name="footer">
+										<h:outputLabel
+											value="#{billExchangeMB.addBillsExchangeList.stream().map(s->s.paymentPreviously).sum()}">
+											<f:convertNumber pattern="###,###.##" />
+										</h:outputLabel>
+									</f:facet>
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg['Previous_Balance']} " />
+									</f:facet>
+									<h:outputText value="#{det.balancePreviously}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+								</p:column>
+
+
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value="#{msg['Collection']} " />
+									</f:facet>
+									<h:inputText value="#{det.payment}" />
+									<f:facet name="footer">
+										<h:outputLabel
+											value="#{billExchangeMB.addBillsExchangeList.stream().map(s->s.payment).sum()}">
+											<f:convertNumber pattern="###,###.##" />
+										</h:outputLabel>
+									</f:facet>
+								</p:column>
+
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value="#{msg['Remaining_Balance']} " />
+									</f:facet>
+									<h:outputText value="#{det.openBalance}">
+										<f:convertNumber pattern="###,###.##" />
+									</h:outputText>
+									<f:facet name="footer">
+										<h:outputLabel
+											value="#{billExchangeMB.addBillsExchangeList.stream().map(s->s.openBalance).sum()}">
+											<f:convertNumber pattern="###,###.##" />
+										</h:outputLabel>
+									</f:facet>
+								</p:column>
+
+
+							</p:dataTable>
+							<h:outputLabel value="المبلغ وقدرة كتابة	 :"
+								style="font-size: 20px;font-weight:bold;">
+
+								<h:inputText
+									value="#{billExchangeMB.billsExchange.amountWritten}"
+									styleClass="Wid200" ></h:inputText>
+							</h:outputLabel>
+						</p:panelGrid>
+						<br></br> <br></br> <br></br>
+						<p:column></p:column>
+						<p:column></p:column>
+						<p:column></p:column>
+						<p:column></p:column>
+						<p:panelGrid styleClass="no-border"
+							style="width :100%;  direction:#{localeMB.dir}" columns="8"
+							columnClasses="bold , ,bold, ,bold,,bold"
+							rendered="#{billExchangeMB.billsExchange.batchType eq 1  and billExchangeMB.billsExchange.closeMonth eq 0}">
+							<label>المبلغ وقدرة</label>
+
+							<p:inputText value="#{billExchangeMB.billsExchange.value}"
+								required="true" />
+							<label>المبلغ وقدرة كتابة</label>
+
+							<p:inputText value="#{billExchangeMB.billsExchange.valueWritten}"
+								required="true" />
+						</p:panelGrid>
+						<br></br>
+
+
+						<p:panelGrid columns="2" id="pnl11"
+							styleClass="no-border Wid100 MarAuto"
+							rendered="#{billExchangeMB.billsExchange.paymentMethod eq 2 and  billExchangeMB.billsExchange.closeMonth eq 0}">
+
+							<p:commandButton action="#{billExchangeMB.addNewDetails()}"
+								oncomplete="PF('bui').hide()" onstart="PF('bui').show()"
+									style="width:auto;border-radius:20px;background-color:#888888" value="اضافه سطر" process="@this"
+								icon="ui-icon-plus" />
+							<br></br>
+							<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet12"
+								rowIndexVar="index" var="det" styleClass="txt-center"
+								style="border:hidden;"
+								value="#{billExchangeMB.checkPaymentList}">
+
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value="رقم الشيك  " />
+									</f:facet>
+									<h:inputText value="#{det.checkNumber}" />
+
+
+								</p:column>
+
+
+
+
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value="تاريخ الاستحقاق" />
+									</f:facet>
+									<p:calendar value="#{det.dueDate}" pattern="yyyy/MM/dd" />
+
+
+								</p:column>
+
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value="قيمة الشيك   "  />
+									</f:facet>
+									<h:inputText value="#{det.checkValue}" />
+
+
+								</p:column>
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value="البنك المسحوب عليه    " />
+									</f:facet>
+									<h:inputText value="#{det.bank}" />
+
+
+								</p:column>
+
+
+								<p:column>
+
+									<f:facet name="header">
+										<h:outputText value="تاريخ الدفع"  />
+									</f:facet>
+									<p:calendar value="#{det.arrestDate}" pattern="yyyy/MM/dd" />
+
+
+								</p:column>
+
+
+							</p:dataTable>
+
+
+						</p:panelGrid>
+						<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">
+							<div class="card card-w-title">
+								<p:panelGrid columns="1" id="pnl80"
+									styleClass="ui-border Wid120">
+									<label>الوصف  </label>
+									<p:inputTextarea value="#{billExchangeMB.billsExchange.note}"
+										autoResize="false" styleClass="Wid200" rows="3"></p:inputTextarea>
+								</p:panelGrid>
+							</div>
+						</div>
+					
+					<br></br>
+					<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">
+						<div class="card card-w-title">
+							<p:panelGrid columns="1" id="pnl89"
+								styleClass="ui-noborder Wid120">
+								<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+										style="width:auto;border-radius:20px;background-color:#888888"
+									action="#{billExchangeMB.saveBillExchange()}" process="@form"
+									update="@form" />
+
+								<p:commandButton id="esrr" styleClass="printBtn disNone"
+									title="#{screenLabels.PRINT_BTN}" onclick="PF('Panel').hide()"
+										style="width:auto;border-radius:20px;background-color:#888888"
+									oncomplete="$('.printBtn').click()" icon="ui-icon-print">
+									
+									<p:printer target="print" />
+								</p:commandButton>
+								<p:commandButton value="العودة للقائمة الرئيسية"
+									icon="ui-icon-cancel" 	style="width:auto;border-radius:20px;background-color:#888888" process="@this"
+									update="@this" action="#{billExchangeMB.cancelAction()}" />
+								<p:dialog resizable="false" height="45vh" width="450px"
+									modal="true" showHeader="false" widgetVar="uploadDocument"
+									closeOnEscape="true" dynamic="true">
+
+									<p:spacer height="10" width="100%"></p:spacer>
+									<center>
+										<h:panelGroup columns="2" id="fd" layout="block"
+											styleClass="no-border Wid70 MarAuto">
+
+											<p:outputLabel style="font-size: 17px;"
+												value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+											<p:spacer height="10" width="100%"></p:spacer>
+
+											<p:fileUpload
+												rendered="#{billExchangeMB.billsExchange.id ne null}"
+												fileUploadListener="#{billExchangeMB.uploadDocument}"
+												mode="advanced" label="#{msg['attached']}" auto="true"
+												allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+												uploadLabel="#{msg['attached']}" style="width:auto"
+												cancelLabel="#{msg['Cancel']}">
+
+											</p:fileUpload>
+
+											<p:commandButton value="لا" style="width:auto"
+											
+												action="#{billExchangeMB.cancelAction()}" process="@form"
+												update="@form">
+
+											</p:commandButton>
+
+
+										</h:panelGroup>
+									</center>
+								</p:dialog>
+								<p:dataTable
+									rendered="#{billExchangeMB.billsExchange.id ne null}"
+									reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+									var="doc" styleClass="txt-center"
+									value="#{billExchangeMB.documentList}">
+
+									<p:column>
+										<p:link value="#{doc.documentName}" type="button"
+											onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+									</p:column>
+
+
+								</p:dataTable>
+							</p:panelGrid>
+							<h:panelGroup id="cc" layout="block"
+								styleClass="no-border Wid70 MarAuto">
+
+
+								<p:dialog header="edit" width="800" height="600"
+									widgetVar="Panel">
+									<ui:include src="review/billexchanges_review.xhtml" />
+								</p:dialog>
+							</h:panelGroup>
+						</div>
+					</div>
+
+</div>
+					<br></br>
+
+				</div>
+			</div>
+		</div>
+
+	</composite:implementation>
+</body>
+</html>

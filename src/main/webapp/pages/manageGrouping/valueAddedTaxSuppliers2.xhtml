@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	 template="/WEB-INF/template.xhtml">
+	<ui:define name="title">#{msg['Statement_of_account']}  </ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+
+<h:form id="officeInfo8">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px">الضريبة القيمة المضافة لجميع الموردون</h1>
+						<p:panelGrid id="pnlReport1" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+								<p:row>
+								<p:column>
+									<h:panelGroup >
+																			<label>#{msg['report.from_date']}:</label>
+									
+										<p:calendar value="#{valueAddedTax.fromDate}" pattern="yyyy/MM/dd">
+											<p:ajax event="dateSelect" process="@form" update="@form" ></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+																<p:column>
+								</p:column>
+								<p:column>
+									<h:panelGroup >
+											<label>#{msg['report.to_date']}:</label>
+									
+										<p:calendar value="#{valueAddedTax.toDate}" pattern="yyyy/MM/dd">
+											<p:ajax process="@form" update="@form" ></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+							</p:row>		
+								   
+							<p:spacer />
+
+						</p:panelGrid>
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto" action="#{valueAddedTax.search2()}"
+							process="@form" update="@form" />
+
+						<br />
+					</div>
+
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+									<common:printHeader target="@form:print" office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['Statement_of_account']}">
+
+									</common:printHeader>
+									
+		
+									<br />
+
+
+				<p:dataTable var="record" value="#{valueAddedTax.valueTaxList}" id="groupListSuppliers2"  >
+				
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="اسم المورد" />
+					</f:facet>
+					<h:outputLabel  value="#{record.suppliers.suppliersNameAr}" >
+					
+					</h:outputLabel>
+				</p:column>
+				
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="الرقم الضريبيي" />
+					</f:facet>
+					<h:outputLabel  value="#{record.suppliers.saleTaxNumber}" >
+					
+					</h:outputLabel>
+				</p:column>
+				
+						<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Date']}" />
+					</f:facet>
+					<h:outputLabel  value="#{record.date}" >
+					
+					</h:outputLabel>
+				</p:column>
+						
+				
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="رقم الفاتورة"/>
+					</f:facet>
+					<h:outputLabel  value="#{record.documentNumber}" >
+					</h:outputLabel>
+				</p:column>
+					
+				<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="المبلغ قبل الضريبة  "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.amountBeforeTax}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+					
+					</h:outputLabel>
+				</p:column>
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="الضريبة  " />
+					</f:facet>
+					<h:outputLabel  value="#{record.tax}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+					
+					</h:outputLabel>
+				</p:column>
+				
+				
+				<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="المبلغ بعد الضريبة"  />
+					</f:facet>
+					<h:outputLabel  value="#{record.amountAfterTax}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+					
+					</h:outputLabel>
+				</p:column>
+				
+					</p:dataTable>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+
+		
+			
+								
+		
+
+	</ui:define>
+</ui:composition>

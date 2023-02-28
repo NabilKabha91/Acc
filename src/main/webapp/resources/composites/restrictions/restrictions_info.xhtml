@@ -1,0 +1,450 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addRestriction" required="true"
+		default="true" type="java.lang.Boolean"
+		shortDescription="true for add company,false for edit" />
+</composite:interface>
+</head>
+<body>
+	<h:outputStylesheet library="css" name="custom-v2.8.css" />
+	<h:outputStylesheet rendered="#{cc.attrs.addWordCss}" library="css"
+		name="word.css" />
+	<composite:implementation>
+		<center>
+			<h:outputLabel style='font-size: 25.0pt '
+				value="#{restrictionsMB.restrictions.documentType}">
+			</h:outputLabel>
+		</center>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card">
+					<div>
+						<div style="box-shadow: 3px 3px 3px 3px #888888; display: grid">
+							<table cellpadding="4" cellspacing="0"
+								style='border-collapse: collapse; border: none'>
+								<tr
+									style="background-color: #e0e0e0; padding: 0.5em; font-weight: bolder;">
+									<td width="100">#{msg['Entry_date']}</td>
+									<td width="150">#{msg['Entry_Number']}</td>
+									<td width="150">#{msg['Currency']}</td>
+									<td width="150">#{msg['Title_restriction']}</td>
+								</tr>
+								<tr style="padding: 20px">
+									<td><p:calendar
+											value="#{restrictionsMB.restrictions.todayDate}"
+											pattern="yyyy/MM/dd" required="true" /></td>
+
+									<td><h:outputText
+											value="#{restrictionsMB.restrictions.restrictions}" /></td>
+									<td>
+										<p:selectOneMenu id="definitionOfCurrencies"
+											value="#{restrictionsMB.restrictions.definitionOfCurrencies}"
+											style="margin-bottom:10px;"
+											converter="omnifaces.SelectItemsConverter" filter="true"
+											filterMatchMode="contains" multiple="true">
+											<f:selectItem itemLabel=" " itemValue="" />
+											<p:ajax event="change" process="@this" update="@parent:pnl2" />
+											<f:selectItem itemLabel="addNew +"
+												itemValue="#{restrictionsMB.addDefinitionOfCurrencies}" />
+											<f:selectItems
+												value="#{restrictionsDetailsMB.definitionOfCurrenciesList}"
+												var="definitionOfCurrenciesList"
+												itemLabel="#{utils.isArabic() ? definitionOfCurrenciesList.definitionOfCurrenciesName : definitionOfCurrenciesList.definitionOfCurrenciesNameEn} "
+												itemValue="#{definitionOfCurrenciesList}" />
+											<p:ajax event="itemSelect"
+												listener="#{restrictionsMB.addDefinitionOfCurrencie}">
+											</p:ajax>
+										</p:selectOneMenu></td>
+
+									<td><p:inputText
+											value="#{restrictionsMB.restrictions.titleRestriction}"  />
+
+									</td>
+								</tr>
+
+							</table>
+
+						</div>
+
+
+						<br></br> <br></br>
+						<div>
+							<div class="card card-w-title">
+								<p:panelGrid columns="10" id="pnl2" styleClass="ui-noborder">
+									<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet"
+										rowIndexVar="index" var="det" styleClass="txt-center"
+										value="#{restrictionsMB.addRestrictionsList}"
+										style="border:hidden;">
+										<p:columnGroup type="header">
+											<p:row>
+												<p:column colspan="1" headerText="#{msg['Account_Number']}"
+													width="100"
+													style="border:hidden;font-size: 12px ;font-weight:bold;" />
+
+												<p:column colspan="1" headerText="اسم الحساب " width="100"
+													style="border:hidden;font-size: 12px ;font-weight:bold;"
+													rendered="false" />
+												<p:column colspan="1" headerText="#{msg['Descreption']}"
+													style="border:hidden;font-size: 12px ;font-weight:bold" />
+												<p:column colspan="1" headerText="#{msg['Debit']}"
+													style="border:hidden;font-size: 12px ;font-weight:bold" />
+												<p:column colspan="1" headerText="#{msg['Debit']}"
+													style="border:hidden;font-size: 12px ;font-weight:bold" />
+												<p:column colspan="1" headerText="#{msg['Credit']}"
+													style="border:hidden;font-size: 12px ;font-weight:bold" />
+												<p:column colspan="1" headerText="#{msg['Credit']}"
+													style="border:hidden;font-size: 12px ;font-weight:bold" />
+												<p:column colspan="1"
+													headerText="  #{msg['Customer_Supplier']}"
+													style="border:hidden;font-size: 12px ;font-weight:bold" />
+												<p:column colspan="1" headerText=" مراكز التكلفة" width="80"
+													style="border:hidden;font-size: 12px ;font-weight:bold"
+													rendered="#{utils.getVersion() eq 'KSA'}" />
+												<p:column colspan="1" headerText=" تحليلي " width="80"
+													style="border:hidden;font-size: 12px ;font-weight:bold"
+													rendered="#{utils.getVersion() eq 'KSA'}" />
+
+											</p:row>
+											<p:row>
+												<ui:repeat value="" var="year">
+													<p:column headerText="#{year}"
+														style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+												</ui:repeat>
+												<ui:repeat value="" var="year">
+													<p:column headerText="#{year}"
+														style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+												</ui:repeat>
+
+												<ui:repeat
+													value="#{utils.isArabic() ? restrictionsMB.restrictions.definitionOfCurrencies.definitionOfCurrenciesName : restrictionsMB.restrictions.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+													var="year">
+													<p:column headerText="#{year}"
+														style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+												</ui:repeat>
+
+
+
+
+												<ui:repeat value="#{restrictionsMB.main}" var="year">
+													<p:column headerText="#{year}"
+														style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+												</ui:repeat>
+
+												<ui:repeat
+													value="#{utils.isArabic() ? restrictionsMB.restrictions.definitionOfCurrencies.definitionOfCurrenciesName : restrictionsMB.restrictions.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+													var="year">
+													<p:column headerText="#{year}"
+														style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+												</ui:repeat>
+
+												<ui:repeat value="#{restrictionsMB.main}" var="year">
+													<p:column headerText="#{year}"
+														style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+												</ui:repeat>
+												<ui:repeat value="" var="year">
+													<p:column headerText="#{year}"
+														style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+												</ui:repeat>
+
+
+
+											</p:row>
+										</p:columnGroup>
+
+
+
+
+										<p:column headerText="#{msg['Account_Number']}"
+											style="border:hidden;">
+											<p:autoComplete filterBy="#{det.account}" autocomplete="true"
+												effect="fade" scrollHeight="350" cache="true" id="dd"
+												panelStyle="height :300px ;max-height :300px"
+												style="width:250%" autoHighlight="false" dropdown="true"
+												value="#{det.account}" var="sel" itemLabel="#{sel.label}"
+												itemValue="#{sel}"
+												completeMethod="#{restrictionsMB.completeText}">
+												<o:converter converterId="omnifaces.ListConverter"
+													list="#{restrictionsMB.accountsList}" />
+
+											</p:autoComplete>
+											<f:facet name="footer">
+												<p:panelGrid columns="1" columnClasses="Wid50,Wid50">
+													<p:commandButton action="#{restrictionsMB.addNewDetails()}"
+														oncomplete="PF('bui').hide()" onstart="PF('bui').show()"
+														style="width:auto;border-radius:20px;background-color:#888888"
+														value="اضافه سطر" process="@this" icon="ui-icon-plus" />
+													<p:commandButton value="#{msg['Calculation']}"
+														style="width:auto;border-radius:20px;background-color:#888888"
+														action="#{restrictionsMB.saveRestrictions1()}"
+														process="@form" update="@form"
+														disabled="#{restrictionsMB.restrictions.closeMonth eq 1}">
+													</p:commandButton>
+												</p:panelGrid>
+											</f:facet>
+
+										</p:column>
+
+										<p:column headerText="اسم الحساب  " rendered="false"
+											style="border:hidden;">
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+												filter="true" filterMatchMode="contains" id="group1"
+												value="#{det.nameGrp}" style="margin-bottom:10px"
+												styleClass="Wid100">
+												<f:selectItem itemLabel="المجموعات" />
+												<f:selectItems value="#{restrictionsMB.groupList}"
+													var="grouping" itemLabel="#{grouping.grpDesc}"
+													itemValue="#{grouping.grpDesc}" />
+
+
+											</p:selectOneMenu>
+
+										</p:column>
+
+
+
+										<p:column headerText="#{msg['Descreption']}" width="50"
+											style="border:hidden;">
+											<p:inputTextarea escape="false" value="#{det.description}"
+												autoResize="false" styleClass="Wid100" rows="3">
+											</p:inputTextarea>
+										</p:column>
+
+
+										<p:column headerText="#{msg['Debit']} " width="20"
+											style="border:hidden;">
+											<p:inputNumber decimalSeparator="." thousandSeparator=","
+												minValue="-999999999999999999.999" value="#{det.debit}"
+												styleClass="inputFull">
+
+											</p:inputNumber>
+											<f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{restrictionsMB.addRestrictionsList.stream().map(s->s.debit).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+										</p:column>
+
+										<p:column headerText="#{msg['Debit']} " width="20"
+											style="border:hidden;">
+											<h:outputLabel value="#{det.initalDebit}">
+												<f:convertNumber pattern="###,###.##" />
+											</h:outputLabel>
+
+											<f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{restrictionsMB.addRestrictionsList.stream().map(s->s.initalDebit).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+										</p:column>
+
+										<p:column headerText="#{msg['Credit']}" width="20"
+											style="border:hidden;">
+											<p:inputNumber decimalSeparator="." thousandSeparator=","
+												minValue="-999999999999999999.999" value="#{det.credit}"
+												styleClass="inputFull">
+											</p:inputNumber>
+											<f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{restrictionsMB.addRestrictionsList.stream().map(s->s.credit).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+										</p:column>
+
+										<p:column headerText="#{msg['Credit']}" width="20"
+											style="border:hidden;">
+											<h:outputLabel value="#{det.initalCredit}">
+												<f:convertNumber pattern="###,###.##" />
+											</h:outputLabel>
+
+											<f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{restrictionsMB.addRestrictionsList.stream().map(s->s.initalCredit).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+										</p:column>
+
+										<p:column headerText="#{msg['Customer_Supplier']}" width="30"
+											style="border:hidden;">
+
+
+											<p:autoComplete autocomplete="true" effect="fade"
+												scrollHeight="350" cache="true" id="dd2"
+												panelStyle="height :100px ;max-height :100px"
+												style="width:100%" autoHighlight="false" dropdown="true"
+												value="#{det.nameId}" var="listCustomerAndSuppliers"
+												itemLabel="#{listCustomerAndSuppliers.label}"
+												itemValue="#{listCustomerAndSuppliers}"
+												completeMethod="#{restrictionsMB.completeTextlistCustomerAndSuppliers}">
+												<o:converter converterId="omnifaces.ListConverter"
+													list="#{restrictionsMB.listCustomerAndSuppliersList}" />
+
+											</p:autoComplete>
+
+
+										</p:column>
+										<p:column headerText="مراكز التكلفه" width="50"
+											style="border:hidden;"
+											rendered="#{utils.getVersion() eq 'KSA'}">
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+												filter="true" filterMatchMode="contains" id="group2"
+												value="#{det.costCenter}" style="margin-bottom:10px;"
+												styleClass="Wid100">
+												<f:selectItem itemLabel="مركز التكلفة " itemValue="" />
+
+												<f:selectItems
+													value="#{restrictionsDetailsMB.costCenterList}"
+													var="costCenter" itemLabel="#{costCenter.costCenterCoding}"
+													itemValue="#{costCenter}" />
+
+											</p:selectOneMenu>
+										</p:column>
+										<p:column headerText="تحليلي " width="50"
+											style="border:hidden;"
+											rendered="#{utils.getVersion() eq 'KSA'}">
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+												filter="true" filterMatchMode="contains" id="analytical"
+												value="#{det.analytical}" style="margin-bottom:10px;"
+												styleClass="Wid100">
+												<f:selectItem itemLabel=" تحليلي " itemValue="" />
+
+												<f:selectItems
+													value="#{restrictionsDetailsMB.analyticalList}"
+													var="analytical" itemLabel="#{analytical.analytical}"
+													itemValue="#{analytical}" />
+
+											</p:selectOneMenu>
+										</p:column>
+										<p:column headerText="#{msg['Delete']}" width="30"
+											style="border:hidden;">
+
+											<p:commandButton styleClass="red-btn"
+												action="#{restrictionsMB.delete(det)}" process="@this"
+												update="@form" icon="ui-icon-delete">
+												<p:confirm header="#{msg['glopal.confirmation']}"
+													message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+											</p:commandButton>
+
+										</p:column>
+
+
+									</p:dataTable>
+								</p:panelGrid>
+							</div>
+						</div>
+
+
+						<div>
+							<div>
+								<p:panelGrid columns="1" id="pnl89"
+									styleClass="ui-noborder Wid120">
+
+									<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+										style="width:auto;border-radius:20px;background-color:#888888"
+										action="#{restrictionsMB.saveRestrictions()}" process="@form"
+										update="@form"
+										disabled="#{restrictionsMB.restrictions.closeMonth eq 1}" />
+
+									<p:commandButton id="esrr" styleClass="printBtn disNone"
+										title="#{screenLabels.PRINT_BTN}" onclick="PF('Panel').hide()"
+										style="width:auto;border-radius:20px;background-color:#888888"
+										oncomplete="$('.printBtn').click()" icon="ui-icon-print">
+										<p:printer target="print" />
+									</p:commandButton>
+									<p:commandButton value="#{msg['Main_list']}"
+										icon="ui-icon-cancel"
+										style="width:auto;border-radius:20px;background-color:#888888"
+										process="@this" update="@this"
+										action="#{restrictionsMB.cancelAction()}" />
+
+
+									<p:dialog resizable="false" height="45vh" width="450px"
+										modal="true" showHeader="false" widgetVar="uploadDocument"
+										closeOnEscape="true" dynamic="true">
+
+										<p:spacer height="10" width="100%"></p:spacer>
+										<center>
+											<h:panelGroup columns="2" id="fd" layout="block"
+												styleClass="no-border Wid70 MarAuto">
+
+												<p:outputLabel style="font-size: 17px;"
+													value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+												<p:spacer height="10" width="100%"></p:spacer>
+
+												<p:fileUpload
+													rendered="#{restrictionsMB.restrictions.id ne null}"
+													fileUploadListener="#{restrictionsMB.uploadDocument}"
+													mode="advanced" label="#{msg['attached']}" auto="true"
+													allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+													uploadLabel="#{msg['attached']}"
+													cancelLabel="#{msg['Cancel']}" multiple="true">
+
+												</p:fileUpload>
+
+												<p:commandButton value="لا" style="width:auto"
+													action="#{restrictionsMB.cancelAction()}" process="@form"
+													update="@form">
+
+												</p:commandButton>
+
+
+											</h:panelGroup>
+										</center>
+									</p:dialog>
+									<p:dataTable
+										rendered="#{restrictionsMB.restrictions.id ne null}"
+										reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+										var="doc" styleClass="txt-center"
+										value="#{restrictionsMB.documentList}">
+										<p:column>
+											<p:link value="#{doc.documentName}" type="button"
+												onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+											<p:commandButton id="delteBtn" icon="ui-icon-delete"
+												action="#{restrictionsMB.deleteDoucment()}" process="@this"
+												update="@this">
+												<p:confirm header="#{msg['glopal.confirmation']}"
+													message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+											</p:commandButton>
+										</p:column>
+
+
+									</p:dataTable>
+								</p:panelGrid>
+								<h:panelGroup id="cc" layout="block"
+									styleClass="no-border Wid70 MarAuto">
+
+
+									<p:dialog header="edit" width="800" height="600"
+										widgetVar="Panel">
+										<ui:include src="review/restrictions_review.xhtml" />
+									</p:dialog>
+								</h:panelGroup>
+							</div>
+						</div>
+
+						<br></br> <br></br>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</composite:implementation>
+</body>
+</html>

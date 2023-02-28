@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addBills" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+
+</composite:interface>
+
+</head>
+<body>
+	<composite:implementation>
+
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card">
+				<div align ="center">
+					<p:outputLabel value="CustomerSheet" align="center" style="font-size:30px"></p:outputLabel>
+</div>
+					<p:panelGrid columns="2" styleClass="ui-noborder Wid120">
+						<label style="font-weight: bolder;">#{msg['addCustomer.customerName']}*:</label>
+						<div></div>
+						<p:selectOneMenu id="bonusesList3"
+							value="#{customerSheetMB.customerSheet.customer}"
+							style="margin-bottom:10px;width:180px"
+							converter="omnifaces.SelectItemsConverter" required="true"
+							requiredMessage="#{msg['addCustomer.customerName']} #{msg['required']}"
+							filter="true" filterMatchMode="contains" multiple="true">
+							
+							<f:selectItem itemLabel="#{msg['Choose_customer']} " itemValue="" />
+
+							<f:selectItems value="#{customerSheetDetailsMB.customerList}"
+								var="customer"
+								itemLabel="#{utils.isArabic() ? customer.customerNameAr:customer.customerNameEn}"
+								itemValue="#{customer}" />
+
+						</p:selectOneMenu>
+				<label style="font-weight: bolder;">#{msg['Invoice_date']}:</label>
+						
+<p:calendar   value="#{customerSheetMB.customerSheet.todayDate}"
+										pattern="dd/MM/yyyy" required="true" >
+										
+										</p:calendar>
+					</p:panelGrid>
+					
+					<br></br>
+
+				
+
+					<div style="box-shadow: 3px 3px 3px 3px #888888;">
+						<p:panelGrid columns="1" id="pnl2" styleClass="ui-noborder"
+							>
+
+							<p:commandButton action="#{customerSheetMB.addNewDetails()}"
+								oncomplete="PF('bui').hide()" onstart="PF('bui').show()"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								value="#{msg['Add_Row']} " process="@this" icon="ui-icon-plus"
+								 />
+
+
+<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet"
+									rowIndexVar="index" var="det" styleClass="txt-center"
+									value="#{customerSheetMB.addcustomerSheetList}" style="border:hidden">
+
+									
+
+
+										
+
+									<p:column headerText="#{msg['Item']}" width="150"
+										style="border:hidden;">
+										<p:selectOneMenu required="true"
+											converter="omnifaces.SelectItemsConverter" filter="true"
+											filterMatchMode="contains" id="agents"
+											value="#{det.servicesProducts}" 
+											styleClass="Wid200">
+											<f:selectItem itemLabel="#{msg['select']}" />
+											<f:selectItems value="#{customerSheetDetailsMB.servicesProductsList}"
+												var="servicesProducts"
+												itemLabel="#{utils.isArabic() ? servicesProducts.nameProductOrService:servicesProducts.nameProductOrServiceEn}"
+												itemValue="#{servicesProducts}" />
+										</p:selectOneMenu>
+									</p:column>
+									
+							<p:column headerText="Cost Center" width="30"
+										style="border:hidden;">
+							<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="group2"
+									value="#{det.costCenter}" style="margin-bottom:10px;"
+									styleClass="Wid100" required="true" >
+									<f:selectItem itemLabel="مراكز التكلفة " itemValue="" />
+
+									<f:selectItems
+										value="#{customerSheetDetailsMB.costCenterList}"
+										var="costCenter" itemLabel="#{costCenter.costCenterCoding}"
+										itemValue="#{costCenter}" />
+
+								</p:selectOneMenu>
+								</p:column>
+										<p:column headerText="الموظف" width="150"
+										style="border:hidden;">
+										<p:selectOneMenu required="true"
+											converter="omnifaces.SelectItemsConverter" filter="true"
+											filterMatchMode="contains" id="employee"
+											value="#{det.employees}" 
+											styleClass="Wid200">
+											<f:selectItem itemLabel="#{msg['select']}" />
+											<f:selectItems value="#{customerSheetDetailsMB.employeeList}"
+												var="servicesProducts"
+												itemLabel="#{utils.isArabic() ? servicesProducts.employeeNameAr:servicesProducts.employeeNameEn}"
+												itemValue="#{servicesProducts}" />
+										</p:selectOneMenu>
+									</p:column>
+									
+								<p:column  width="150" headerText="السعر"
+										style="border:hidden;">
+										<p:inputNumber value="#{det.price}" required="true" />
+									</p:column>
+									
+									<p:column headerText="كاش/فيزا" width="100"
+										style="border:hidden;">
+											<p:selectOneRadio id="reportType" value="#{det.description}">
+					<f:selectItem itemLabel="cash" itemValue="cash"  />
+					<f:selectItem itemLabel="Visa" itemValue="Visa" />
+ 				</p:selectOneRadio>
+									</p:column>
+<p:column  width="150" headerText="قيمة العموله"
+										style="border:hidden;">
+										<p:outputLabel value="#{det.commission}" />
+										
+									</p:column>
+									<p:column headerText="#{msg['Delete']}" width="20"
+										style="border:hidden;">
+
+										<p:commandButton styleClass="red-btn"
+											action="#{customerSheetMB.delete(det)}" process="@this"
+											update="@form" icon="ui-icon-delete">
+											<p:confirm header="#{msg['glopal.confirmation']}"
+												message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+										</p:commandButton>
+
+									</p:column>
+
+
+								</p:dataTable>
+						</p:panelGrid>
+					
+
+
+					</div>
+
+				
+					
+
+					</div>
+
+
+					<br></br> <br></br>
+					<p:panelGrid columns="3" styleClass="ui-noborder Wid120">
+
+						<p:commandButton 
+							value="#{msg['save_btn']}" icon="ui-icon-save"
+							style="width:auto; border-radius:20px;background-color:#888888"
+							action="#{customerSheetMB.saveBills()}" process="@form" update="@form">
+
+						</p:commandButton>
+					
+						<p:commandButton value="#{msg['Main_list']}" icon="ui-icon-cancel"
+							style="width:auto;border-radius:20px;background-color:#888888"
+							process="@this" update="@this" action="#{customerSheetMB.cancelAction()}" />
+
+					
+						
+					</p:panelGrid>
+				
+				</div>
+				
+			</div>
+
+	</composite:implementation>
+</body>
+</html>

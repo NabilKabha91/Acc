@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCustomer" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+		 
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1> #{msg['Tax']}  </h1>
+					<p:panelGrid id="pnlCustomer" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						
+							
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{definitionOfTaxMB.definitionOfTax.tax}" required="true" />
+							<label> #{msg['Tax1']}</label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield" >
+							<p:inputText value="#{definitionOfTaxMB.definitionOfTax.taxAmount}" required="true" >
+											        <f:convertNumber pattern="###,###.##%"  />
+							</p:inputText>
+							<label> #{msg['Tax_Rate']}  </label>
+						</h:panelGroup>
+
+                  
+						
+         	<p:selectOneMenu 
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="group" value="#{definitionOfTaxMB.definitionOfTax.groupingId}"
+						style="margin-bottom:10px;" styleClass="Wid100" required="true">
+													<f:selectItem  itemLabel="#{msg['Group_'+=utils.getVersion()]}"/>
+													
+													<f:selectItems value="#{definitionOfTaxMB.groupList}" 
+													var="grouping"  itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}" itemValue="#{grouping.grpId}"  />
+													
+												</p:selectOneMenu>
+											
+            	<p:selectOneMenu  rendered="#{utils.getVersion() eq 'KSA'}"
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="groupBills" value="#{definitionOfTaxMB.definitionOfTax.groupingIdBills}"
+						style="margin-bottom:10px;" styleClass="Wid100" required="true">
+													<f:selectItem  itemLabel="مجموعات (المشتريات )"/>
+													
+													<f:selectItems value="#{definitionOfTaxMB.groupList}" 
+													var="grouping"  itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}" itemValue="#{grouping.grpId}"  />
+													
+												</p:selectOneMenu>
+											
+						
+					
+						
+						
+						
+					</p:panelGrid>
+						
+						
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{definitionOfTaxMB.saveDefinitionOfTax()}" process="@form"
+						update="@form" 
+						 />
+                                <p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{definitionOfTaxMB.cancelAction()}" />
+					
+					
+						
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

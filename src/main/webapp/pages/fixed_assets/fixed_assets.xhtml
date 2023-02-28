@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/agent" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+
+		<h:form id="agentInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+				<p:commandButton icon="ui-icon-add" value="#{msg['title.add_agent']}" action="#{fixedAssetsMB.init()}" actionListener="#{fixedAssetsDetailsMB.redirectToFixedAssetsAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{fixedAssetsMB.addFixedAssets}" />
+				</p:commandButton>
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="agentDetails" var="det" styleClass="txt-center" value="#{fixedAssetsDetailsMB.fixedAssetsList}">
+				
+
+					<p:column filterBy="#{det.assetsName}"  headerText="اسم الاصل">
+						<p:outputLabel value="#{det.assetsName}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.assetsGroup}" headerText="مجموعه الاصل ">
+						<p:outputLabel value="#{det.assetsGroup}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.consumptionDate}" headerText="تاريخ بداية الاستهلاك ">
+						<p:outputLabel value="#{det.consumptionDate}" />
+					</p:column>
+
+					<p:column filterBy="#{det.dateOfPurchase}" headerText="تاريخ  الشراء">
+						<p:outputLabel value="#{det.dateOfPurchase}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.depreciationPercentage}" headerText="نسبة الاستهلاك السنوي">
+						<p:outputLabel value="#{det.depreciationPercentage}" />
+					</p:column>
+<p:column   headerText=" العمر الانتاجي ">
+						<p:outputLabel value="#{det.usefulLife}" >
+												                        <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{fixedAssetsMB.init()}" actionListener="#{fixedAssetsDetailsMB.redirectToFixedAssetsEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{fixedAssetsMB.fixedAssets}" />
+							<f:setPropertyActionListener value="false" target="#{fixedAssetsMB.addFixedAssets}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_agent']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{fixedAssetsDetailsMB.deleteFixedAssets(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

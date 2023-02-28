@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addAgent" required="true" default="true" type="java.lang.Boolean"
+		shortDescription="true for add agent, false for edit " />
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>تعريف الموجودات الثابتة</h1>
+					<p:panelGrid id="pnlAgent" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+					
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{fixedAssetsMB.fixedAssets.assetsName}" required="true" />
+							<label>اسم الاصل </label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{fixedAssetsMB.fixedAssets.assetsGroup}" />
+							<label>مجموعة الاصل </label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							                       <p:calendar required="true" id="date1" pattern="dd/MM/yyyy" effect="fold" value="#{fixedAssetsMB.fixedAssets.dateOfPurchase}" />
+						
+							<label>تاريخ الشراء</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+						<p:calendar required="true" id="date2" pattern="dd/MM/yyyy" effect="fold" value="#{fixedAssetsMB.fixedAssets.consumptionDate}" />
+							<label>تاريخ بداية الاستهلاك </label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+													<p:inputText value="#{fixedAssetsMB.fixedAssets.depreciationPercentage}" required="true" >
+						
+											        <f:convertNumber pattern="###,###.##%"/>
+							</p:inputText>
+							<label>نسبة الاستهلاك السنوي</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{fixedAssetsMB.fixedAssets.purchaseCost}" />
+							<label>كلفه الشراء</label>
+						</h:panelGroup>
+					</p:panelGrid>
+				<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{fixedAssetsMB.saveFixedAssets()}"
+						process="@form" update="@form" rendered="#{cc.attrs.addFixedAssets}" />
+
+					<p:commandButton value="#{msg['edit_btn']}" icon="ui-icon-edit" style="width:auto" action="#{fixedAssetsMB.saveFixedAssets()}"
+						process="@form" update="@form" rendered="#{!cc.attrs.addFixedAssets}" />
+
+					<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{fixedAssetsMB.cancelAction()}" />
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

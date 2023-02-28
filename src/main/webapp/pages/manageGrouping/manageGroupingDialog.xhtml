@@ -1,0 +1,216 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" dir="#{languageDetails.dir}" template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Dashboard</ui:define>
+    <ui:define name="head"/>
+    <ui:define name="content">
+
+        <h:form id="officeInfo">
+            <p:growl autoUpdate="true" globalOnly="true"/>
+            <table width="100%">
+
+                <tr>
+                    <td valign="top" height="25px">
+                        <p:commandLink value="اضافه"
+                                       action="#{groupingBacking.initialize()}"
+                                       actionListener="#{groupingBacking.initAddGroup}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top" height="10px">
+                        <hr/>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td valign="top">
+                        <p:contextMenu for="groupTree" rendered="false">
+                            <p:menuitem value="تعديل" id="edit"
+                                        icon="ui-icon-arrowrefresh-1-w"
+                                        action="#{groupingBacking.prepareToEdit()}">
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.grpName}"
+                                        target="#{groupingBacking.grouping.groupNamee}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.grpDesc}"
+                                        target="#{groupingBacking.grouping.groupDesce}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.parentGroupId}"
+                                        target="#{groupingBacking.grouping.parentGroupIde}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.parentGroupName}"
+                                        target="#{groupingBacking.grouping.parentGroupNamee}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.grpId}"
+                                        target="#{groupingBacking.grouping.groupIde}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.grpType}"
+                                        target="#{groupingBacking.grouping.groupTypee}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.current}"
+                                        target="#{groupingBacking.grouping.currente}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data}"
+                                        target="#{groupingBacking.selectedGroup}"/>
+
+
+                            </p:menuitem>
+
+                            <p:menuitem value="اضافة" id="addBtn" icon="ui-icon-extlink"
+                                        update="@form:addGPanel"
+                                        action="#{groupingBacking.initAddGroup}">
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.grpName}"
+                                        target="#{groupingBacking.grouping.grpName}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data.grpId}"
+                                        target="#{groupingBacking.grouping.parentGroupId}"/>
+                                <f:setPropertyActionListener
+                                        value="#{groupingBacking.selectedNode.data}"
+                                        target="#{groupingBacking.selectedGroup}"/>
+
+                            </p:menuitem>
+                        </p:contextMenu>
+
+
+                        <p:tree value="#{groupingBacking.groupTree}"
+                                dir="#{localeMB.dir}" var="item" widgetVar="groupTree"
+                                animate="true" id="groupTree" style="border:0;width: 500px"
+                                selectionMode="single"
+                                selection="#{groupingBacking.selectedNode}">
+
+                            <p:treeNode id="groupNode" expandedIcon="ui-icon-folder-open"
+                                        collapsedIcon="ui-icon-folder-collapsed">
+                                <p:commandLink action="#{groupingBacking.initAddGroup}"
+                                               value="#{item.grpName} - #{localeMB.locale eq 'en'? item.grpDescEn : item.grpDesc} - #{item.total}  "
+                                               id="grpName" update="@form:addGPanel">
+                                    <f:setPropertyActionListener value="#{item.grpName}"
+                                                                 target="#{groupingBacking.grouping.parentGroupName}"/>
+                                    <f:setPropertyActionListener value="#{item.grpId}"
+                                                                 target="#{groupingBacking.grouping.parentGroupId}"/>
+
+
+                                </p:commandLink>
+                                <p:commandLink action="#{groupingBacking.initAddGroup}"
+                                               update="@form:addGPanel @form:addGPanel2">
+                                    <span class="ui-icon ui-icon-add" style="display:inline-block;"/>
+                                    <f:setPropertyActionListener value="#{item.grpName}"
+                                                                 target="#{groupingBacking.grouping.parentGroupName}"/>
+                                    <f:setPropertyActionListener value="#{item.grpId}"
+                                                                 target="#{groupingBacking.grouping.parentGroupId}"/>
+
+                                    <f:setPropertyActionListener value="#{item}"
+                                                                 target="#{groupingBacking.selectedGroup}"/>
+
+                                </p:commandLink>
+
+
+                                <p:commandLink
+                                        update="@form:addGPanel @form:editGPanel"
+                                        action="#{groupingBacking.prepareToEdit()}">
+                                    <span class="ui-icon ui-icon-edit" style="display:inline-block;"/>
+
+
+                                    <f:setPropertyActionListener value="#{item.grpName}"
+                                                                 target="#{groupingBacking.grouping.groupNamee}"/>
+                                    <f:setPropertyActionListener value="#{item.grpDesc}"
+                                                                 target="#{groupingBacking.grouping.groupDesce}"/>
+                                    <f:setPropertyActionListener value="#{item.parentGroupId}"
+                                                                 target="#{groupingBacking.grouping.parentGroupIde}"/>
+                                    <f:setPropertyActionListener value="#{item.parentGroupName}"
+                                                                 target="#{groupingBacking.grouping.parentGroupNamee}"/>
+                                    <f:setPropertyActionListener value="#{item.grpId}"
+                                                                 target="#{groupingBacking.grouping.groupIde}"/>
+                                    <f:setPropertyActionListener value="#{item.grpType}"
+                                                                 target="#{groupingBacking.grouping.groupTypee}"/>
+                                    <f:setPropertyActionListener value="#{item.current}"
+                                                                 target="#{groupingBacking.grouping.currente}"/>
+                                    <f:setPropertyActionListener value="#{item}"
+                                                                 target="#{groupingBacking.selectedGroup}"/>
+
+                                </p:commandLink>
+                            </p:treeNode>
+                            <p:treeNode id="subgroupNode" icon="ui-icon-document" type="file">
+                                <p:commandLink action="#{groupingBacking.initAddGroup}"
+                                               value="#{item.grpName} - #{localeMB.locale eq 'en'? item.grpDescEn : item.grpDesc} -#{item.total}  "
+                                               id="subgroupName" update="@form:addGPanel">
+                                    <f:setPropertyActionListener value="#{item.grpName}"
+                                                                 target="#{groupingBacking.grouping.parentGroupName}"/>
+                                    <f:setPropertyActionListener value="#{item.grpId}"
+                                                                 target="#{groupingBacking.grouping.parentGroupId}"/>
+
+                                </p:commandLink>
+
+                                <p:commandLink action="#{groupingBacking.initAddGroup}"
+                                               id="grpAdd2" update="@form:addGPanel @form:addGPanel2">
+                                    <span class="ui-icon ui-icon-add" style="display:inline-block;"/>
+
+                                    <f:setPropertyActionListener value="#{item.grpName}"
+                                                                 target="#{groupingBacking.grouping.parentGroupName}"/>
+                                    <f:setPropertyActionListener value="#{item.grpId}"
+                                                                 target="#{groupingBacking.grouping.parentGroupId}"/>
+                                    <f:setPropertyActionListener value="#{item}"
+                                                                 target="#{groupingBacking.selectedGroup}"/>
+
+                                </p:commandLink>
+
+
+                                <p:commandLink
+
+
+                                        update="@form:addGPanel @form:editGPanel"
+                                        action="#{groupingBacking.prepareToEdit()}">
+                                    <span class="ui-icon ui-icon-edit" style="display:inline-block;"/>
+
+                                    <f:setPropertyActionListener value="#{item.grpName}"
+                                                                 target="#{groupingBacking.grouping.groupNamee}"/>
+                                    <f:setPropertyActionListener value="#{item.grpDesc}"
+                                                                 target="#{groupingBacking.grouping.groupDesce}"/>
+                                    <f:setPropertyActionListener value="#{item.parentGroupId}"
+                                                                 target="#{groupingBacking.grouping.parentGroupIde}"/>
+                                    <f:setPropertyActionListener value="#{item.parentGroupName}"
+                                                                 target="#{groupingBacking.grouping.parentGroupNamee}"/>
+                                    <f:setPropertyActionListener value="#{item.grpId}"
+                                                                 target="#{groupingBacking.grouping.groupIde}"/>
+                                    <f:setPropertyActionListener value="#{item.grpType}"
+                                                                 target="#{groupingBacking.grouping.groupTypee}"/>
+                                    <f:setPropertyActionListener value="#{item.current}"
+                                                                 target="#{groupingBacking.grouping.currente}"/>
+                                    <f:setPropertyActionListener value="#{item}"
+                                                                 target="#{groupingBacking.selectedGroup}"/>
+
+                                </p:commandLink>
+
+                                <p:commandLink value="#{screenLabels.DELETE_GROUP}"
+                                               id="delete"
+
+                                               action="#{groupingBacking.deleteGroupAction()}"
+
+                                               update="@form:addGPanel"
+
+                                ><span class="ui-icon ui-icon-trash"
+                                       style="display: inline-block;"/>
+                                    <f:setPropertyActionListener
+                                            value="#{groupingBacking.selectedNode.data.grpId}"
+                                            target="#{groupingBacking.grouping.grpId}"/>
+                                </p:commandLink>
+                            </p:treeNode>
+                        </p:tree></td>
+
+                </tr>
+
+            </table>
+            <p:dialog header="ADD" width="800" height="600"
+                      widgetVar="addGroupPanel">
+                <ui:include src="addGroup.xhtml"/>
+            </p:dialog>
+            <p:dialog header="edit" width="800" height="600"
+                      widgetVar="editGroupPanel">
+                <ui:include src="editGroup.xhtml"/>
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

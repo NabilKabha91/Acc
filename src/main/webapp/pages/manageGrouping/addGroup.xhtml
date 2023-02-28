@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" dir="#{languageDetails.dir}">
+	<p:growl id="addgGrow" showDetail="false" autoUpdate="false" />
+	<h:panelGrid columns="4" id="addGPanel">
+		<p:outputLabel value="المرجع	" />
+		<p:outputLabel value="#{screenLabels.LABEL_SEPARATOR} " />
+		<p:outputLabel value="#{screenLabels.REQUIRED_STAR} "
+			styleClass="required-star-style" />
+		<p:inputText id="groupName"
+			value="#{groupingBacking.grouping.grpName}" />
+
+
+		<p:outputLabel value="اسم الحساب الفرعي(عربي)	 " />
+		<p:outputLabel value="#{screenLabels.LABEL_SEPARATOR} " />
+		<h:inputHidden />
+		<p:inputText id="groupDesc"
+			value="#{groupingBacking.grouping.grpDesc}" />
+			
+	   <p:outputLabel value="اسم الحساب الفرعي(E)	 " />
+		<p:outputLabel value="#{screenLabels.LABEL_SEPARATOR} " />
+		<h:inputHidden />
+		<p:inputText id="groupDescEn"
+			value="#{groupingBacking.grouping.grpDescEn}" />
+
+	<p:outputLabel value="المرجع الرئيسي " />
+		<p:outputLabel value="#{screenLabels.LABEL_SEPARATOR} " />
+		<h:inputHidden id="parentGroupId"
+			value="#{groupingBacking.grouping.parentGroupId}" />
+		<p:inputText id="parentGroupName" disabled="true"
+			value="#{groupingBacking.grouping.parentGroupName}" />
+		
+	
+
+		
+
+		<p:spacer width="20px"></p:spacer>
+		<h:inputHidden />
+		<h:inputHidden />
+		<h:inputHidden />
+	</h:panelGrid>
+
+	<p:fieldset legend="#{screenLabels.CHANG_GRP_TYPE}" style="margin-bottom:20px"
+		toggleable="true" toggleSpeed="500" collapsed="true">
+		<h:panelGrid columns="4" id="addGPanel2">
+			<p:outputLabel value="#{screenLabels.COMPANY_TYPE_LBL}" />
+			<p:outputLabel value="#{screenLabels.LABEL_SEPARATOR} " />
+			<h:inputHidden />
+		
+			<p:spacer width="20px"></p:spacer>
+			<h:inputHidden />
+			<h:inputHidden />
+			<h:inputHidden />
+
+			<p:outputLabel value="#{screenLabels.COMPANY_NAT}" />
+			<p:outputLabel value="#{screenLabels.LABEL_SEPARATOR} " />
+			<h:inputHidden />
+			
+		</h:panelGrid>
+	</p:fieldset>
+
+	<p:commandButton value="اضافه" 
+		actionListener="#{groupingBacking.addGroupActionlis}"
+		update="@form">
+	</p:commandButton>
+</html>

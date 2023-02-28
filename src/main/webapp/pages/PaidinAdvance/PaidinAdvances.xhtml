@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add" value="اضافه فاتورة " action="#{purchaseBillsMB.init()}" actionListener="#{paidinAdvanceDetailsMB.redirectToPaidInAdvanceAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{purchaseBillsMB.addPaidInAdvance}" />
+				</p:commandButton>
+				
+					
+								<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="billsDetails" var="det" styleClass="txt-center" value="#{paidinAdvanceDetailsMB.paidInAdvanceList}">
+					<p:column   headerText="اسم العميل">
+						
+						
+							<p:selectOneMenu id="bonusesList" value="#{det.suppliers}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter" required="true"
+									requiredMessage="#{msg['addDeductions.deductionsType']} #{msg['required']}"
+									 filter="true" filterMatchMode="contains" disabled="true" >
+									<f:selectItems value="#{purchaseBillsMB.suppliersList}" var="suppliers" itemLabel="#{suppliers.suppliersNameAr}" itemValue="#{suppliers}" />
+								</p:selectOneMenu>
+														</p:column>
+														
+									
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{purchaseBillsMB.init()}" actionListener="#{paidinAdvanceDetailsMB.redirectToPaidInAdvanceEdit}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{purchaseBillsMB.paidInAdvance}" />
+							<f:setPropertyActionListener value="false" target="#{purchaseBillsMB.addPaidInAdvance}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="تعديل الفاتورة " trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{purchaseBillsMB.delete(det)}" process="@this" update="@this">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+												
+					</p:column>						
+														</p:dataTable>
+				
+				
+			
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

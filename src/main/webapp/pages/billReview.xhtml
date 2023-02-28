@@ -1,0 +1,96 @@
+<!DOCTYPE html [
+    <!ENTITY mdash "&#8212;"> 
+    <!ENTITY nbsp    "&#160;"> 
+    ]>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" dir="#{languageDetails.dir}" lang="#{languageDetails.locale}">
+
+<h:head>
+
+	
+</h:head>
+<f:view contentType="text/html" locale="#{languageDetails.locale}">
+
+	<h:body>
+		<p:panel id="print">
+
+			<h:form>
+				
+				<h:panelGroup styleClass=" FLeft left20  posFixed" layout="block" id="header">
+					<p:commandButton onclick="window.print();" type="button" icon="ui-icon-print" >
+					</p:commandButton>
+					<p:commandButton action="#{billsMB.closeViewDilog()}" process="@this" icon="ui-icon-close" title="  #{screenLabels.close_rb_close}" />
+				</h:panelGroup>
+
+			</h:form>
+
+			<div class="WordSection1" align="center" dir="#{languageDetails.dir}">
+				<h1>
+					<strong><span dir="#{languageDetails.dir}" style='font-size: 20.0pt; font-style: normal'> <label class="FLeft" style="color: steelblue">#{documentsBacking.selectedDoc}</label>
+							#{billsMB.bills.documentType}
+					</span></strong>
+				</h1>
+				<br />
+
+				<div align="center">
+					<table border="1" style='width: 17.0cm; border-collapse: collapse;'>
+						<tr>
+							<td width="269" style='width: 201.95pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+								<p class="MsoNormal" align="right" style='text-align: right'>
+									<strong><span dir="#{languageDetails.dir}" style='font-size: 12.0pt'>#{msg['addCustomer.customerName']}:</span></strong>
+								</p>
+							</td>
+							<td width="373" style='width: 280.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+								<p class="TableText" align="right" style='text-align: right'>#{billsMB.bills.customer.customerNameAr}</p>
+							</td>
+						</tr>
+						
+					
+					</table>
+				</div>
+				<br />
+
+				<table border="1" style='margin-left: 5.4pt; border-collapse: collapse;'>
+					<tr>
+						<td width="522" valign="top" style='width: 10px; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<p class="MsoCommentText">#</p>
+						</td>
+						<td width="522" valign="top" style='width: 320.7pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<p class="MsoCommentText">#{msg['Item']}</p>
+						</td>
+						<td width="60" valign="top" style='width: 45.0pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{msg['Descreption']}</span>
+							</h6>
+						</td>
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{msg['Unit_Price']}</span>
+							</h6>
+						</td>
+						<td width="60" valign="top" style='width: 45.35pt; border: solid windowtext 1.0pt; background: #CCCCCC; padding: 0cm 5.4pt 0cm 5.4pt'>
+							<h6>
+								<span dir="#{languageDetails.dir}" style='font-weight: normal'>#{msg['Quantity']} </span>
+							</h6>
+						</td>
+						
+					</tr>
+
+					<c:forEach items="#{billsMB.addbillsList}" var="det" varStatus="index">
+						
+							<tr >
+								<td width="522" style='width: 10px; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt'>
+									<p class="MsoNormal" align="right" style='text-align: right'>
+										<span dir="#{languageDetails.dir}" style='font-size: 12.0pt'> 
+										<h:outputText value="#{det.quantity}"  />
+										</span>
+									</p>
+								</td>
+															</tr>
+						
+				</table>
+			</div>
+		</p:panel>
+	</h:body>
+</f:view>
+</html>

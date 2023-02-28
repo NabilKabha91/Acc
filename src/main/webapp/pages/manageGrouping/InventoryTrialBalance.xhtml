@@ -1,0 +1,243 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="title">#{msg['Statement_of_account']}  </ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+
+		<h:form id="officeInfo">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px">
+							#{msg['Statement_of_account']}</h1>
+						<p:panelGrid id="pnlReport" columns="1" layout="grid"
+							styleClass="ui-panelgrid-blank form-group">
+				
+	
+							
+					<p:selectOneMenu 
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="fromWarehouses" value="#{inventoryTrialBalanceMB.warehousesFrom}"
+						style="margin-bottom:10px;" styleClass="Wid100" required="true">
+													<f:selectItem   itemLabel="من مستودع" />
+													<f:selectItems value="#{inventoryTrialBalanceMB.warehousesList}" 
+													var="warehouses" itemLabel="#{utils.isArabic() ? warehouses.nameWarehouses : warehouses.nameWarehousesEn}"  itemValue="#{warehouses.id}"  />
+												
+												</p:selectOneMenu>
+											                     	                      <p:column></p:column>
+											
+											
+												<p:selectOneMenu 
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="toWarehouses" value="#{inventoryTrialBalanceMB.warehousesTo}"
+						style="margin-bottom:10px;" styleClass="Wid100" required="true">
+													<f:selectItem  itemLabel="الى مستودع" />
+													<f:selectItems value="#{inventoryTrialBalanceMB.warehousesList}" 
+													var="warehouses" itemLabel="#{utils.isArabic() ? warehouses.nameWarehouses : warehouses.nameWarehousesEn}"  itemValue="#{warehouses.id}"  />
+												
+												</p:selectOneMenu>
+											
+							<p:column>
+								<h:panelGroup>
+									<label>#{msg['report.from_date']}:</label>
+
+									<p:calendar value="#{inventoryTrialBalanceMB.fromDate}"
+										pattern="dd/MM/yyyy">
+										<p:ajax event="dateSelect" process="@form" update="@form"></p:ajax>
+									</p:calendar>
+								</h:panelGroup>
+							</p:column>
+							<p:column>
+							</p:column>
+							<p:column>
+								<h:panelGroup>
+									<label>#{msg['report.to_date']}:</label>
+
+									<p:calendar value="#{inventoryTrialBalanceMB.toDate}"
+										pattern="dd/MM/yyyy">
+										<p:ajax process="@form" update="@form"></p:ajax>
+									</p:calendar>
+								</h:panelGroup>
+							</p:column>
+
+							<p:spacer />
+
+						</p:panelGrid>
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save"
+							style="width:auto"
+							action="#{inventoryTrialBalanceMB.init2()}"
+							process="@form" update="@form" />
+
+
+						<br />
+					</div>
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+									
+									<common:printHeader target="@form:print"
+										office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['Statement_of_account']}  ">
+
+									</common:printHeader>
+
+									
+									<br />
+<p:commandButton  value="اصدار الى اكسل "   id="exportEx"  style="width:auto" action="#{inventoryTrialBalanceMB.exportToExcel}">
+			</p:commandButton>
+									
+									<p:dataTable var="record"
+										value="#{inventoryTrialBalanceMB.statementAccountList}"
+										id="groupList">
+									
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="#{msg['Date']}" />
+											</f:facet>
+											<p:outputLabel value="#{record.date}">
+												<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3" />
+
+
+											</p:outputLabel>
+										</p:column>
+								
+								
+									<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="كود الصنف   " />
+											</f:facet>
+											<p:outputLabel value="#{record.codeItem}">
+
+
+											</p:outputLabel>
+										</p:column>
+									
+									
+									<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="اسم  الصنف   " />
+											</f:facet>
+											<p:outputLabel value="#{record.nameItem}">
+
+
+											</p:outputLabel>
+										</p:column>
+										
+											<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="اسم  المجموعه   " />
+											</f:facet>
+											<p:outputLabel value="#{record.itemGroup}">
+
+
+											</p:outputLabel>
+										</p:column>
+										
+										
+												<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="نوع التشطيب      " />
+											</f:facet>
+											<p:outputLabel value="#{record.finishType}">
+
+
+											</p:outputLabel>
+										</p:column>
+										
+										
+												<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="اللون       " />
+											</f:facet>
+											<p:outputLabel value="#{record.color}">
+
+
+											</p:outputLabel>
+										</p:column>
+										
+										
+									<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="  كميه افتتاحي    " />
+											</f:facet>
+											<h:outputLabel value="#{record.debit}">
+												<f:convertNumber pattern="###,###.##" />
+
+											</h:outputLabel>
+												<f:facet name="footer">
+					<h:outputLabel style="color: Black;font-size: 15px;"
+						value="#{inventoryTrialBalanceMB.statementAccountList.stream().map(s->s.debit).sum()}" >
+								 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>
+				</f:facet>
+										</p:column>
+									<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="  كميه  داخلة   " />
+											</f:facet>
+											<h:outputLabel value="#{record.debitTransaction}">
+												<f:convertNumber pattern="###,###.##" />
+
+											</h:outputLabel>
+												<f:facet name="footer">
+					<h:outputLabel style="color: Black;font-size: 15px;"
+						value="#{inventoryTrialBalanceMB.statementAccountList.stream().map(s->s.debitTransaction).sum()}" >
+								 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>
+				</f:facet>
+										</p:column>
+
+			<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="  كميه  خارجه   " />
+											</f:facet>
+											<h:outputLabel value="#{record.creditTransaction}">
+												<f:convertNumber pattern="###,###.##" />
+
+											</h:outputLabel>
+												<f:facet name="footer">
+					<h:outputLabel style="color: Black;font-size: 15px;"
+						value="#{inventoryTrialBalanceMB.statementAccountList.stream().map(s->s.creditTransaction).sum()}" >
+								 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>
+				</f:facet>
+										</p:column>
+
+									<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="  كميه نهائية    " />
+											</f:facet>
+											<h:outputLabel value="#{record.debitEndingBalance}">
+												<f:convertNumber pattern="###,###.##" />
+
+											</h:outputLabel>
+												<f:facet name="footer">
+					<h:outputLabel style="color: Black;font-size: 15px;"
+						value="#{inventoryTrialBalanceMB.statementAccountList.stream().map(s->s.debitEndingBalance).sum()}" >
+								 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>
+				</f:facet>
+										</p:column>	
+									
+									</p:dataTable>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

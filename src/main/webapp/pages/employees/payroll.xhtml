@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				
+									<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="customerDetails" var="det" styleClass="txt-center" value="#{employeesDetailsMB.employeeList}">
+				
+						<p:column filterBy="#{det.securityNumber}"  headerText="#{msg['addEmployee.securityNumber']}">
+						<p:outputLabel value="#{det.securityNumber}" />
+					</p:column>
+				
+					<p:column filterBy="#{det.nationalEmployeeNumber}"  headerText="#{msg['addEmployee.nationalEmployeeNumber']}">
+						<p:outputLabel value="#{det.nationalEmployeeNumber}" />
+					</p:column>
+				
+					<p:column filterBy="#{utils.isArabic() ? det.employeeNameAr : det.employeeNameEn}" headerText="#{msg['addEmployee.employeeName']}">
+						<p:outputLabel value="#{utils.isArabic() ? det.employeeNameAr : det.employeeNameEn}" />
+					</p:column>
+					
+
+                   <p:column filterBy="#{det.basicSalary}"  headerText="#{msg['addEmployee.basicSalary']}">
+						<p:outputLabel value="#{det.basicSalary}" />
+	                         <f:facet name="footer">
+							<h:outputLabel value="#{employeesDetailsMB.employeeList.stream().map(s->s.basicSalary).sum()}" />
+								</f:facet>
+					</p:column>
+	                
+                   <p:column filterBy="#{det.bonuseTotal}"  headerText="العلاوات">
+						<p:outputLabel value="#{det.bonuseTotal}" />
+						
+					</p:column>
+					    <p:column filterBy="#{det.bonuseVal}"  headerText="مجموع العلاوات">
+						<p:outputLabel value="#{det.bonuseVal}" />
+						    <f:facet name="footer">
+							<h:outputLabel value="#{employeesDetailsMB.employeeList.stream().map(s->s.bonuseVal).sum()}" />
+								</f:facet>
+					</p:column>
+					
+					
+					 <p:column filterBy="#{det.basicSalary}"  headerText="الاقتطاعات">
+						<p:outputLabel value="#{det.deductionTotal}" />
+					</p:column>
+                       <p:column filterBy="#{det.basicSalary}"  headerText="مجموع الاقتطاعات">
+						<p:outputLabel value="#{det.deductionVal}" />
+						<f:facet name="footer">
+							<h:outputLabel value="#{employeesDetailsMB.employeeList.stream().map(s->s.deductionVal).sum()}" />
+								</f:facet>
+					</p:column>
+					 <p:column filterBy="#{det.basicSalary}"  headerText="حصة الموظف بالضمان ">
+						<p:outputLabel value="#{det.employeeShareOfGuarantee}" />
+						<f:facet name="footer">
+							<h:outputLabel value="#{employeesDetailsMB.employeeList.stream().map(s->s.employeeShareOfGuarantee).sum()}" />
+								</f:facet>
+					</p:column>
+					 <p:column filterBy="#{det.basicSalary}"  headerText="صافي الراتب المحول على البنك   ">
+						<p:outputLabel value="#{det.netSalaryTransferredBank}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+						<f:facet name="footer">
+							<h:outputLabel value="#{employeesDetailsMB.employeeList.stream().map(s->s.netSalaryTransferredBank).sum()}" >
+																					 <f:convertNumber pattern="###,###.##"/>
+							</h:outputLabel>
+								</f:facet>
+					</p:column>
+					 <p:column filterBy="#{det.basicSalary}"  headerText="  مساهمة ااشركة في الضمان ">
+						<p:outputLabel value="#{det.companyContributionToTheGuarantee}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+						<f:facet name="footer">
+							<h:outputLabel value="#{employeesDetailsMB.employeeList.stream().map(s->s.companyContributionToTheGuarantee).sum()}" >
+																					 <f:convertNumber pattern="###,###.##"/>
+							</h:outputLabel>
+								</f:facet>
+					</p:column>
+						 <p:column filterBy="#{det.basicSalary}"  headerText=" قيمة الضمان الواجب توريدة ">
+						<p:outputLabel value="#{det.theValueOfTheGuaranteeThatMustBeSupplied}" >
+																				 <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+						<f:facet name="footer">
+							<h:outputLabel value="#{employeesDetailsMB.employeeList.stream().map(s->s.theValueOfTheGuaranteeThatMustBeSupplied).sum()}" >
+																					 <f:convertNumber pattern="###,###.##"/>
+							</h:outputLabel>
+								</f:facet>
+					</p:column>
+				
+					
+					
+					
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

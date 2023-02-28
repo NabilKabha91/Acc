@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" dir="#{languageDetails.dir}">
+
+<p:growl id="editgGrow" showDetail="false" autoUpdate="false" />
+<h:panelGrid columns="4" id="editGPanel">
+	<p:outputLabel value="المرجع	 " />
+	<p:inputText id="egroupName" value="#{groupingBacking.grouping.groupNamee}" />
+
+		<h:inputHidden />
+		<h:inputHidden />
+
+	<p:outputLabel value="اسم الحساب الفرعي(عربي)	 "  />
+	<p:inputText id="egroupDesc" value="#{groupingBacking.grouping.groupDesce}" />
+
+<h:inputHidden />
+<h:inputHidden />
+
+	<p:outputLabel value="المرجع الرئيسي "  />
+	<p:inputText id="eparentGroupName" value="#{groupingBacking.grouping.parentGroupNamee}" />
+
+	
+		<h:inputHidden />
+			<h:inputHidden />
+	
+	
+	
+
+		<p:commandButton value="UPDATE" actionListener="#{groupingBacking.editGroupActionLis}" 
+		update="@form">
+	</p:commandButton>
+	
+
+</h:panelGrid>
+</html>

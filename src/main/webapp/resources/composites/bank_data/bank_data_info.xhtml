@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCustomer" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+		 
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>#{msg['Add_Bank_Details']}</h1>
+					<p:panelGrid id="pnlCustomer" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						
+							
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{bankDataMB.bankData.nameBankAr}" required="true" />
+							<label>#{msg['Bank_Name_Arabic']}*   </label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{bankDataMB.bankData.nameBankEn}"  />
+							<label>#{msg['Bank_Name_English']}</label>
+						</h:panelGroup>
+
+                       <h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{bankDataMB.bankData.branch}" required="true" />
+							<label>#{msg['Branch']}*</label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{bankDataMB.bankData.branchEn}"  />
+							<label>#{msg['Branch_English']}</label>
+						</h:panelGroup>
+						
+						<h:panelGroup >
+							<p:outputLabel value="#{msg['The_beneficiary_of_the_account']} :" styleClass="bold" />
+						<p:outputLabel value="#{utils.isArabic() ? selectCompany.legalCompanyName : selectCompany.legalCompanyNameEn}" />
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{bankDataMB.bankData.swift}" required="true" />
+							<label> #{msg['Swift_Code']}* </label>
+						</h:panelGroup>
+
+                       <h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{bankDataMB.bankData.iban}" required="true" />
+							<label>IBAN* </label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{bankDataMB.bankData.accountNum}" required="true" />
+							<label>   #{msg['Account_Number']}* </label>
+						</h:panelGroup>
+
+			<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{bankDataMB.bankData.nickName}" required="true" />
+							<label>nickname *   </label>
+						</h:panelGroup>
+			
+						
+						
+					
+						
+						
+						
+					</p:panelGrid>
+						
+						
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{bankDataMB.saveBankData()}" process="@form"
+						update="@form" 
+						 />
+                                <p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{bankDataMB.cancelAction()}" />
+					
+						
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:us="http://java.sun.com/jsf/composite/composites/user" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+		<h:outputStylesheet>
+		</h:outputStylesheet>
+		<h:form id="userInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+				
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="userDetails" var="det" styleClass="txt-center" value="#{userDetailsMB.userList}">
+					<p:column filterBy="#{utils.isArabic() ? det.nameAr : det.nameEn}" headerText="#{utils.isArabic() ? msg['addUser.name_ar'] : msg['addUser.name_en']}" width="50">
+						<p:outputLabel value="#{utils.isArabic() ? det.nameAr : det.nameEn}" />
+					</p:column>
+
+				
+					<p:column   headerText="#{msg['Bank_Details']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.bankDataPermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['Invoice_management']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.billManagementPermissions}" />
+					</p:column>
+				
+					<p:column   headerText="#{msg['Currency']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.definitionOfCurrenciesPermissions}" />
+					</p:column>
+						<p:column   headerText="#{msg['Tax_'+=utils.getVersion()]} " width="30">
+						<p:selectBooleanCheckbox value="#{det.definitionOfTaxPermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['ComercialDiscount_'+=utils.getVersion()]} " width="30">
+						<p:selectBooleanCheckbox value="#{det.comericalDiscountPermissions}" />
+					</p:column>
+				
+					<p:column   headerText="#{msg['Customers_List']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.customerPermissions}" />
+					</p:column>
+					
+					
+					<p:column   headerText="#{msg['Services_Product_list']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.servicesAndProductsPermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['Invoices']} " width="30">
+						<p:selectBooleanCheckbox value="#{det.billPermissions}" />
+					</p:column>
+				
+					<p:column   headerText="#{msg['Suppliers_List']} " width="30">
+						<p:selectBooleanCheckbox value="#{det.suppliersPermissions}" />
+					</p:column>
+						<p:column   headerText="#{msg['Bills']} " width="30">
+						<p:selectBooleanCheckbox value="#{det.purchasebillsPermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['Units_List']} " width="30">
+						<p:selectBooleanCheckbox value="#{det.unitPermissions}" />
+					</p:column>
+				
+					<p:column   headerText="#{msg['Items_List']}  " width="30">
+						<p:selectBooleanCheckbox value="#{det.itemsScreenPermissions}" />
+					</p:column>
+					
+				
+					<p:column   headerText="#{msg['Orders']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.orderItemPermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['ItemsTransfervoucher_'+=utils.getVersion()]} " width="30">
+						<p:selectBooleanCheckbox value="#{det.warehouseReleaseDocumentPermissions}" />
+					</p:column>
+				
+					<p:column   headerText="#{msg['Chart_of_Accounts']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.chartOfAccountsPermissions}" />
+					</p:column>
+						<p:column   headerText="#{msg['Entries']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.entriesPermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['Recipt_Voucher']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.reciptVoucherPermissions}" />
+					</p:column>
+				
+					<p:column   headerText="#{msg['Payment_Voucher']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.paymentVoucherPermissions}" />
+					</p:column>
+					
+					
+						<p:column   headerText="#{msg['Debit_Note']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.debitNotePermissions}" />
+					</p:column>
+						<p:column   headerText="#{msg['Credit_Note']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.creditNotePermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['Bank_Deposit_voucher']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.bankDepositPermissions}" />
+					</p:column>
+				
+					<p:column   headerText="#{msg['Statement_of_account']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.statementOfAccountPermissions}" />
+					</p:column>
+					
+				
+					<p:column   headerText="#{msg['Trial_Balance']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.trialBalancePermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['Employees_details']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.employeesPermissions}" />
+					</p:column>
+				
+					<p:column   headerText="#{msg['Allowances']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.allowancesPermissions}" />
+					</p:column>
+						<p:column   headerText="#{msg['Deductions']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.deductionsPermissions}" />
+					</p:column>
+
+							<p:column   headerText="#{msg['Salaries_statements']}" width="30">
+						<p:selectBooleanCheckbox value="#{det.salariesStatementsPermissions}" />
+					</p:column>
+				
+					<p:column   headerText=" قائمة الدخل    "  width="30">
+						<p:selectBooleanCheckbox value="#{det.incomeStatementPermissions}" />
+					</p:column>	
+					
+						<p:column   headerText=" قائمة المركز المالي     " width="30">
+						<p:selectBooleanCheckbox value="#{det.statementOfFinancialPositionPermissions}" />
+					</p:column>	
+					
+					
+					
+					
+					
+				</p:dataTable>
+				<p:commandButton value="#{msg['edit_btn']}" icon="ui-icon-edit" style="width:auto" action="#{userMB.saveUser()}" process="@form"
+						update="@form :profile" rendered="#{!cc.attrs.addUser}" />
+				
+				
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

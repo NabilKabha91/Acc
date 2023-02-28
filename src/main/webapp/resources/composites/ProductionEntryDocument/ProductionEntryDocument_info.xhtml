@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addBills" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+</composite:interface>
+</head>
+<body>
+	<h:outputStylesheet library="css" name="custom-v2.8.css" />
+	<h:outputStylesheet rendered="#{cc.attrs.addWordCss}" library="css"
+		name="word.css" />
+	<composite:implementation>
+		<center>
+			<h:outputLabel style="color: Gray;font-size: 25px;font-weight:bold;"
+				value="#{productionEntryDocumentMB.productionEntryDocument.documentType}">
+			</h:outputLabel>
+		</center>
+
+
+		<div class="ui-g">
+
+
+
+
+			<br></br>
+			<div class="ui-g-12 ui-md-12 ui-lg-6 table-g-6">
+
+				<div class="card card-w-title">
+
+
+					<p:panelGrid columns="3" id="pnl3"
+						styleClass="no-border Wid80 MarAuto">
+
+						<p:outputLabel value="#{msg['Invoice_date']}" />
+						<p:calendar
+							value="#{productionEntryDocumentMB.productionEntryDocument.todayDate}"
+							pattern="yyyy/MM/dd" required="true" />
+
+						<p:column></p:column>
+
+
+
+						<p:outputLabel value="#{msg['Voucher_number']}" />
+						<h:outputText
+							value="#{productionEntryDocumentMB.productionEntryDocument.warehouseReleaseDocumentNumber}" />
+						<p:column></p:column>
+
+						<p:outputLabel value="الحساب الدائن" />
+
+
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+							filter="true" filterMatchMode="contains" id="group1"
+							value="#{productionEntryDocumentMB.productionEntryDocument.groupingIdTo}"
+							style="margin-bottom:10px;" styleClass="Wid100" required="true">
+							<f:selectItem itemLabel="#{msg['Group_'+=utils.getVersion()]}" />
+							<f:selectItems value="#{productionEntryDocumentMB.groupList1}"
+								var="grouping"
+								itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}"
+								itemValue="#{grouping.grpId}" />
+
+						</p:selectOneMenu>
+
+
+					</p:panelGrid>
+				</div>
+
+			</div>
+			<br></br>
+
+
+
+			<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">
+
+				<div class="card card-w-title" style="width: 110%;">
+					<p:commandButton
+						action="#{productionEntryDocumentMB.addNewDetails()}"
+						oncomplete="PF('bui').hide()" onstart="PF('bui').show()"
+						style="width:auto" value="اضافة سطر" process="@this"
+						icon="ui-icon-plus" />
+			<p:commandButton
+						action="#{productionEntryDocumentMB.calculation()}"
+						oncomplete="PF('bui').hide()" onstart="PF('bui').show()"
+						style="width:auto" value="احتساب التكلفة" process="@this"
+						 />
+
+
+					<p:panelGrid columns="8" id="pnl2" styleClass="ui-noborder Wid100" rendered="#{productionEntryDocumentMB.productionEntryDocument.closeMonth eq 0}" >
+
+
+
+						<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet"
+							rowIndexVar="index" var="det" styleClass="txt-center"
+							value="#{productionEntryDocumentMB.addProductionEntryDocumentList}"
+							style="border:hidden;">
+
+
+
+
+							<p:column headerText="#" width="20" style="border:hidden;">
+
+								<h:outputText value="#{index+1}" />
+
+
+
+							</p:column>
+
+
+
+							<p:column headerText="#{msg['Item_Name']}" width="80"
+								style="border:hidden;">
+								<p:selectOneMenu required="true"
+									converter="omnifaces.SelectItemsConverter" filter="true"
+									filterMatchMode="contains" id="agents"
+									value="#{det.itemsScreen}" style="margin-bottom:10px;"
+									styleClass="Wid100">
+									<p:ajax event="change" process="@this" update="tblSheet" />
+									<f:selectItem itemLabel="#{msg['select']}" />
+									<f:selectItems
+										value="#{productionEntryDocumentDetailsMB.itemsScreenList}"
+										var="itemsScreen"
+										itemLabel="#{utils.isArabic() ?itemsScreen.nameItem:itemsScreen.nameItemEn}"
+										itemValue="#{itemsScreen}" />
+								</p:selectOneMenu>
+							</p:column>
+	                      <p:column headerText="Th/h" width="10"
+								style="border:hidden;font-size:12px">
+								<p:inputNumber value="#{det.th}" />
+							</p:column>
+								<p:column headerText="width" width="10"
+								style="border:hidden;font-size:12px">
+								<p:inputNumber value="#{det.width}" />
+							</p:column>
+								<p:column headerText="length" width="10"
+								style="border:hidden;font-size:12px">
+								<p:inputNumber value="#{det.length}" />
+							</p:column>
+								<p:column headerText="Pcs" width="10"
+								style="border:hidden;font-size:12px">
+								<p:inputNumber value="#{det.pcs}" />	
+							</p:column>
+							
+							<p:column headerText="LM" width="10"
+								style="border:hidden;font-size:12px">
+								<h:outputText value="#{det.lM}" >
+								<f:convertNumber pattern="###,###.###" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="M2" width="10"
+								style="border:hidden;font-size:12px">
+							<h:outputText value="#{det.m2}" >
+							<f:convertNumber pattern="###,###.###" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="M3" width="10"
+								style="border:hidden;font-size:12px">
+								<h:outputText value="#{det.m3}" >
+								<f:convertNumber pattern="###,###.###" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="#{msg['Quantity']}" width="30"
+								style="border:hidden;">
+								<h:outputText value="#{det.quantity}" >
+								<f:convertNumber pattern="###,###.###" />
+								</h:outputText>
+							</p:column>
+							
+							
+								<p:column headerText="#{msg['measuringUnit']}" width="40"
+								style="border:hidden;">
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" 
+									value="#{det.unit}" style="margin-bottom:10px;"
+									styleClass="Wid100" required="true">
+									<f:selectItem itemLabel=" اختار وحدة قياس" itemValue="" />
+
+									<f:selectItems
+										value="#{productionEntryDocumentDetailsMB.unitList}"
+										var="unit" itemLabel="#{unit.unitName}"
+										itemValue="#{unit}" />
+
+								</p:selectOneMenu>
+							</p:column>
+
+
+<p:column headerText="الوصف " width="30" 
+								style="border:hidden;">
+								<p:inputText value="#{det.description}" />
+							</p:column>
+<p:column headerText="سعر التكلفة" width="20" 
+								style="border:hidden;" rendered="#{selectCompany.companyActivityNature != 25}">
+								<p:inputNumber value="#{det.costUnit}" />
+							</p:column>
+
+							<p:column headerText="المستودعات" width="50"
+								style="border:hidden;">
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="group"
+									value="#{det.warehouses}" style="margin-bottom:10px;"
+									styleClass="Wid100" required="true">
+									<f:selectItem itemLabel="اسم المستودع" itemValue="" />
+
+									<f:selectItems
+										value="#{productionEntryDocumentDetailsMB.warehousesList}"
+										var="warehouses" itemLabel="#{warehouses.nameWarehouses}"
+										itemValue="#{warehouses}" />
+
+								</p:selectOneMenu>
+							</p:column>
+							<p:column headerText="مراكز التكلفة" width="50"
+								style="border:hidden;">
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="group2"
+									value="#{det.costCenter}" style="margin-bottom:10px;"
+									styleClass="Wid100" required="true">
+									<f:selectItem itemLabel="مراكز التكلفة " itemValue="" />
+
+									<f:selectItems
+										value="#{productionEntryDocumentDetailsMB.costCenterList}"
+										var="costCenter" itemLabel="#{costCenter.costCenterCoding}"
+										itemValue="#{costCenter}" />
+
+								</p:selectOneMenu>
+							</p:column>
+							<p:column headerText="تحليلي" width="50" style="border:hidden;"
+								rendered="#{utils.getVersion() eq 'KSA'}">
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="analytical"
+									value="#{det.analytical}" style="margin-bottom:10px;"
+									styleClass="Wid100">
+									<f:selectItem itemLabel="تحليلي " itemValue="" />
+
+									<f:selectItems
+										value="#{productionEntryDocumentDetailsMB.analyticalList}"
+										var="analytical" itemLabel="#{analytical.analytical}"
+										itemValue="#{analytical}" />
+
+								</p:selectOneMenu>
+							</p:column>
+							<p:column headerText="#{msg['Delete']}" width="30"
+								style="border:hidden;">
+
+								<p:commandButton styleClass="red-btn"
+									action="#{productionEntryDocumentMB.delete(det)}"
+									process="@this" update="@form" icon="ui-icon-delete">
+									<p:confirm header="#{msg['glopal.confirmation']}"
+										message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+								</p:commandButton>
+
+							</p:column>
+
+
+						</p:dataTable>
+					</p:panelGrid>
+				</div>
+			</div>
+
+
+
+
+
+			<br />
+			<div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">
+				<div class="card card-w-title">
+					<p:panelGrid columns="3" id="pnl30" styleClass="ui-noborder Wid120">
+
+						<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+							style="width:auto"
+							action="#{productionEntryDocumentMB.saveProductionEntryDocument()}"
+							process="@form" update="@form" disabled="#{productionEntryDocumentMB.productionEntryDocument.closeMonth eq 1}">
+
+						</p:commandButton>
+
+						<p:commandButton value="#{msg['print']}" onclick="window.print();"
+							type="button" icon="ui-icon-print">
+						</p:commandButton>
+						<p:commandButton value="#{msg['Main_list']}" icon="ui-icon-cancel"
+							style="width:auto" process="@this" update="@this"
+							action="#{productionEntryDocumentMB.cancelAction()}" />
+
+						<p:dialog resizable="false" height="45vh" width="450px"
+							modal="true" showHeader="false" widgetVar="uploadDocument"
+							closeOnEscape="true" dynamic="true">
+
+							<p:spacer height="10" width="100%"></p:spacer>
+							<center>
+								<h:panelGroup columns="2" id="p" layout="block"
+									styleClass="no-border Wid70 MarAuto">
+
+									<p:outputLabel style="font-size: 17px;"
+										value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+									<p:spacer height="10" width="100%"></p:spacer>
+
+									<p:fileUpload
+										rendered="#{productionEntryDocumentMB.productionEntryDocument.id ne null}"
+										fileUploadListener="#{productionEntryDocumentMB.uploadDocument}"
+										mode="advanced" label="#{msg['attached']}" auto="true"
+										allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+										uploadLabel="#{msg['attached']}"
+										cancelLabel="#{msg['Cancel']}">
+									</p:fileUpload>
+
+									<p:commandButton value="لا" style="width:auto"
+										action="#{productionEntryDocumentMB.cancelAction()}"
+										process="@form" update="@form">
+
+									</p:commandButton>
+
+
+								</h:panelGroup>
+							</center>
+						</p:dialog>
+						<p:dataTable
+							rendered="#{productionEntryDocumentMB.productionEntryDocument.id ne null}"
+							reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+							var="doc" styleClass="txt-center"
+							value="#{productionEntryDocumentMB.documentList}">
+
+							<p:column>
+								<p:link value="#{doc.documentName}" type="button"
+									onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+							</p:column>
+
+
+						</p:dataTable>
+					</p:panelGrid>
+				</div>
+			</div>
+
+
+
+			<br></br> <br></br>
+
+		</div>
+
+
+
+
+	</composite:implementation>
+</body>
+</html>

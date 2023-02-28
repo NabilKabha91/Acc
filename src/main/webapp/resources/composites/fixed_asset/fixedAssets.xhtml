@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="fixedAssets" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<body>
+<br></br>
+
+<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<center>
+							<h1 style="font-weight: bold">إضافة</h1>
+						</center>
+<div class="card card-w-title" style="box-shadow: 3px 3px 3px 3px #888888;">
+
+
+									<p:panelGrid id="pnlAssets" columns="3" layout="grid"
+										styleClass="ui-panelgrid-blank form-group">
+
+
+										<h:panelGroup styleClass="md-inputfield">
+											<p:inputText value="#{assetsMB.assets.assetName}"
+												required="true" />
+											<label>الأصل</label>
+										</h:panelGroup>
+										<h:column></h:column>
+										<h:column></h:column>
+									
+											<p:selectOneMenu id="bonusesList444"
+											value="#{assetsMB.assets.groupingId}"
+											style="margin-bottom:10px;"
+											converter="omnifaces.SelectItemsConverter" required="true"
+											filter="true" filterMatchMode="contains" multiple="true">
+											<f:selectItem itemLabel="اختار التصنيف"
+												itemValue=""/>
+												<f:selectItems value="#{assetsMB.groupList}" 
+													var="grouping" itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}" itemValue="#{grouping.grpId}"  />
+												
+									</p:selectOneMenu>
+											
+									
+										<h:column></h:column>
+										<h:column></h:column>
+
+										<h:panelGroup styleClass="md-inputfield">
+											<p:inputText value="#{assetsMB.assets.purchaseValue}"
+												required="true" />
+											<label>الكلفة التاريخية للاصل</label>
+										</h:panelGroup>
+										<h:column></h:column>
+										<h:column></h:column>
+										<h:panelGroup styleClass="md-inputfield">
+											<p:inputText value="#{assetsMB.assets.depreciationValue}"
+												required="true" />
+											<label>نسبة الاستهلاك السنوي</label>
+
+										</h:panelGroup>
+										<h:column></h:column>
+										<h:column></h:column>
+										<h:panelGroup styleClass="md-inputfield">
+											<p:calendar value="#{assetsMB.assets.startUse}"
+												pattern="yyyy/MM/dd" required="true" />
+											<label>تاريخ بدأ الاستخدام</label>
+										</h:panelGroup>
+										<h:column></h:column>
+										<h:column></h:column>
+										<h:panelGroup styleClass="md-inputfield">
+											<p:calendar value="#{assetsMB.assets.deprectiationDate}"
+												pattern="yyyy/MM/dd" required="true" />
+											<label>تاريخ بدأ الاستهلاك</label>
+										</h:panelGroup>
+										<h:column></h:column>
+										<h:column></h:column>
+										
+
+										<p:selectOneMenu id="bonusesList3"
+											value="#{assetsMB.assets.suppliers}"
+											style="margin-bottom:10px;"
+											converter="omnifaces.SelectItemsConverter" required="true"
+											filter="true" filterMatchMode="contains" multiple="true">
+											<f:selectItem itemLabel="اختيار موردين"
+												itemValue="" />
+											<f:selectItems value="#{assetsMB.suppliersList}"
+												var="suppliers"
+												itemLabel="#{utils.isArabic() ? suppliers.suppliersNameAr : suppliers.suppliersNameEn}"
+												itemValue="#{suppliers}" />
+										</p:selectOneMenu>
+										<h:column></h:column>
+										<h:column></h:column>
+										<p:commandButton value="حفظ" icon="ui-icon-save"
+												style="width:auto; border-radius:20px;background-color:#888888"
+												 action="#{assetsMB.saveAssets()}" />
+									</p:panelGrid>
+
+
+								</div>
+								</div>
+								</div>
+								</div>
+
+
+
+</body>
+	</composite:implementation>
+</body>
+</html>

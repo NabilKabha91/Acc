@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:off="http://java.sun.com/jsf/composite/composites/office" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+
+		<h:form id="officeInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add" value="#{msg['title.add_office']}" 
+				actionListener="#{officeDetailsMB.redirectToOfficeAddition()}" >
+				</p:commandButton>
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="officeDetails" var="det" styleClass="txt-center" value="#{officeDetailsMB.officeList}">
+					<p:column headerText="#{utils.isArabic() ? msg['addOffice.office_name_ar'] : msg['addOffice.office_name_en']}">
+						<p:outputLabel value="#{utils.isArabic() ? det.nameAr : det.nameEn}" />
+					</p:column>
+
+					<p:column headerText="#{msg['addOffice.office_email']}">
+						<p:outputLabel value="#{det.email}" />
+					</p:column>
+
+					<p:column headerText="#{msg['addAgent.agent_phone']}">
+						<p:outputLabel value="#{det.phoneNumber}" />
+					</p:column>
+
+					<p:column headerText="#{msg['addOffice.office_phone_number']}">
+						<p:outputLabel value="#{det.phoneNumber}" />
+					</p:column>
+
+					<p:column headerText="#{msg['addOffice.office_address']}">
+						<p:outputLabel value="#{det.address}" />
+					</p:column>
+
+					<p:column headerText="#{msg['addOffice.office_pox']}">
+						<p:outputLabel value="#{det.po}" />
+					</p:column>
+
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{officeMB.init()}" actionListener="#{officeDetailsMB.redirectToOfficeEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{officeMB.office}" />
+							<f:setPropertyActionListener value="false" target="#{officeMB.addOffice}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_office']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{officeDetailsMB.deleteOffice(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:off="http://java.sun.com/jsf/composite/composites/office" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+	<ui:define name="title"></ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form>
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+
+
+
+                  <p:fileUpload  fileUploadListener="#{uploadFiles.uploadDocument}" mode="advanced"
+								label="Upload" auto="true" allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+								uploadLabel="Upload" cancelLabel="الغاء" />
+				
+											
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="document" var="doc" styleClass="txt-center" value="#{uploadFiles.documentList}">
+					
+						<p:column  headerText="اسم  المستند   ">
+				      	<p:link value="#{doc.documentName}" type="button"
+	onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />			
+			</p:column>
+					
+					
+					</p:dataTable>			
+					
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

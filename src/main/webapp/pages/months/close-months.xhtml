@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form>
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12">
+					<div class="card card-w-title">
+						<h1>#{msg['title.close-month']}</h1>
+						<p:selectOneMenu id="yearList" value="#{monthsMB.selectedYear}"
+							style="margin-bottom:10px;width:50%">
+							<p:ajax update="pnlMonths" process="@this"
+								listener="#{monthsMB.prepareMoths()}" />
+							<f:selectItem itemLabel="#{msg['month.select-year']}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{monthsMB.yearList}" var="year"
+								itemLabel="#{year}" itemValue="#{year}" />
+						</p:selectOneMenu>
+						<p:spacer />
+						<p:panelGrid id="pnlMonths" columns="4"
+							styleClass="ui-panelgrid-blank form-group">
+							<p:fragment autoUpdate="true"
+								rendered="#{not empty monthsMB.monthList}">
+								<h1>#{msg['title.months']}</h1>
+							</p:fragment>
+							<p:spacer />
+							<p:spacer />
+							<p:spacer />
+
+							<c:forEach items="#{monthsMB.monthList}" var="month"
+								varStatus="var">
+
+								<p:inputSwitch value="#{month.close}">
+									<p:ajax process="@this" update="pnlMonths"></p:ajax>
+								</p:inputSwitch>
+								<h:panelGrid columns="2" styleClass="mont">
+									<p:column>
+									<p:graphicImage library="images" rendered="#{month.close}"
+										name="lock.png" height="30px"></p:graphicImage>
+									<p:graphicImage library="images" rendered="#{!month.close}"
+										name="unlock.png" height="30px"></p:graphicImage>
+									<label>#{utils.isArabic() ? month.monthAr :
+										month.monthEn} (#{month.month}) </label>
+										
+										</p:column>
+								</h:panelGrid>
+							</c:forEach>
+						</p:panelGrid>
+						<br />
+
+						<p:inputSwitch value="true" styleClass="hide">
+						</p:inputSwitch>
+						<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+							style="width:auto" action="#{monthsMB.save()}" process="@form"
+							update="@form" />
+
+						<p:commandButton value="#{msg['cancel_btn']}"
+							icon="ui-icon-cancel" style="width:auto" process="@this"
+							update="@this" action="#{monthsMB.cancelAction()}" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

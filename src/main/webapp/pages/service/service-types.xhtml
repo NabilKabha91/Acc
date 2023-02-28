@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:se="http://java.sun.com/jsf/composite/composites/service" xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+		<h:outputStylesheet>
+		</h:outputStylesheet>
+	<h:form id="officeInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+				<p:commandButton icon="ui-icon-add" value="#{msg['title.add_service_type']}" action="#{serviceTypeAdditionMB.init()}" actionListener="#{serviceTypeDetailsMB.redirectToServiceTypeAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{serviceTypeAdditionMB.addService}" />
+				</p:commandButton>
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="serviceTypeDetails" var="det" styleClass="txt-center" value="#{serviceTypeDetailsMB.serviceTypeList}">
+					<p:column filterBy="#{det.serviceNameAr}" headerText="#{msg['addServiceType.name_ar']}">
+						<p:outputLabel value="#{det.serviceNameAr}" />
+					</p:column>
+
+					<p:column filterBy="#{det.serviceNameEn}"  headerText="#{msg['addServiceType.name_en']}">
+						<p:outputLabel value="#{det.serviceNameEn}" />
+					</p:column>
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{serviceTypeAdditionMB.init()}" actionListener="#{serviceTypeDetailsMB.redirectToServiceTypeEdit()}" process="@this" >
+							<f:setPropertyActionListener value="false" target="#{serviceTypeAdditionMB.addService}" />
+							<f:setPropertyActionListener value="#{det}" target="#{serviceTypeAdditionMB.serviceType}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_service_type']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{serviceTypeDetailsMB.deleteServiceType(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

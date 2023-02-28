@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add"  value="قائمة الخدمات"  action="#{servicesAndProductsMB.init()}" actionListener="#{servicesAndProductsDetailsMB.redirectToServicesAndProductsAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{servicesAndProductsMB.addservicesAndProducts}" />
+				</p:commandButton>
+				
+				<p:fileUpload  fileUploadListener="#{servicesAndProductsMB.listener}" mode="advanced" label="تحميل اكسل "
+		 auto="true" uploadLabel="تحميل اكسل" cancelLabel="الغاء" />
+		
+									<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="customerDetails" var="det" styleClass="txt-center" value="#{servicesAndProductsDetailsMB.servicesProductsList}">
+					
+               	<p:column filterBy="#{det.nameProductOrService}"  headerText="اسم الخدمة">
+						<p:outputLabel value="#{det.nameProductOrService}" />
+					</p:column>
+					<p:column filterBy="#{det.codeProductOrService}"  headerText="#{msg['Serviceproductcode_'+=utils.getVersion()]}">
+						<p:outputLabel value="#{det.codeProductOrService}" />
+					</p:column>
+					
+                   <p:column filterBy="#{det.sellPrice}"  headerText="#{msg['Selling_Price']}">
+						<p:outputLabel value="#{det.sellPrice}" />
+					</p:column>
+	              
+					
+<p:column headerText="المجموعات" >
+						<p:outputLabel value="#{det.grpDesc}" />
+
+					</p:column>
+
+<p:column headerText="المخزن" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.grpDesc1}" />
+
+					</p:column>
+
+
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{servicesAndProductsMB.init()}" actionListener="#{servicesAndProductsDetailsMB.redirectToServicesAndProductsEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{servicesAndProductsMB.servicesProducts}" />
+							<f:setPropertyActionListener value="false" target="#{servicesAndProductsMB.addservicesAndProducts}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_agent']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{servicesAndProductsDetailsMB.deleteServicesAndProducts(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

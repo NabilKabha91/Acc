@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" >
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="shortcut icon" href="#{resource['images/logo.png']}" />
+
+	</f:facet>
+	<title>ACC</title>
+	<h:outputScript name="js/ripple.js" library="ultima-layout" />
+	<h:outputScript name="js/layout.js" library="ultima-layout" />
+</h:head>
+
+<h:body styleClass="login-body">
+	<h:form id="frmLogin">
+		<div class="card login-panel ui-fluid">
+			<p:messages autoUpdate="true" />
+			<div class="ui-g">
+				<div class="ui-g-12">
+					<p:graphicImage name="logo.png" library="images" />
+				</div>
+				<div class="ui-g-12">
+					<h:panelGroup styleClass="md-inputfield">
+						<p:inputText value="#{loginMB.userName}" required="true" />
+						<label>Username</label>
+					</h:panelGroup>
+				</div>
+				<div class="ui-g-12">
+					<h:panelGroup styleClass="md-inputfield">
+						<p:password value="#{loginMB.password}" required="true" />
+						<label>Password</label>
+					</h:panelGroup>
+				</div>
+				<div class="ui-g-12">
+					<p:commandButton  action="#{loginMB.login}" process="@form" update="@form" value="Sign In" icon="ui-icon-check"  />
+					<p:commandButton value="Forgot Password" icon="ui-icon-help" styleClass="secondary" onclick="PF('forgetPass').show()" type="button" />
+				</div>
+			</div>
+		</div>
+
+		<div class="login-footer">
+			<a href="http://laurelwreath-jo.com" target="_blank"> laurelwreath-jo.com </a>
+		</div>
+
+               
+    
+		<p:dialog height="45vh" width="450px" modal="true" widgetVar="forgetPass" closeOnEscape="true" dynamic="true">
+			<p:panel id="pnlforget">
+				<p:messages id="messages1" showDetail="false" autoUpdate="true" closable="true" />
+
+				<p:spacer height="10" width="100%"></p:spacer>
+				<center>
+					<h:panelGroup id="pnl" layout="block" rendered="#{!loginMB.foundEmail}">
+
+						<p:outputLabel style="font-size: 17px;" value="البريد الإلكتروني / Email"></p:outputLabel>
+						<p:spacer height="10" width="100%"></p:spacer>
+						<p:inputText value="#{loginMB.email}" style="width:90%; direction:ltr" validatorMessage="ادخل بريد صحيح">
+							<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+						</p:inputText>
+						<p:defaultCommand target="frmLogin:btn" scope="pnl"></p:defaultCommand>
+					</h:panelGroup>
+					<h:panelGroup id="pnl2" layout="block" rendered="#{loginMB.foundEmail}">
+						<p:spacer height=" 10" width="100%">
+						</p:spacer>
+						<p:outputLabel style="font-size: 19px;" value="رمز التحقق الذي وصل إلى بريدك "></p:outputLabel>
+						<p:spacer height="10" width="100%"></p:spacer>
+						<p:inputText value="#{loginMB.userCode}" style="width:90%; direction:ltr" validatorMessage="ادخل بريد صحيح">
+						</p:inputText>
+						<p:defaultCommand target="frmLogin:valid" scope="pnl2"></p:defaultCommand>
+					</h:panelGroup>
+				</center>
+				<f:facet name="footer">
+					<p:commandButton id="btn" action="#{loginMB.forgetPass()}" process="pnlforget" update="pnlforget" value="طلب " icon="ui-icon-check" rendered="#{!loginMB.foundEmail}"
+						validateClient="true" style="margin-right:10px" />
+
+					<p:commandButton id="valid" action="#{loginMB.validateCode()}" process="pnlforget" update="pnlforget" value="تأكيد" icon="ui-icon-check" rendered="#{loginMB.foundEmail}"
+						validateClient="true" style="margin-right:10px" />
+
+					<p:commandButton action="#{loginMB.forgetPass()}" process="pnlforget" update="pnlforget" value="إعادة إرسال الرمز " rendered="#{loginMB.foundEmail}" icon="ui-icon-check"
+						validateClient="true" style="margin-right:10px" />
+				</f:facet>
+			</p:panel>
+		</p:dialog>
+
+		<h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+		<h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+		<h:outputStylesheet name="custom.css" library="css" />
+	</h:form>
+</h:body>
+
+</html>

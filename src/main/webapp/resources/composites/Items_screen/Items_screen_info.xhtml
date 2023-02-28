@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCustomer" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+		 
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>#{msg['add_item']}</h1>
+					<p:panelGrid id="pnlCustomer" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						
+							
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{itemsScreenMB.itemsScreen.nameItem}" required="true" />
+							<label> #{msg['Item_Name_Arabic']}</label>
+						</h:panelGroup>
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{itemsScreenMB.itemsScreen.nameItemEn}" required="true" />
+							<label> #{msg['Item_Name_English']} </label>
+						</h:panelGroup>
+
+	<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA'}">
+	                      		<p:inputText value="#{itemsScreenMB.itemsScreen.finishType}" />  
+	                      			                      	<label>نوع التشطيب </label>   
+	                      		  
+	                      	</h:panelGroup>	
+	                      	
+	                      		<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA'}">
+	                      		<p:inputText value="#{itemsScreenMB.itemsScreen.color}" />    
+	                      	<label>اللون </label>   
+	                      		
+	                      	</h:panelGroup>	
+	                      		<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA' and itemsScreenMB.itemsScreen.quantity ==null}">
+	                      		<p:inputText value="#{itemsScreenMB.itemsScreen.quantity}" />  
+	                      			                       		<label>الكمية </label>   
+	                      		  
+	                      	</h:panelGroup>	
+	                      	
+	                      	<h:panelGroup  rendered="#{utils.getVersion() eq 'KSA' and itemsScreenMB.itemsScreen.quantity !=null   }" >
+	                       		<label>  الكمية :</label>   
+
+							<h:outputText value="#{itemsScreenMB.itemsScreen.quantity}" readonly="true" />
+						</h:panelGroup>
+	                      	
+	                   	<h:panelGroup  rendered="#{utils.getVersion() ne 'KSA' }" >
+	                       		<label>  الكمية :</label>   
+
+							<h:outputText value="#{itemsScreenMB.itemsScreen.quantity}" readonly="true" />
+						</h:panelGroup>
+	                     
+	                      		<h:panelGroup styleClass="md-inputfield" rendered="#{itemsScreenMB.itemsScreen.itemCost ==null or (selectCompany.companyActivityNature == 25 and (itemsScreenMB.itemsScreen.rawMaterials == 1 or itemsScreenMB.itemsScreen.finishGood ==1))}">
+	                      	<p:outputLabel value="  "/>
+	                      		<p:inputText value="#{itemsScreenMB.itemsScreen.itemCost}" /> 
+	                       		<label>تكلفة الوحدة</label>   
+	                      		   
+	                      	</h:panelGroup>	
+	                    
+	                    
+
+<h:panelGroup  rendered="#{selectCompany.companyActivityNature == 25 and itemsScreenMB.itemsScreen.itemCost !=null and (itemsScreenMB.itemsScreen.rawMaterials == 0 and itemsScreenMB.itemsScreen.finishGood == 0) }" >
+	                       		<label>  تكلفة الوحدة :</label>   
+
+							<h:outputText value="#{itemsScreenMB.itemsScreen.itemCost}" readonly="true" />
+						</h:panelGroup>
+	                     
+							<h:panelGroup  rendered="#{ selectCompany.companyActivityNature != 25 and itemsScreenMB.itemsScreen.itemCost !=null }" >
+	                       		<label>  تكلفة الوحدة :</label>   
+
+							<h:outputText value="#{itemsScreenMB.itemsScreen.itemCost}" readonly="true" />
+						</h:panelGroup>
+	                      		<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA'}">
+	                      		<p:inputText value="#{itemsScreenMB.itemsScreen.salesPrice}" />
+	                      		<label> سعر بيع الوحدة</label>   
+	                      	</h:panelGroup>	
+	                      	
+						<h:panelGroup styleClass="md-inputfield">
+						<p:inputText value="#{itemsScreenMB.itemsScreen.codeItem}" required="true" />
+						<label>#{msg['ItemCode_'+=utils.getVersion()]}</label>
+						</h:panelGroup>
+						
+	<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'KSA' and utils.isSallon() ne  true}">
+	                      		<p:inputText value="#{itemsScreenMB.itemsScreen.itemGroup}" /> 
+	                      		<label > مجموعه الصنف</label>   
+	                      	</h:panelGroup>	
+
+	<h:panelGroup styleClass="md-inputfield"  rendered="#{utils.getVersion() ne 'KSA' and utils.isSallon() ne  true}">
+							<p:inputText value="#{itemsScreenMB.itemsScreen.demandLimit}" required="true" />
+							<label> #{msg['Reorder_point']} </label>
+						</h:panelGroup>
+ <h:panelGroup >
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents12" value="#{itemsScreenMB.itemsScreen.definitionOfTax}"
+													style="margin-bottom:10px;" styleClass="Wid100" rendered="#{utils.isSallon() ne  true}">
+													<f:selectItem  itemLabel=" #{msg['Tax_Rate']} " />
+													
+													<f:selectItems value="#{itemsScreenMB.definitionOfTaxList}" 
+													var="definitionOfTax" itemLabel="#{definitionOfTax.taxAmount}" itemValue="#{definitionOfTax}"  />
+													
+												</p:selectOneMenu>
+											
+						</h:panelGroup>
+						
+						 <h:panelGroup >
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents126" value="#{itemsScreenMB.itemsScreen.unit}"
+													style="margin-bottom:10px;" styleClass="Wid100" rendered="#{utils.isSallon() ne  true}">
+													<f:selectItem  itemLabel=" #{msg['Unit']} " />
+													
+													<f:selectItems value="#{itemsScreenMB.unitList}" 
+													var="unit" itemLabel="#{utils.isArabic() ?unit.unitName:unit.unitNameEn}" itemValue="#{unit}"  />
+													
+												</p:selectOneMenu>
+											
+						</h:panelGroup>
+
+                     
+							                       <h:panelGroup >
+							
+					<p:selectOneMenu 
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="group1" value="#{itemsScreenMB.itemsScreen.groupingId}"
+						style="margin-bottom:10px;" styleClass="Wid100" required="true" rendered="#{utils.isSallon() ne  true}">
+													<f:selectItem  itemLabel="المخزن " />
+													<f:selectItems value="#{itemsScreenMB.groupList}" 
+													var="grouping" itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}" itemValue="#{grouping.grpId}"  />
+												
+												</p:selectOneMenu>
+									
+									
+											
+						</h:panelGroup>
+					
+						
+						<h:panelGroup >
+							
+					<p:selectOneMenu 
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="group" value="#{itemsScreenMB.itemsScreen.groupingId1}"
+						style="margin-bottom:10px;" styleClass="Wid100" required="true">
+													<f:selectItem  itemLabel="#{msg['Group_'+=utils.getVersion()]}" />
+													<f:selectItems value="#{itemsScreenMB.groupList2}" 
+													var="grouping" itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}" itemValue="#{grouping.grpId}"  />
+												
+												</p:selectOneMenu>
+											
+						</h:panelGroup>
+					
+							  <h:panelGroup rendered="#{utils.getVersion() eq 'KSA' and utils.isSallon() ne  true}">
+							
+					<p:selectOneMenu 
+	                 converter="omnifaces.SelectItemsConverter" filter="true"
+	                  filterMatchMode="contains" id="items" value="#{itemsScreenMB.itemsScreen.groupingId2}"
+						style="margin-bottom:10px;" styleClass="Wid100" required="true">
+													<f:selectItem  itemLabel="حساب المصروفات" />
+													<f:selectItems value="#{itemsScreenMB.groupList3}" 
+													var="grouping" itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}" itemValue="#{grouping.grpId}"  />
+												
+												</p:selectOneMenu>
+											
+						</h:panelGroup>   
+						
+						<h:panelGroup  rendered="#{itemsScreenMB.itemsScreen.weightedAverage !=null }" >
+	                       		<label>  التكلفة الاجمالية  :</label>   
+
+							<h:outputText value="#{itemsScreenMB.itemsScreen.weightedAverage}" readonly="true" />
+						</h:panelGroup>  
+						             
+					</p:panelGrid>
+						
+						
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{itemsScreenMB.saveItemsScreen()}" process="@form"
+						update="@form" 
+						 />
+                                <p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{itemsScreenMB.cancelAction()}" />
+						
+					  <p:commandButton value="#{msg['Main_list']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{itemsScreenMB.cancelAction()}" />
+					
+						
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

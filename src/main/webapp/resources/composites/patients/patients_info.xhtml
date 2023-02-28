@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="infoPatient" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add Clinic, false for edit " />
+
+
+</composite:interface>
+
+
+</head>
+<body>
+
+	<composite:implementation>
+
+
+
+
+		<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+
+		<h3 style="margin-top: 0">
+			<h:outputLabel value="#{msg['basic_info']}" />
+		</h3>
+		<p:tabView>
+			<p:tab title="#{msg['basic_info']}">
+
+				<div class="p-d-flex p-flex-column">
+					<div class="p-mb-2 p-mr-2">
+						<span>*Date: </span>
+						<p:calendar id="date1" pattern="dd/MM/yyyy" effect="fold"
+							value="#{patientMB.addpatients.fileNewDate}"
+							styleClass="Right Right50 " required="true" />
+
+
+					</div>
+					<div class="p-mb-2">
+						<h:outputLabel value="#{msg['Patient_number']}"
+							style="color:black ;margin:10px" />
+						<h:outputLabel value="#{patientMB.addpatients.id}"
+							style="color:black" />
+					</div>
+				</div>
+				<div style="clear: both"></div>
+
+				<p:fieldset legend="personal information"
+					style="width:50%;	float:left;">
+					<div class="p-d-flex">
+						<div class="p-mb-2 p-mr-2">
+							<p:selectOneRadio value="#{patientMB.addpatients.gender}"
+								unselectable="true" required="true">
+								<f:selectItem itemLabel="#{msg['gnder_male']}" itemValue="male" />
+								<f:selectItem itemLabel="#{msg['gnder_fmale']}"
+									itemValue="fmale" />
+
+							</p:selectOneRadio>
+						</div>
+
+
+						<div class="p-mb-2 p-mr-2">
+
+							<p:selectOneRadio
+								value="#{patientMB.addpatients.selsecNationality}"
+								style="margin-bottom:10px;" filter="true"
+								filterMatchMode="contains" required="true">
+								<p:ajax event="change" process="@this" update="@form" />
+								<f:selectItem itemLabel="#{msg['Nationality_Jordanian']}"
+									itemValue="1" />
+								<f:selectItem itemLabel="#{msg['Nationality_nonJordanian']}"
+									itemValue="2" />
+							</p:selectOneRadio>
+							<div class="p-mb-2 p-mr-2">
+								<p:outputLabel value="*#{msg['ID_number']}"
+									rendered="#{patientMB.addpatients.selsecNationality eq 1 }" />
+
+							</div>
+							<p:inputText value="#{patientMB.addpatients.idNumber}"
+								required="true"
+								rendered="#{patientMB.addpatients.selsecNationality eq 1 }" />
+
+						</div>
+					</div>
+					<div class="p-mb-5">
+						<p:selectOneRadio
+							value="#{patientMB.addpatients.selsectCashOrInsurance}"
+							unselectable="true">
+							<p:ajax event="change" process="@this" update="@form" />
+							<f:selectItem itemLabel="#{msg['insurance']}" itemValue="1" />
+							<f:selectItem itemLabel="#{msg['cash']}" itemValue="2" />
+
+						</p:selectOneRadio>
+
+						<div class="p-mb-5">
+							<h:outputLabel value="*#{msg['name_insurance']}"
+								rendered="#{patientMB.addpatients.selsectCashOrInsurance eq 1 }" />
+						</div>
+						<div class="p-mb-5">
+							<p:inputText value="#{patientMB.addpatients.infoinsurance}"
+								required="true"
+								rendered="#{patientMB.addpatients.selsectCashOrInsurance eq 1 }" />
+						</div>
+					</div>
+
+					<div class="p-d-flex p-flex-column">
+						<div class="p-m-5">
+
+							<h:outputLabel value="*#{msg['Patient_name']} " />
+						</div>
+						<div class="p-m-5">
+							<p:inputText value="#{patientMB.addpatients.namePatient}"
+								required="true" />
+
+						</div>
+						<div class="p-m-5">
+							<h:outputLabel value="*#{msg['age']}" />
+
+						</div>
+						<div class="p-m-5">
+							<p:inputText value="#{patientMB.addpatients.age}" required="true" />
+
+						</div>
+						<div class="p-m-5">
+							<h:outputLabel value="*#{msg['work_nature']}" />
+						</div>
+						<div class="p-m-5">
+							<p:inputText value="#{patientMB.addpatients.workNature}"
+								required="true" />
+						</div>
+						<div class="p-m-5">
+							<h:outputLabel value="*#{msg['phone']}" />
+						</div>
+						<div class="p-m-5">
+							<p:inputText value="#{patientMB.addpatients.phone}"
+								required="true" />
+						</div>
+						<div class="p-m-5">
+							<h:outputLabel value="*#{msg['location']}" />
+						</div>
+						<div class="p-m-5">
+							<p:inputText value="#{patientMB.addpatients.location}"
+								required="true" />
+						</div>
+
+
+
+					</div>
+
+				</p:fieldset>
+
+				<p:fieldset legend="Doctor information"
+					style="width:40%;float:right">
+
+					<div class="p-mb-5">
+						<h:outputLabel value="*#{msg['Transformer_doctor']}" />
+					</div>
+					<div class="p-mb-5">
+						<p:inputText value="#{patientMB.addpatients.doctor}"
+							required="true" />
+					</div>
+					<div class="p-mb-5">
+						<h:outputLabel value="*#{msg['Diagnostics_on_conversion']}" />
+					</div>
+					<div class="p-mb-5">
+						<p:inputTextarea rows="6" cols="33" />
+					</div>
+
+				</p:fieldset>
+
+				<div style="clear: both"></div>
+
+				<!-- end flex -->
+
+			</p:tab>
+
+			<p:tab title="#{msg['medical_history']}">
+				<h3>A-Chief Complaints</h3>
+				<p:panelGrid columns="1" layout="grid"
+					columnClasses="ui-g-12 ui-md-6 ui-lg-12, ui-g-12 ui-md-6 ui-lg-12"
+					style="box-shadow: 5px 10px 20px grey;">
+					<h:outputLabel value="#{msg['chief_complaints']}" />
+					<p:inputTextarea value="#{patientMB.addpatients.chiefComplaints}"
+						cols="33" />
+				</p:panelGrid>
+				<br />
+				<h3>B-Past Medical History</h3>
+				<p:panelGrid columns="13" layout="grid"
+					columnClasses="ui-g-12 ui-md-6 ui-lg-12, ui-g-12 ui-md-6 ui-lg-12"
+					id="selsectYesOrNo" style="box-shadow: 5px 10px 20px grey;">
+					<div>
+						<h:outputLabel value="#{msg['p_m_history']}" />
+						<p:selectManyCheckbox id="grid2"
+							value="#{patientMB.selectedPastMedicalHistory}"
+							layout="responsive" columns="3">
+							<f:selectItems value="#{patientMB.pastMedicalHistoryArray}"
+								var="Patien" itemLabel="#{Patien}" itemValue="#{Patien}" />
+						</p:selectManyCheckbox>
+						<div>
+
+							<h:outputLabel value="Other" />
+							<p:inputText value="#{patientMB.addpatients.otherPastMedical}" />
+						</div>
+
+						<div>
+
+							<h:outputLabel
+								value="History of Serious Injuries? If Yes please describe below." />
+
+							<p:selectOneRadio value="#{patientMB.addpatients.selsectYesOrNo}"
+								unselectable="true">
+								<p:ajax event="change" process="@this"
+									update="@parent:selsectYesOrNo" />
+								<f:selectItem itemLabel="Yes" itemValue="1" />
+								<f:selectItem itemLabel="NO" itemValue="2" />
+							</p:selectOneRadio>
+							<div>
+								<p:inputTextarea cols="33"
+									value="#{patientMB.addpatients.describeIllnesses}"
+									rendered="#{patientMB.addpatients.selsectYesOrNo eq 1 }" />
+							</div>
+						</div>
+					</div>
+				</p:panelGrid>
+				<br />
+				<h3>C-Past Surgical History</h3>
+				<p:panelGrid columns="10" layout="grid"
+					styleClass="showcase-text-align-center"
+					columnClasses="ui-g-12 ui-md-6 ui-lg-12, ui-g-12 ui-md-6 ui-lg-12"
+					style="box-shadow: 5px 10px 20px grey;border-radius: 30px;">
+					<div>
+
+						<h:outputLabel value="#{msg['p_S_history']}" />
+						<p:selectManyCheckbox
+							value="#{patientMB.selectedPastSurgicalHistory}"
+							layout="responsive" columns="3">
+							<f:selectItems value="#{patientMB.pastSurgicalHistoryArray}"
+								var="Patien" itemLabel="#{Patien}" itemValue="#{Patien}" />
+						</p:selectManyCheckbox>
+						<div>
+
+							<h:outputLabel value="Other" />
+							<p:inputText value="#{patientMB.addpatients.otherPastSurgical}" />
+						</div>
+					</div>
+				</p:panelGrid>
+				<br />
+				<h3>D-Social History</h3>
+				<p:panelGrid columns="26" layout="grid"
+					styleClass="showcase-text-align-center"
+					columnClasses="ui-g-12 ui-md-6 ui-lg-12, ui-g-12 ui-md-6 ui-lg-12"
+					style="box-shadow: 5px 10px 20px grey;">
+					<div>
+
+						<h:outputLabel value="#{msg['Social_history']}" />
+						<div>
+							<h:outputLabel value="#{msg['Married_Status']}" />
+							<p:selectOneRadio value="#{patientMB.addpatients.marriedStatus}"
+								unselectable="true">
+								<f:selectItem itemLabel="#{msg['single']}" itemValue="single" />
+								<f:selectItem itemLabel="#{msg['Married']}" itemValue="Married" />
+
+							</p:selectOneRadio>
+						</div>
+						<div>
+							<h:outputLabel value="#{msg['have_Childern']}" />
+							<p:selectOneRadio value="#{patientMB.addpatients.children}"
+								unselectable="true">
+								<f:selectItem itemLabel="Yes" itemValue="Yes" />
+								<f:selectItem itemLabel="NO" itemValue="Yes" />
+							</p:selectOneRadio>
+						</div>
+						<div>
+							<h:outputLabel value="#{msg['live_alone']}" />
+							<p:selectOneRadio value="#{patientMB.addpatients.liveAlone}"
+								unselectable="true">
+								<f:selectItem itemLabel="Yes" itemValue="Yes" />
+								<f:selectItem itemLabel="NO" itemValue="Yes" />
+
+							</p:selectOneRadio>
+						</div>
+
+
+
+						<div>
+							<h:outputLabel value="#{msg['Tobacco']}:" />
+							<p:selectOneRadio value="#{patientMB.addpatients.tobacco}"
+								unselectable="true">
+								<f:selectItem itemLabel="Never" itemValue="Never" />
+								<f:selectItem itemLabel="In the Past" itemValue="In the Past" />
+								<f:selectItem itemLabel="Presently" itemValue="Presently" />
+							</p:selectOneRadio>
+
+
+							<h:outputLabel value="How Much?" />
+							<p:inputText value="#{patientMB.addpatients.howMuch}" />
+
+
+							<h:outputLabel value="How Long?" />
+							<p:inputText value="#{patientMB.addpatients.howLong}" />
+
+						</div>
+						<div>
+							<h:outputLabel value="#{msg['AlcoholUse']}" />
+							<p:selectOneRadio value="#{patientMB.addpatients.alcoholUse}"
+								unselectable="true">
+								<f:selectItem itemLabel="Daily" itemValue="Daily" />
+								<f:selectItem itemLabel="Occasional" itemValue="Occasional" />
+								<f:selectItem itemLabel="None" itemValue="None" />
+							</p:selectOneRadio>
+
+						</div>
+
+						<div>
+							<h:outputLabel value="Other substance use or abouse ?" />
+							<p:selectOneRadio
+								value="#{patientMB.addpatients.otherSubstanceUseOrAbouse}"
+								unselectable="true">
+								<f:selectItem itemLabel="Yes" itemValue="Yes" />
+								<f:selectItem itemLabel="NO" itemValue="Yes" />
+							</p:selectOneRadio>
+
+						</div>
+					</div>
+				</p:panelGrid>
+				<br />
+				<h3>E-System Review</h3>
+				<p:panelGrid columns="2" layout="grid"
+					styleClass="showcase-text-align-center"
+					style="box-shadow: 5px 10px 20px grey;">
+					<p:column>
+						<h:outputLabel
+							value="General Symptoms (i.e fever,weight ganin/loss,fatigue)" />
+						<p:inputText value="#{patientMB.addpatients.generalSymptoms}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Eyes/Ears/Nose/Throat" />
+						<p:inputText value="#{patientMB.addpatients.eyesEarsNosethroat}" />
+
+					</p:column>
+
+
+					<p:column>
+						<h:outputLabel value="Heart" />
+						<p:inputText value="#{patientMB.addpatients.infoheart}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Lung" />
+						<p:inputText value="#{patientMB.addpatients.lung}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Allergies/Rashes" />
+						<p:inputText value="#{patientMB.addpatients.allergiesRashes}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Muscles/Bones/Joints" />
+						<p:inputText value="#{patientMB.addpatients.musclesBonesJoints}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Psychiatric" />
+						<p:inputText value="#{patientMB.addpatients.psychiatric}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Endocrine(Diabetes/Thyroid)" />
+						<p:inputText value="#{patientMB.addpatients.endocrine}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Bleeding/Lymph Nodes" />
+						<p:inputText value="#{patientMB.addpatients.bleedingLymphNodes}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Nerves" />
+						<p:inputText value="#{patientMB.addpatients.nerves}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Skin and /or Breasts" />
+						<p:inputText value="#{patientMB.addpatients.skinAndOrBreasts}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="OB/Genital/Urinary" />
+						<p:inputText value="#{patientMB.addpatients.oBGenitalUrinary}" />
+
+					</p:column>
+
+					<p:column>
+						<h:outputLabel value="Abdomen" />
+						<p:inputText value="#{patientMB.addpatients.abdomen}" />
+
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Other" />
+						<p:inputText value="#{patientMB.addpatients.otherSymptom}" />
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Please List" />
+						<p:inputTextarea cols="33"
+							value="#{patientMB.addpatients.pleaseList}" />
+					</p:column>
+					<p:column>
+						<h:outputLabel value="Current Medicaltions" />
+						<p:inputTextarea cols="33"
+							value="#{patientMB.addpatients.currentMedicaltions}" />
+					</p:column>
+
+				</p:panelGrid>
+				<br />
+				<div align="center">
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+						style="width:auto" action="#{patientMB.save()}" process="@form"
+						update="@form" />
+				</div>
+			</p:tab>
+		</p:tabView>
+
+	</composite:implementation>
+</body>
+</html>

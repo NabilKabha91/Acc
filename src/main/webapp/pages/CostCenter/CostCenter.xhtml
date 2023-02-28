@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add" value="اضافه مراكز التكلفة"  action="#{costCenterMB.init()}" actionListener="#{costCenterDetailsMB.redirectToCostCenterAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{costCenterMB.addwarehouses}" />
+				</p:commandButton>
+									<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="customerDetails" var="det" styleClass="txt-center" value="#{costCenterDetailsMB.costCenterList}">
+					
+              
+					<p:column filterBy="#{det.costCenterCoding}"  headerText="اسم  مركز التكلفه بالعربي ">
+						<p:outputLabel value="#{det.costCenterCoding}" />
+					</p:column>
+				 
+				<p:column filterBy="#{det.costCenterCodingEn}"  headerText="اسم مركز التكلفة انجليزي">
+						<p:outputLabel value="#{det.costCenterCodingEn}" />
+					</p:column>
+
+<p:column filterBy="#{det.code}"  headerText="كود مركز التكلفه">
+						<p:outputLabel value="#{det.code}" />
+					</p:column>
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{costCenterMB.init()}" actionListener="#{costCenterDetailsMB.redirectToCostCenterEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{costCenterMB.costCenter}" />
+							<f:setPropertyActionListener value="false" target="#{costCenterMB.addwarehouses}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_agent']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{costCenterDetailsMB.deleteCostCenter(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

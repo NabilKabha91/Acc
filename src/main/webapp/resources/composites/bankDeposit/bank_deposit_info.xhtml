@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCustomer" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<div class="card card-w-title">
+					<center>
+
+						<h:outputLabel style='font-size: 25.0pt '
+							value="#{bankDepositMB.bankDeposit.documentType}">
+
+
+						</h:outputLabel>
+					</center>
+					<p:panelGrid id="pnlCustomer" columns="2" layout="grid"
+						styleClass="border Wid70 MarAuto">
+
+						<p:outputLabel value="#{msg['noRecord']}" />
+
+						<p:inputText
+							value="#{bankDepositMB.bankDeposit.bankdepositNumber}" />
+
+						<p:outputLabel value="#{msg['Bank_deposit_number']}" />
+
+						<p:inputText value="#{bankDepositMB.bankDeposit.bankNoticeNumber}" />
+
+						<p:outputLabel value="#{msg['Date']}" />
+
+						<p:calendar value="#{bankDepositMB.bankDeposit.todayDate}"
+							pattern="yyyy/MM/dd" required="true" />
+
+
+
+						<p:outputLabel value="#{msg['from_Account']}" />
+
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+							filter="true" filterMatchMode="contains" id="group"
+							value="#{bankDepositMB.bankDeposit.groupingIdFrom}"
+							style="margin-bottom:10px;" styleClass="Wid100">
+							<f:selectItem itemLabel="#{msg['from_Account']}" />
+							<f:selectItems value="#{bankDepositMB.groupList}" var="grouping"
+								itemLabel="#{grouping.grpDesc}" itemValue="#{grouping.grpId}" />
+
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="#{msg['To_account']}" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+							filter="true" filterMatchMode="contains" id="groupto"
+							value="#{bankDepositMB.bankDeposit.groupingIdTo}"
+							style="margin-bottom:10px;" styleClass="Wid100">
+							<f:selectItem itemLabel="#{msg['To_account']}" />
+							<f:selectItems value="#{bankDepositMB.groupList}" var="grouping"
+								itemLabel="#{grouping.grpDesc}" itemValue="#{grouping.grpId}" />
+
+						</p:selectOneMenu>
+
+						<p:outputLabel value="#{msg['Currency']}     " />
+						<p:selectOneMenu id="definitionOfCurrencies"
+							value="#{bankDepositMB.bankDeposit.definitionOfCurrencies}"
+							style="margin-bottom:10px;"
+							converter="omnifaces.SelectItemsConverter" filter="true"
+							filterMatchMode="contains" multiple="true">
+							<f:selectItem itemLabel=" " itemValue="" />
+
+							<f:selectItems
+								value="#{bankDepositMB.definitionOfCurrenciesList}"
+								var="definitionOfCurrenciesList"
+								itemLabel="#{utils.isArabic() ? definitionOfCurrenciesList.definitionOfCurrenciesName : definitionOfCurrenciesList.definitionOfCurrenciesNameEn} "
+								itemValue="#{definitionOfCurrenciesList}" />
+
+
+						</p:selectOneMenu>
+
+						<p:outputLabel value="#{msg['amount']}     " />
+
+						<p:inputText value="#{bankDepositMB.bankDeposit.initalAmount}"
+							required="true" />
+
+						<h:outputLabel value="#{msg['Total']}     ">
+						</h:outputLabel>
+
+						<h:outputText value="#{bankDepositMB.bankDeposit.amount}">
+							<f:convertNumber pattern="###,###.##" />
+						</h:outputText>
+						<p:outputLabel value="#{msg['Descreption']}     " />
+
+						<p:inputText value="#{bankDepositMB.bankDeposit.note}"
+							required="true" />
+
+					</p:panelGrid>
+
+
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+						style="width:auto" action="#{bankDepositMB.saveBankDeposit()}"
+						process="@form" update="@form" />
+
+					<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel"
+						style="width:auto" process="@this" update="@this"
+						action="#{bankDepositMB.cancelAction()}" />
+
+					<p:commandButton onclick="window.print();" type="button"
+						icon="ui-icon-print"  disabled="#{bankDepositMB.bankDeposit.closeMonth eq 1}">
+					</p:commandButton>
+					<p:dialog resizable="false" height="45vh" width="450px"
+						modal="true" showHeader="false" widgetVar="uploadDocument"
+						closeOnEscape="true" dynamic="true">
+
+						<p:spacer height="10" width="100%"></p:spacer>
+						<center>
+							<h:panelGroup columns="2" id="fd" layout="block"
+								styleClass="no-border Wid70 MarAuto">
+
+								<p:outputLabel style="font-size: 17px;"
+									value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+								<p:spacer height="10" width="100%"></p:spacer>
+								<p:fileUpload rendered="#{bankDepositMB.bankDeposit.id ne null}"
+									fileUploadListener="#{bankDepositMB.uploadDocument}"
+									mode="advanced" label="#{msg['attached']}" auto="true"
+									allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+									uploadLabel="#{msg['attached']}" cancelLabel="#{msg['Cancel']}">
+
+								</p:fileUpload>
+
+								<p:commandButton value="لا" style="width:auto"
+									action="#{bankDepositMB.cancelAction()}" process="@form"
+									update="@form">
+
+								</p:commandButton>
+
+
+							</h:panelGroup>
+						</center>
+					</p:dialog>
+
+
+					<p:dataTable rendered="#{bankDepositMB.bankDeposit.id ne null}"
+						reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+						var="doc" styleClass="txt-center"
+						value="#{bankDepositMB.documentList}">
+
+						<p:column>
+							<p:link value="#{doc.documentName}" type="button"
+								onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+						</p:column>
+
+
+					</p:dataTable>
+
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

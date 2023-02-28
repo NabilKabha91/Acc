@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCustomer" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card">
+					<div>
+						<center>
+
+							<h:outputLabel style='font-size: 25.0pt '
+								value="#{noteCreditMB.noteCredit.documentType}">
+								<br></br>
+								<br></br>
+
+
+							</h:outputLabel>
+						</center>
+						<div
+							style="box-shadow: 3px 3px 3px 3px #888888; float: right; width: 1000px; hight: auto;">
+							<p:panelGrid id="pnlCustomer" columns="4" layout="grid"
+								styleClass="no-border Wid500 MarAuto ">
+
+								<p:outputLabel value="#{msg['DN_number']}"
+									style="font-weight:bold;" />
+
+								<p:inputText value="#{noteCreditMB.noteCredit.noteCreditNumber}" />
+
+								<p:outputLabel value="عميل مورد " style="font-weight:bold;" />
+
+								<p:selectOneRadio id="enterVacationList"
+									value="#{noteCreditMB.noteCredit.suppliersCustomer}"
+									style="margin-bottom:10px;" filter="true"
+									filterMatchMode="contains" required="true">
+									<p:ajax event="change" process="@this" update="@form" />
+
+									<f:selectItem itemLabel="عميل " itemValue="1" />
+									<f:selectItem itemLabel="مورد
+						" itemValue="2" />
+
+
+								</p:selectOneRadio>
+
+<p:outputLabel value="فاتوره/بدون فاتورة  "
+									rendered="#{noteCreditMB.noteCredit.suppliersCustomer eq 2}"
+									style="font-weight:bold;" />
+
+								<p:selectOneRadio id="enterVacationList8"
+									value="#{noteCreditMB.noteCredit.bill}"
+									style="margin-bottom:10px;" filter="true"
+									filterMatchMode="contains" required="true"
+									rendered="#{noteCreditMB.noteCredit.suppliersCustomer eq 2}">
+									<p:ajax process="@this" update="@parent:customer5" />
+									<p:ajax event="change" process="@this" update="@form" />
+
+									<f:selectItem itemLabel="فاتورة " itemValue="1" />
+									<f:selectItem itemLabel="بدون فاتورة" itemValue="2" />
+
+
+								</p:selectOneRadio>
+								<p:outputLabel value="#{msg['Date']}" style="font-weight:bold;" />
+
+								<p:calendar value="#{noteCreditMB.noteCredit.todayDate}"
+									pattern="yyyy/MM/dd" required="true" />
+
+								<p:outputLabel value="#{msg['Supplier_Name']}"
+									rendered="#{noteCreditMB.noteCredit.suppliersCustomer eq 2}"
+									style="font-weight:bold;" />
+
+								<p:selectOneMenu id="suppliersList"
+									value="#{noteCreditMB.noteCredit.suppliers}"
+									style="margin-bottom:10px;width:220px"
+									converter="omnifaces.SelectItemsConverter" required="true"
+									filter="true" filterMatchMode="contains" multiple="true"
+									rendered="#{noteCreditMB.noteCredit.suppliersCustomer eq 2}">
+									<p:ajax  update="customer5" />
+
+									<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+
+									<f:selectItems value="#{noteCreditDetailsMB.suppliersList}"
+										var="suppliers"
+										itemLabel="#{utils.isArabic() ? suppliers.suppliersNameAr : suppliers.suppliersNameEn}"
+										itemValue="#{suppliers}" />
+
+
+								</p:selectOneMenu>
+
+
+								<p:outputLabel value="#{msg['addCustomer.customerName']}"
+									rendered="#{noteCreditMB.noteCredit.suppliersCustomer eq 1}"
+									style="font-weight:bold;" />
+
+								<p:selectOneMenu id="customer"
+									value="#{noteCreditMB.noteCredit.customer}"
+									style="margin-bottom:10px;width:220px"
+									converter="omnifaces.SelectItemsConverter" required="true"
+									filter="true" filterMatchMode="contains" multiple="true"
+									rendered="#{noteCreditMB.noteCredit.suppliersCustomer eq 1}">
+
+									<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+
+									<f:selectItems value="#{noteCreditDetailsMB.customerList}"
+										var="customer"
+										itemLabel="#{utils.isArabic() ? customer.customerNameAr:customer.customerNameEn}"
+										itemValue="#{customer}" />
+
+
+								</p:selectOneMenu>
+
+								
+
+
+
+								<p:outputLabel value="رقم الفاتورة "
+									rendered="#{noteCreditMB.noteCredit.bill eq 1 and noteCreditMB.noteCredit.suppliersCustomer eq 2 }"
+									style="font-weight:bold;" />
+
+								<p:selectOneMenu id="customer5"
+									value="#{noteCreditMB.noteCredit.purchaseBills}"
+									style="margin-bottom:10px;"
+									converter="omnifaces.SelectItemsConverter" required="true"
+									filter="true" filterMatchMode="contains" multiple="true"
+									rendered="#{noteCreditMB.noteCredit.bill eq 1 and noteCreditMB.noteCredit.suppliersCustomer eq 2 }">
+
+									<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+
+									<f:selectItems value="#{noteCreditMB.noteCredit.suppliers.purchaseBillsList}"
+										var="suppliers"
+										itemLabel="#{suppliers.purchaseBillsNumber}"
+										itemValue="#{suppliers}" />
+
+
+								</p:selectOneMenu>
+
+								<p:outputLabel value="#{msg['Currency']}     "
+									style="font-weight:bold;" />
+								<p:selectOneMenu id="definitionOfCurrencies"
+									value="#{noteCreditMB.noteCredit.definitionOfCurrencies}"
+									style="margin-bottom:10px;"
+									converter="omnifaces.SelectItemsConverter" filter="true"
+									filterMatchMode="contains" multiple="true" required="true">
+									<f:selectItem itemLabel=" " itemValue="" />
+
+									<f:selectItems
+										value="#{noteCreditMB.definitionOfCurrenciesList}"
+										var="definitionOfCurrenciesList"
+										itemLabel="#{utils.isArabic() ? definitionOfCurrenciesList.definitionOfCurrenciesName : definitionOfCurrenciesList.definitionOfCurrenciesNameEn}"
+										itemValue="#{definitionOfCurrenciesList}" />
+
+
+								</p:selectOneMenu>
+								<p:outputLabel value="#{msg['Group_'+=utils.getVersion()]}"
+									style="font-weight:bold;" />
+
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="group"
+									value="#{noteCreditMB.noteCredit.groupingId}"
+									style="margin-bottom:10px;" styleClass="Wid100">
+									<f:selectItem itemLabel="#{msg['Group_'+=utils.getVersion()]}" />
+									<f:selectItems value="#{noteCreditMB.groupList}" var="grouping"
+										itemLabel="#{utils.isArabic() ? grouping.grpDesc : grouping.grpDescEn}"
+										itemValue="#{grouping.grpId}" />
+
+								</p:selectOneMenu>
+
+
+
+								<h:outputLabel style="font-weight:bold;"
+									value="#{msg['we_debited_your_account_by']}  ">
+								</h:outputLabel>
+
+								<p:inputText value="#{noteCreditMB.noteCredit.initalAmount}"
+									required="true">
+
+
+								</p:inputText>
+								<h:outputLabel style="font-weight:bold;"
+									value="#{noteCreditMB.noteCredit.definitionOfCurrencies.definitionOfCurrenciesName}">
+
+								</h:outputLabel>
+
+								<br></br>
+								<h:outputLabel value="#{msg['Total']}  "
+									style="font-weight:bold;">
+								</h:outputLabel>
+
+								<h:outputText value="#{noteCreditMB.noteCredit.amount}">
+									<f:convertNumber pattern="###,###.##" />
+								</h:outputText>
+
+								<h:outputLabel value="#{msg['Descreption']}  "
+									style="font-weight:bold;" />
+
+
+								<p:inputTextarea value="#{noteCreditMB.noteCredit.note}"
+									autoResize="false" styleClass="Wid200" rows="3">
+								</p:inputTextarea>
+
+
+
+							</p:panelGrid>
+						</div>
+
+
+						<br /> <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
+						<br></br> <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
+						<br></br> <br></br>
+
+
+
+						<center>
+							<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								action="#{noteCreditMB.saveNoteCredit()}" process="@form"
+								update="@form" />
+							<p:commandButton value="#{msg['cancel_btn']}"
+								icon="ui-icon-cancel"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								process="@this" update="@this"
+								action="#{noteCreditMB.cancelAction()}" />
+
+						</center>
+
+						<p:dialog resizable="false" height="45vh" width="450px"
+							modal="true" showHeader="false" widgetVar="uploadDocument"
+							closeOnEscape="true" dynamic="true">
+
+							<p:spacer height="10" width="100%"></p:spacer>
+							<center>
+								<h:panelGroup columns="2" id="fd" layout="block"
+									styleClass="no-border Wid70 MarAuto">
+
+									<p:outputLabel style="font-size: 17px;"
+										value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+									<p:spacer height="10" width="100%"></p:spacer>
+
+									<p:fileUpload rendered="#{noteCreditMB.noteCredit.id ne null}"
+										fileUploadListener="#{noteCreditMB.uploadDocument}"
+										mode="advanced" label="#{msg['attached']}" auto="true"
+										allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+										uploadLabel="#{msg['attached']}"
+										cancelLabel="#{msg['Cancel']}">
+
+									</p:fileUpload>
+
+									<p:commandButton value="لا" style="width:auto"
+										action="#{noteCreditMB.cancelAction()}" process="@form"
+										update="@form">
+
+									</p:commandButton>
+
+
+								</h:panelGroup>
+							</center>
+						</p:dialog>
+
+
+						<p:dataTable rendered="#{noteCreditMB.noteCredit.id ne null}"
+							reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+							var="doc" styleClass="txt-center"
+							value="#{noteCreditMB.documentList}">
+
+							<p:column>
+								<p:link value="#{doc.documentName}" type="button"
+									onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+							</p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

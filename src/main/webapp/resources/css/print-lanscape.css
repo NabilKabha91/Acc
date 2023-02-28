@@ -1,0 +1,16 @@
+@media print {
+	.ui-datatable * {
+		font-size: x-small !important;
+	}
+	@page {
+		size: landscape;
+	}
+	.no-print {
+		display: none;
+		visibility: hidden !important;
+	}
+	.show-on-print {
+		visibility: visible !important;
+		display: table;
+	}
+}

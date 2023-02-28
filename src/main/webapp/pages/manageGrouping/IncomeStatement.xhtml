@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+    <ui:define name="title"> #{msg['Trial_Balance']}</ui:define>
+    <ui:define name="head">
+        <style>
+            .ui-datatable * {
+                border: 0px !important;
+            }
+
+            td {
+                font-size: 15px;
+                background-color: #FFFEFD
+
+
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+
+        <h:form id="officeInfo">
+            <p:growl autoUpdate="true"/>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12 no-border no-padding">
+                    <!-- Left Side -->
+                    <div class="card card-w-title">
+                        <center>
+
+                            <h1 style="padding-right: 10px">قائمة الدخل </h1>
+
+                        </center>
+
+                        <p:panelGrid id="pnlReport" columns="2" layout="grid"
+                                     styleClass="ui-panelgrid-blank form-group">
+
+                            <p:row>
+                                <p:column>
+                                    <h:panelGroup>
+                                        <label>الفترة من :</label>
+
+                                        <p:calendar value="#{iNCOMESTATEMENT.fromDate}" pattern="yyyy/MM/dd">
+                                            <p:ajax event="dateSelect" process="@form" update="@form"></p:ajax>
+                                        </p:calendar>
+                                    </h:panelGroup>
+                                </p:column>
+                                <p:column>
+                                </p:column>
+                                <p:column>
+                                    <h:panelGroup>
+                                        <label>#{msg['report.to_date']}:</label>
+
+                                        <p:calendar value="#{iNCOMESTATEMENT.toDate}" pattern="yyyy/MM/dd">
+                                            <p:ajax process="@form" update="@form"></p:ajax>
+                                        </p:calendar>
+                                    </h:panelGroup>
+                                </p:column>
+                            </p:row>
+                            <p:spacer/>
+                        </p:panelGrid>
+
+                        <p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto"
+                                         action="#{iNCOMESTATEMENT.getAccountsTree()}"
+                                         process="@form" update="@form"/>
+
+                        <br/>
+                        <br/>
+                    </div>
+                    <div class="card card-w-title">
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <h:panelGroup id="print" layout="block">
+                                    <p:commandButton value="اصدار الى اكسل " id="exportEx" style="width:auto"
+                                                     action="#{iNCOMESTATEMENT.exportToExcel}">
+                                    </p:commandButton>
+
+                                    <common:printHeader target="@form:print" office="#{utils.getCurrentOffice()}"
+                                                        reportName=" #{msg['Trial_Balance']}  ">
+
+                                    </common:printHeader>
+                                    <center>
+
+                                        <h1 style="padding-right: 10px">قائمة الدخل </h1>
+
+                                    </center>
+                                    <p:panelGrid styleClass="no-border" style="width :100%;  direction:#{localeMB.dir}">
+
+
+                                        <center>
+                                            <p:outputLabel style="color: red;font-size: 20px;font-weight:bold;" id="emp"
+                                                           value="#{selectCompany.legalCompanyName}"/>
+                                        </center>
+                                        <center>
+                                            <p:outputLabel for="user" value="  الفترة من :"/>
+                                            <p:outputLabel id="user" value="#{iNCOMESTATEMENT.fromDate}">
+
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3"/>
+
+                                            </p:outputLabel>
+                                            <p:spacer width="50px"></p:spacer>
+                                            <p:outputLabel for="user" value="  الى :"/>
+                                            <p:outputLabel id="user1" value="#{iNCOMESTATEMENT.toDate}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3"/>
+
+                                            </p:outputLabel>
+                                        </center>
+
+
+                                    </p:panelGrid>
+
+                                    <p:dataTable var="record" value="#{iNCOMESTATEMENT.accountsTreesList}"
+                                                 id="groupList" rows="100">
+
+                                        <p:column width="6%">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msg['Account_Name']}  "/>
+                                            </f:facet>
+                                            <h:outputLabel value="#{record.accountsTreesName}">
+                                            </h:outputLabel>
+
+                                        </p:column>
+
+                                        <p:column width="6%">
+                                            <f:facet name="header">
+                                                <h:outputText value="الرصيد  "/>
+                                            </f:facet>
+                                            <h:outputLabel value="#{-1*record.total}">
+
+                                            </h:outputLabel>
+
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>

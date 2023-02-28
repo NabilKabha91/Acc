@@ -1,0 +1,133 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add" value="#{msg['add_supplier']}" action="#{suppliersMB.init()}" actionListener="#{suppliersDetailsMB.redirectToSuppliersAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{suppliersMB.addSuppliers}" />
+				</p:commandButton>
+				
+				
+			  
+				<p:fileUpload  fileUploadListener="#{suppliersMB.listener}" mode="advanced" label="تحميل اكسل "
+		 auto="true" uploadLabel="تحميل اكسل" cancelLabel="الغاء" />
+		
+					<p:commandButton value="اصدار الى اكسل "   id="exportEx"  style="width:auto" action="#{suppliersDetailsMB.exportToExcel}">
+			</p:commandButton> 
+			
+				<div  class="topbar-left">
+			
+<h:outputLabel value="الرصيد=" >			
+<h:outputLabel style="color: Black;font-size:20px;"
+						value="#{suppliersDetailsMB.suppliersList.stream().map(s->s.balance).sum()}">
+					 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>	
+					</h:outputLabel>
+					
+					</div>
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="customerDetails" var="det" styleClass="txt-center" value="#{suppliersDetailsMB.suppliersList}">
+				
+				<p:column filterBy="#{det.previousCode}"  headerText="كود المورد"  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.previousCode}" />
+					</p:column> 
+					
+					<p:column filterBy="#{det.suppliersNameEn}"  headerText="اسم المورد بالانجليزي "  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.suppliersNameEn}" />
+					</p:column>  
+					
+					<p:column  width="7%" filterBy="#{utils.isArabic() ? det.suppliersNameAr : det.suppliersNameEn}" headerText="#{msg['Supplier_Name_Arabic']} ">
+						<p:outputLabel value="#{utils.isArabic() ? det.suppliersNameAr : det.suppliersNameEn}" />
+					</p:column>
+
+<p:column filterBy="#{det.ref}"  headerText="المرجع   "  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.ref}" />
+					</p:column>  
+					
+               	<p:column  width="7%" filterBy="#{det.taxNumber}"  headerText="#{msg['addCustomer.taxNumber_'+=utils.getVersion()]}" rendered="#{utils.getVersion() ne 'KSA'}">
+						<p:outputLabel value="#{det.taxNumber}" />
+					</p:column>
+					
+					<p:column filterBy="#{det.saleTaxNumber}"  headerText="رقم ضريبة القيمة المضافة    "  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.saleTaxNumber}" />
+					</p:column>  
+					<p:column  width="7%" filterBy="#{det.suppliersIdNumber}"  headerText="#{msg['addCustomer.customerIdNumber_'+=utils.getVersion()]}" rendered="#{utils.isSallon() ne  true}">
+						<p:outputLabel value="#{det.suppliersIdNumber}" />
+					</p:column>
+					
+                   <p:column  width="7%" filterBy="#{det.responsiblePerson}"  headerText="#{msg['addCustomer.responsiblePerson_'+=utils.getVersion()]}" rendered="#{utils.isSallon() ne  true}">
+						<p:outputLabel value="#{det.responsiblePerson}" />
+					</p:column>
+	                  <p:column width="7%" filterBy="#{det.address}" headerText="#{msg['addCompany.address']}">
+						<p:outputLabel value="#{det.address}" />
+					</p:column>
+					<p:column width="7%" filterBy="#{det.phoneNumber}" headerText="#{msg['addAgent.agent_phone']}">
+						<p:outputLabel value="#{det.phoneNumber}" />
+					</p:column>
+
+					<p:column width="7%" filterBy="#{det.faxNumber}" headerText="#{msg['addAgent.agent_fax']}">
+						<p:outputLabel value="#{det.faxNumber}" />
+					</p:column>
+
+
+					<p:column width="7%" filterBy="#{det.email}" headerText="#{msg['addAgent.agent_email']}">
+						<p:outputLabel value="#{det.email}" />
+					</p:column>
+					<p:column filterBy="#{det.paymentMethod}"  headerText="طريقة السداد   "  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.paymentMethod}" />
+					</p:column>  
+                   <p:column width="7%" filterBy="#{det.creditLimit}" headerText="#{msg['addCustomer.creditLimit']}" rendered="#{utils.isSallon() ne  true}">
+						<p:outputLabel value="#{det.creditLimit}" />
+					</p:column>
+					
+                     <p:column  headerText="الارصدة الافتتاحية " width="7%" >
+						<p:outputLabel value="#{det.openingBalances}" >
+													                <f:convertNumber pattern="###,###.##"/>
+						
+						</p:outputLabel>
+					</p:column>	
+						
+							<p:column filterBy="#{det.grpDesc}"  headerText=" المجموعات"  width="7%" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.grpDesc}" />
+					</p:column>
+							 <p:column width="7%" headerText="#{msg['Balance']} ">
+						<p:outputLabel value="#{det.balance}">
+			                <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+					</p:column>	
+					<p:column  width="7%" headerText="#{msg['Account_statement']}  ">
+						<p:commandButton id="Btn" icon="ui-icon-document"  action="#{suppliersDetailsMB.redirectToCustomerSelect()}" process="@this" >
+		                <f:setPropertyActionListener value="#{det}" target="#{suppliersMB.suppliers}" />
+							
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_agent']}" trackMouse="true" />
+						</p:column>
+					<p:column headerText="#{msg['global.options']}" width="20%">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{suppliersMB.init()}" actionListener="#{suppliersDetailsMB.redirectToSuppliersEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{suppliersMB.suppliers}" />
+							<f:setPropertyActionListener value="false" target="#{suppliersMB.addSuppliers}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['Edit_supplier']} " trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{suppliersDetailsMB.deleteSuppliers(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

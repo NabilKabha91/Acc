@@ -1,0 +1,191 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="title">#{msg['Statement_of_account']}  </ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+
+		<h:form id="customerSheetReport">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px">Customer Sheet Report</h1>
+						<p:panelGrid id="pnlReport" columns="1" layout="grid"
+							styleClass="ui-panelgrid-blank form-group">
+
+				
+						
+						
+							<p:row>
+								<p:column>
+									<h:panelGroup>
+										<label>#{msg['report.from_date']}:</label>
+
+										<p:calendar value="#{customerSheetReport.fromDate}"
+											pattern="yyyy/MM/dd">
+											<p:ajax event="dateSelect" process="@form" update="@form"></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+								<p:column>
+								</p:column>
+								<p:column>
+									<h:panelGroup>
+										<label>#{msg['report.to_date']}:</label>
+
+										<p:calendar value="#{customerSheetReport.toDate}"
+											pattern="yyyy/MM/dd">
+											<p:ajax process="@form" update="@form"></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+
+							<p:spacer />
+
+						</p:panelGrid>
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save"
+							style="width:auto" action="#{customerSheetReport.initAllcustomer()}"
+							process="@form" update="@form" />
+
+
+						<br />
+					</div>
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+									<common:printHeader target="@form:print"
+										office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['Statement_of_account']}">
+
+									</common:printHeader>
+									<p:panelGrid styleClass="no-border"
+										style="width :100%;  direction:#{localeMB.dir}">
+
+
+
+
+
+
+										<center>
+											<p:outputLabel
+												style="color: red;font-size: 20px;font-weight:bold;"
+												id="emp" value="#{selectCompany.legalCompanyName}" />
+										</center>
+									</p:panelGrid>
+
+
+
+
+
+									<br />
+
+
+									<p:dataTable var="record"
+										value="#{customerSheetReport.valueTaxList}"
+										id="customerSheetReport" sortBy="#{record.customer.customerNameAr}">
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="#{msg['Date']}" />
+											</f:facet>
+											<h:outputLabel value="#{record.date}">
+												<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3" />
+
+											</h:outputLabel>
+										</p:column>
+
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputLabel for="user"
+													value="#{msg['addCustomer.customerName']}" />
+											</f:facet>
+											<h:outputLabel id="user"
+												value="#{utils.isArabic() ? record.customer.customerNameAr:record.customer.customerNameEn}">
+											</h:outputLabel>
+										</p:column>
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="السعر    " />
+											</f:facet>
+											<h:outputLabel value="#{record.total}">
+												<f:convertNumber pattern="###,###.##" />
+											</h:outputLabel>
+											<f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{customerSheetReport.valueTaxList.stream().map(s->s.total).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+										</p:column>
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputLabel value="الخدمة" />
+											</f:facet>
+											<h:outputLabel id="user2"
+												value="#{utils.isArabic() ? record.servicesProducts.nameProductOrService:record.servicesProducts.nameProductOrServiceEn}">
+											</h:outputLabel>
+										</p:column>
+
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputLabel value="الموظف" />
+											</f:facet>
+											<h:outputLabel
+												value="#{utils.isArabic() ? record.employee.employeeNameAr:record.employee.employeeNameEn}">
+											</h:outputLabel>
+										</p:column>
+
+										
+
+	<p:summaryRow >
+										<p:column>
+										<h:outputText style="color: Black;font-size: 17px;font-weight: bold;"
+				
+										value="المجموع">
+										</h:outputText>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+											<h:outputLabel style="color: Black;font-size: 15px;"
+											value="#{customerSheetReport.getSum(record)}">
+
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+										</p:column>
+										<p:column>
+										</p:column>
+										<p:column>
+										</p:column>
+										
+										</p:summaryRow>
+									</p:dataTable>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>

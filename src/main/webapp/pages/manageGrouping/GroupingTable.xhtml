@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title"> #{msg['Trial_Balance']}</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form id="officeInfo">
+			<p:growl autoUpdate="true"  />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px"> #{msg['Trial_Balance']} </h1>
+												<p:panelGrid id="pnlReport" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						
+			<p:row>
+								<p:column>
+									<h:panelGroup >
+																			<label>#{msg['report.from_date']}:</label>
+									
+										<p:calendar value="#{accountsTreeBacking.fromDate}" pattern="yyyy/MM/dd">
+											<p:ajax event="dateSelect" process="@form" update="@form" ></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+																<p:column>
+								</p:column>
+								<p:column>
+									<h:panelGroup >
+											<label>#{msg['report.to_date']}:</label>
+									
+										<p:calendar value="#{accountsTreeBacking.toDate}" pattern="yyyy/MM/dd">
+											<p:ajax process="@form" update="@form" ></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+								</p:column>
+							</p:row>	
+							<p:spacer />
+
+						</p:panelGrid>
+						
+							
+								<p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto" action="#{accountsTreeBacking.getAccountsTree()}"
+							process="@form" update="@form" />	
+		
+		<br />
+					</div>
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+							<p:panelGrid id="pnt" columns="2" styleClass="ui-noborder Wid120" >
+								
+									<p:commandButton value="اصدار الى اكسل "   id="exportEx"  style="width:auto" action="#{accountsTreeBacking.exportToExcel}">
+			</p:commandButton>
+									
+									<common:printHeader target="@form:print"  office="#{utils.getCurrentOffice()}"
+										reportName=" #{msg['Trial_Balance']}  ">
+
+									</common:printHeader>
+</p:panelGrid>
+								<center>
+															<h1 style="padding-right: 10px">ميزان المراجعة  </h1>
+									</center>
+									<center>
+										<p:outputLabel for="user" value="  الفترة من :" />
+								<p:outputLabel id="user" value="#{accountsTreeBacking.fromDate}" >
+								
+															<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3"/>
+								
+								</p:outputLabel>
+		<p:spacer width="50px"></p:spacer>
+<p:outputLabel for="user" value="  الى :" />
+								<p:outputLabel id="user1" value="#{accountsTreeBacking.toDate}" >
+															<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3"/>
+								
+								</p:outputLabel>
+                        </center>
+							<p:dataTable var="record" value="#{accountsTreeBacking.accountsTreesList}" id="groupList" rows="500">
+						<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="#{msg['Account_Number']}   " />
+					</f:facet>
+					<h:outputLabel  value="#{record.accountsTreesNumber}" >
+					</h:outputLabel>
+				</p:column>
+					<p:column width="6%">
+					<f:facet name="header">
+						<h:outputText value="#{msg['Account_Name']}  " />
+					</f:facet>
+					<h:outputLabel  value="#{record.accountsTreesName}" >
+					</h:outputLabel>
+					
+				</p:column>
+				
+					<p:column width="6%">
+					<f:facet name="header">
+						<h:outputText value="#{msg['Debit']}  " />
+					</f:facet>
+					<h:outputLabel  value="#{record.debit}" >
+		 <f:convertNumber pattern="###,###.##"/>
+					
+					</h:outputLabel>
+					<f:facet name="footer">
+					<h:outputLabel style="color: Black;font-size: 15px;"
+						value="#{accountsTreeBacking.accountsTreesList.stream().map(s->s.debit).sum()}" >
+								 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>
+				</f:facet>
+				</p:column>
+					<p:column width="6%">
+					<f:facet name="header">
+						<h:outputText value="#{msg['Credit']}  "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.credit}" >
+						 <f:convertNumber pattern="###,###.##"/>
+					
+					</h:outputLabel>
+					<f:facet name="footer">
+					<h:outputLabel style="color: Black;font-size: 15px;"
+						value="#{accountsTreeBacking.accountsTreesList.stream().map(s->s.credit).sum()}" >
+												 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>
+				</f:facet>
+				</p:column>
+					</p:dataTable>
+					</h:panelGroup>
+					</div>
+					</div>
+					</div>
+					</div>
+					</div>
+					
+
+				
+			
+		
+
+		</h:form>
+	</ui:define>
+</ui:composition>

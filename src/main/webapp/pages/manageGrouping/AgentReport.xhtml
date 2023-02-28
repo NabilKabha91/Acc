@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	 template="/WEB-INF/template.xhtml">
+	<ui:define name="title">#{msg['Statement_of_account']}  </ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+
+<h:form id="officeInfo2">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+									<h:panelGroup >
+										<label>#{msg['report.from_date']}:</label>
+										<p:calendar value="#{agentReportBacking.fromDate}" pattern="yyyy/MM/dd">
+											<p:ajax event="dateSelect" process="@form" update="@form" ></p:ajax>
+										</p:calendar>
+									</h:panelGroup>
+									<br />
+	<p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto" action="#{agentReportBacking.getAccountsTree()}"
+							process="@form" update="@form" />	
+									<p:dataTable var="record" value="#{agentReportBacking.agentTreeList}" id="groupList" sortBy="#{record.agentTreeNumber}">
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="العملاء "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.agentTreeName}" >
+					</h:outputLabel>
+				</p:column>				
+					<p:column width="6%" >
+					<f:facet name="header" >
+						<h:outputText value="اقل من 30 يوم  " />
+					</f:facet>
+					<h:outputLabel  value="#{record.total1}" >
+					</h:outputLabel>
+				</p:column>
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="90-31 ايام "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.total2}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="91-180 ايام "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.total3}" >
+					</h:outputLabel>
+				</p:column>
+					<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="181-270 ايام "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.total4}" >
+					</h:outputLabel>
+				</p:column>
+				<p:column width="6%" >
+					<f:facet name="header">
+						<h:outputText value="اكثر من 270 يوم  "/>
+					</f:facet>
+					<h:outputLabel  value="#{record.total5}" >
+					</h:outputLabel>
+				</p:column>
+				<p:summaryRow>
+				
+				</p:summaryRow>
+					</p:dataTable>
+					
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

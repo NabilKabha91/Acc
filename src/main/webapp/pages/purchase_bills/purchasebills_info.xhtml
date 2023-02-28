@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addBills" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+		 
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>#{addEmployee}</h1>
+					<h:panelGroup  layout="block ">
+							
+							
+								<p:panelGrid columns="4" id="pnl" styleClass="no-border Wid70 MarAuto">
+				
+          <p:outputLabel value="اسم المورد "/>
+	<p:selectOneMenu id="suppliersList" value="#{purchaseBillsMB.purchaseBills.suppliers}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter" required="true"
+									
+									 filter="true" filterMatchMode="contains" multiple="true">
+									<f:selectItems value="#{purchaseBillsMB.suppliersList}" var="suppliers" itemLabel="#{suppliers.suppliersNameAr}" itemValue="#{suppliers}" />
+								</p:selectOneMenu>
+								
+                <p:outputLabel value="تاريخ فاتورة الشراء "/>
+	                       <p:calendar   value="#{purchaseBillsMB.purchaseBills.todayDate}" pattern="yyyy/MM/dd" required="true" disabled="true"/>
+       
+       <p:column></p:column>
+              <p:column></p:column>
+       
+              <p:outputLabel value="تاريخ الاستحقاق"/>
+	                       <p:calendar required="true" id="date1" pattern="dd/MM/yyyy" effect="fold" value="#{purchaseBillsMB.purchaseBills.dueDate}" />
+	                          <p:column></p:column>
+              <p:column></p:column>
+	           <p:outputLabel value="رقم الفاتورة"/>
+	                      		<h:outputText value="#{billsMB.size}" />
+       
+            <p:commandButton action="#{purchaseBillsMB.addNewDetails()}" oncomplete="PF('bui').hide()" onstart="PF('bui').show()" style="width:auto" value="#{msg['add']}" 
+												process="@this" icon="ui-icon-plus" />
+            
+            			</p:panelGrid>
+									
+						
+						
+					
+						
+					<br></br>
+					<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet" rowIndexVar="index" var="det" styleClass="txt-center"
+											value="#{purchaseBillsMB.addPurchaseBillsList}">
+					<p:column headerText="#" width="20">
+												<h:outputText value="#{index+1}" />
+											</p:column>
+					<p:column headerText="البند" width="50">
+											
+											</p:column>
+								<p:column headerText="الوصف" width="100">
+								<p:inputTextarea value="#{det.description}"> 
+								</p:inputTextarea>
+								</p:column>		   	
+							<p:column headerText="سعر الوحدة " width="50">
+								
+					</p:column>	
+							<p:column headerText="الكمية" width="50">
+							<p:inputNumber value="#{det.quantity}"/>
+							</p:column>	
+								
+								<p:column headerText="القيمة قبل الضريبة " width="50">
+							<h:outputText value="#{det.valueBeforeTax}"/>
+								<f:facet name="footer">
+
+					<h:outputLabel
+						value="#{purchaseBillsMB.addPurchaseBillsList.stream().map(s->s.valueBeforeTax).sum()}" />
+				</f:facet>
+							</p:column>	
+								
+								
+							<p:column headerText="نسبة الضريبة" width="50">
+								<p:selectOneMenu  required="true"
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents12" value="#{det.definitionOfTax}"
+													style="margin-bottom:10px;" styleClass="Wid100">
+													<f:selectItem  itemLabel="#{msg['select']}" />
+													<f:selectItems value="#{billsMB.definitionOfTaxList}" 
+													var="definitionOfTax" itemLabel="#{definitionOfTax.taxAmount}" itemValue="#{definitionOfTax}"  />
+													
+												</p:selectOneMenu>
+											
+							</p:column>	
+							
+						<p:column headerText="قيمة الضريبة " width="50">
+							<h:outputText value="#{det.taxAmount}">
+							
+														<f:convertNumber pattern="###,###.##" />
+							</h:outputText>
+									<f:facet name="footer">
+					<h:outputLabel
+						value="#{det.stream().map(s->s.taxAmount).sum()}" />
+				</f:facet>
+							</p:column>	
+								<p:column headerText="المجموع" width="50">
+							<h:outputText value="#{det.total}"/>
+							</p:column>
+								<p:column width="30">
+												<p:commandButton  styleClass="red-btn" action="#{billsMB.delete(det)}"  process="@this" update="@form" icon="ui-icon-delete">
+													<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+												</p:commandButton>
+
+											</p:column>	
+								
+								
+					</p:dataTable>
+										<br />
+					
+							<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{purchaseBillsMB.savePurchaseBills()}"
+						process="@form" update="@form" />
+						
+									<p:commandButton process="@form" update="@form" styleClass="btn-view" action="#{purchaseBillsMB.openViewDilog()}" title="#{screenLabels.Preview}" icon="ui-icon-search" />
+						
+					</h:panelGroup>
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

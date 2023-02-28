@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Dashboard</ui:define>
+    <ui:define name="head"/>
+    <ui:define name="content">
+
+        <h:form>
+            <p:growl autoUpdate="true" globalOnly="true"/>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="cYeard cYeard-w-title">
+                        <h1>#{msg['title.close-year']}</h1>
+                        <p:selectOneMenu id="yearList" value="#{closeYearMB.selectedYear}"
+                                         style="margin-bottom:10px;width:50%">
+                            <f:selectItem itemLabel="#{msg['month.select-year']}"
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{closeYearMB.yearList}" var="year"
+                                           itemLabel="#{year}" itemValue="#{year}"/>
+                        </p:selectOneMenu>
+                        <p:spacer/>
+
+
+                        <p:commandButton id="pnlMonths" value="#{msg['search']}" icon="ui-icon-save"
+                                         style="width:auto" action="#{closeYearMB.prepareYearClosing()}" process="@form"
+                                         update="@form"/>
+
+                    </div>
+                    <div class="ui-g-12 ui-lg-12">
+                        <p:dataTable id="closeYearDT" var="cYear" value="#{closeYearMB.acctStatementDTOs}"
+                                     editable="true"
+                                     editMode="cell" widgetVar="cellYear">
+                            <!--   <f:facet name="header">
+                                   Cell Editing with Click and RightClick
+                               </f:facet>-->
+
+                            <p:ajax event="cellEdit" listener="#{closeYearMB.onCellEdit}" update="@this"/>
+
+
+                            <p:column headerText="name">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{cYear.name}"/></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{cYear.name}" readonly="true"
+                                    /></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="number">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{cYear.number}"/></f:facet>
+
+                                    <f:facet name="input"><p:inputText value="#{cYear.number}" readonly="true"
+                                    /></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Currencies">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText
+                                            value="#{cYear.definitionOfCurrencies.definitionOfCurrenciesName}"/></f:facet>
+                                    <f:facet name="input">
+
+                                        <p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+                                                         filter="true"
+                                                         id="currency-id"
+                                                         value="#{cYear.definitionOfCurrencies}">
+                                            <f:selectItem noSelectionOption="true"
+                                                          itemLabel="#{msgs.getLabel('common.choose')}"
+                                                          itemDisabled="true"/>
+                                            <f:selectItems value="#{closeYearMB.definitionOfCurrenciesList}"
+                                                           var="currency"
+                                                           itemLabel="#{utils.isArabic() ? currency.definitionOfCurrenciesName : currency.definitionOfCurrenciesNameEn} "
+                                            />
+                                        </p:selectOneMenu>
+
+
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="credit">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{cYear.credit}"/></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{cYear.credit}"
+                                    /></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="debit">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{cYear.debit}"/></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{cYear.debit}"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="note">
+                                <p:cellEditor>
+
+                                    <f:facet name="output"><h:outputText value="#{cYear.notes}"/></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{cYear.notes}"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="3" footerText="total"/>
+
+                                    <p:column colspan="1" footerText="#{closeYearMB.calculateCredit()}"/>
+                                    <p:column colspan="1" footerText="#{closeYearMB.calculateDebit()}"/>
+
+                                    <p:column colspan="1" footerText=" "/>
+                                </p:row>
+                            </p:columnGroup>
+                        </p:dataTable>
+                    </div>
+
+
+                    <p:commandButton id="sace" value="#{msg['closing']}" icon="ui-icon-save"
+                                     style="width:auto" action="#{closeYearMB.closeYear()}" process="@form"
+                                     update="@form"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

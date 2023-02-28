@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:common="http://java.sun.com/jsf/composite/composites/common" >
+<h:head>
+
+	
+</h:head>
+<f:view contentType="text/html" locale="#{languageDetails.locale}">
+
+	<h:body>
+		<p:panel id="print">
+
+			<h:form>
+				
+				<h:panelGroup styleClass=" FLeft left20  posFixed" layout="block" id="header">
+					<p:commandButton onclick="window.print();" type="button" icon="ui-icon-print" >
+					</p:commandButton>
+				</h:panelGroup>
+
+			</h:form>
+
+			<div class="WordSection1" align="center" dir="#{languageDetails.dir}">
+				<h1>
+					<strong><span dir="#{languageDetails.dir}" style='font-size: 20.0pt; font-style: normal'> <label class="FLeft" style="color: steelblue">#{billsMB.bills.documentType}
+					</label>
+					</span></strong>
+				</h1>
+				<br />
+
+				<div align="center">
+				
+				
+				<h:panelGrid columns="2" id="customer"  styleClass="no-border Wid80 MarAuto"  >
+								
+					<h:outputLabel value="الفاتورة ل:"/>
+					<br></br>
+												<h:outputLabel value="#{msg['addCustomer.customerName']}:">
+					
+						<h:outputLabel 						value="#{utils.isArabic() ?billsMB.bills.customer.customerNameAr:billsMB.bills.customer.customerNameEn}" >
+						 
+						
+						</h:outputLabel>
+						 <p:spacer/>
+												</h:outputLabel>
+						                	                      								   <p:outputLabel value="#{msg['Invoice_number']}:" styleClass=" FLeft left50  ">
+						                
+	                      		<h:outputText value="#{billsMB.bills.billsNumber}" styleClass=" FLeft left50  "/>    
+	                      		</p:outputLabel>
+			
+					<h:outputLabel value="#{msg['addCompany.address']}:">
+						
+				<h:outputLabel
+						value="#{billsMB.bills.customer.address}" >
+						</h:outputLabel>
+						</h:outputLabel>
+						
+						       						    <p:outputLabel value=" #{msg['Invoice_date']}:" styleClass=" FLeft left50  ">
+						
+	                       <p:calendar   value="#{billsMB.bills.todayDate}" pattern="yyyy/MM/dd"  styleClass=" FLeft left50  " />
+       
+						</p:outputLabel>
+						
+							<h:outputLabel value=" #{msg['addCompany.phone_number']}:">
+						
+							<h:outputLabel
+						value="#{billsMB.bills.customer.phoneNumber}" >
+						</h:outputLabel>
+												</h:outputLabel>
+						
+							         						  <p:outputLabel value="#{msg['Due_date']} " rendered="#{utils.getVersion() ne 'EGY'}"  styleClass=" FLeft left50  ">
+						
+	                       <p:calendar  disabled="true" id="date1" pattern="dd/MM/yyyy" effect="fold" value="#{billsMB.bills.dueDate}" rendered="#{utils.getVersion() ne 'EGY'}"  styleClass=" FLeft left50  "/>
+	         
+                     	  
+</p:outputLabel>																		              
+						
+			<h:outputLabel value="#{msg['Sales_Tax_Number']} :">
+					
+						<h:outputLabel
+						value="#{billsMB.bills.customer.saleTaxNumber}" >
+						</h:outputLabel>
+					
+         		
+											</h:outputLabel>	
+						
+					
+					
+							        			
+                            </h:panelGrid>
+			            		<p:panelGrid columns="8" id="pnl2" styleClass="ui-noborder Wid120" >
+            			      
+            			                
+            				
+					<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet" rowIndexVar="index" var="det" styleClass="txt-center" 
+											value="#{billsMB.addbillsList}" style="border:hidden;" >
+								
+								 <p:columnGroup type="header">
+                <p:row>
+                    <p:column colspan="1" headerText="#" style="border:hidden;"/>
+                    <p:column colspan="1" headerText="#{msg['Item']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                                        <p:column colspan="1" headerText="#{msg['Descreption']}"  style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                                        <p:column colspan="1" headerText="#{msg['Unit_Price']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    <p:column colspan="1" headerText="#{msg['Quantity']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                                        <p:column colspan="1" headerText="Ø§Ù„Ù‚ÙŠÙ…Ø©" style="border:hidden;font-size: 12px ;font-weight:bold" rendered="false"/>
+                                        <p:column colspan="1" headerText="Ø§Ù„Ù‚ÙŠÙ…Ø©" style="border:hidden;font-size: 12px ;font-weight:bold" rendered="false"/>
+                                        <p:column colspan="1" headerText="نسبة الخصم" style="border:hidden;font-size: 12px ;font-weight:bold" />
+                                                            <p:column colspan="1" headerText="Ù‚ÙŠÙ…Ø© Ø§Ù„Ø®ØµÙ…" style="border:hidden;font-size: 12px ;font-weight:bold" rendered="false"/>
+                                                                                <p:column colspan="1" headerText="Ù‚ÙŠÙ…Ø© Ø§Ù„Ø®ØµÙ…" style="border:hidden;font-size: 12px ;font-weight:bold" rendered="false"/>
+                    
+                    <p:column colspan="1" headerText="#{msg['Amount_before_tax']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                                        <p:column colspan="1" headerText="#{msg['Amount_before_tax']}" style="border:hidden; font-size: 12px ;font-weight:bold"/>
+                    
+                     <p:column colspan="1" headerText="#{msg['Tax_Rate']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    <p:column colspan="1" headerText="#{msg['Tax_amount']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    <p:column colspan="1" headerText="#{msg['Tax_amount']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    
+                      <p:column colspan="1" headerText="#{msg['Gross_Total']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                 <p:column colspan="1" headerText="#{msg['Total']}" style="border:hidden;font-size: 12px ;font-weight:bold"/>
+                    
+                </p:row>
+                <p:row>
+                 <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+                     <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;"/>
+                    </ui:repeat>
+                     <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+	  <ui:repeat value="#{utils.isArabic() ? billsMB.bills.definitionOfCurrencies.definitionOfCurrenciesName : billsMB.bills.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>        
+ <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+                      <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+	  <ui:repeat value="#{utils.isArabic() ? billsMB.bills.definitionOfCurrencies.definitionOfCurrenciesName : billsMB.bills.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat> 
+                   
+                 <ui:repeat value="#{billsMB.main}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>    
+                     <ui:repeat value="" var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>
+	  <ui:repeat value="#{utils.isArabic() ? billsMB.bills.definitionOfCurrencies.definitionOfCurrenciesName : billsMB.bills.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat> 
+                          
+                 <ui:repeat value="#{billsMB.main}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>    
+	  <ui:repeat value="#{utils.isArabic() ? billsMB.bills.definitionOfCurrencies.definitionOfCurrenciesName : billsMB.bills.definitionOfCurrencies.definitionOfCurrenciesNameEn}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>           
+                          
+                 <ui:repeat value="#{billsMB.main}"
+ var="year">
+                        <p:column headerText="#{year}" style="border:hidden;font-size: 12px ;font-weight:bold ;color: Gray;" />
+                    </ui:repeat>    
+                    
+                </p:row>
+            </p:columnGroup>
+								
+								
+											   
+                    <p:column headerText="#" width="20" style="border:hidden;" >
+					
+												<h:outputText value="#{index+1}" />
+									
+               						
+					
+											</p:column>
+				
+											 <p:columnGroup type="header">
+                <p:row>
+                    <p:column colspan="#{index+1}" headerText="#" style="border:hidden;"/>
+                </p:row>
+                <p:row>
+                    <ui:repeat value="#{index+1}" var="year">
+                        <p:column  style="border:hidden;"/>
+                    </ui:repeat>
+                </p:row>
+            </p:columnGroup>
+											
+					<p:column headerText="#{msg['Item']}" width="90" style="border:hidden;"  >
+												<p:selectOneMenu  required="true"
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents" value="#{det.servicesProducts}"
+													style="margin-bottom:10px;" styleClass="Wid100">
+														<p:ajax event="change" process="@this" update="tblSheet" />
+													<f:selectItem  itemLabel="#{msg['select']}" />
+													<f:selectItems value="#{billsDetailsMB.servicesProductsList}" 
+													var="servicesProducts" itemLabel="#{utils.isArabic() ? servicesProducts.nameProductOrService:servicesProducts.nameProductOrServiceEn}" itemValue="#{servicesProducts}"/>
+												</p:selectOneMenu>
+											</p:column>
+								<p:column headerText="#{msg['Descreption']}" width="100" style="border:hidden;" >
+								<p:inputTextarea escape="false"  value="#{det.description}" autoResize="false" styleClass="Wid100" rows="3" > 
+								</p:inputTextarea>
+								</p:column>	
+										
+							<p:column id="price" headerText="#{msg['Unit_Price']}" width="50" style="border:hidden;" >
+							<p:inputNumber value="#{det.price}"/>
+						   
+									
+					</p:column>	
+							<p:column headerText="#{msg['Quantity']}" width="50" style="border:hidden;" >
+							<p:inputNumber value="#{det.quantity}"/>
+							</p:column>	
+								
+								<p:column headerText="#{msg['Quantity']}" width="50" style="border:hidden;" rendered="false" >
+							<p:inputNumber value="#{det.initialAmount}"/>
+							</p:column>	
+								<p:column headerText="#{msg['Quantity']}" width="50" style="border:hidden;" rendered="false">
+							<p:inputNumber value="#{det.amount}"/>
+							</p:column>
+								
+								
+								<p:column headerText="#{msg['Tax_Rate']} " width="100" style="border:hidden;" >
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents128" value="#{det.comercialDiscount}"
+													style="margin-bottom:10px;" >
+													<f:selectItem  itemLabel="#{msg['select']}" />
+													
+													<f:selectItems value="#{billsMB.comercialDiscountList}" 
+													var="comercialDiscount" itemLabel="#{comercialDiscount.taxAmount}" itemValue="#{comercialDiscount}"  >
+													
+													</f:selectItems>
+												</p:selectOneMenu>
+											
+							</p:column>	
+							<p:column headerText="#{msg['Quantity']}" width="50" style="border:hidden;" rendered="false" >
+							<p:inputNumber value="#{det.initalamountdiscount}"/>
+							</p:column>
+							
+							
+							<p:column headerText="#{msg['Quantity']}" width="50" style="border:hidden;" rendered="false">
+							<p:inputNumber value="#{det.amountdiscount}"/>
+							</p:column>
+							
+								<p:column headerText="#{msg['Amount_before_tax']}" width="70" style="border:hidden;" >
+							<h:outputText value="#{det.initialValueBeforeTax}">
+														 <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+							
+							</p:column>	
+								
+									<p:column headerText="#{msg['Amount_before_tax']} " width="70" style="border:hidden;" >
+							<h:outputText value="#{det.valueBeforeTax}">
+														 <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+							
+							</p:column>	
+							<p:column headerText="#{msg['Tax_Rate']} " width="100" style="border:hidden;" >
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="agents12" value="#{det.definitionOfTax}"
+													style="margin-bottom:10px;" >
+													<f:selectItem  itemLabel="#{msg['select']}" />
+													
+													<f:selectItems value="#{billsDetailsMB.definitionOfTaxList}" 
+													var="definitionOfTax" itemLabel="#{definitionOfTax.taxAmount}" itemValue="#{definitionOfTax}"  >
+													
+													</f:selectItems>
+												</p:selectOneMenu>
+											
+							</p:column>	
+							
+						<p:column headerText=" #{msg['Tax_amount']} " width="50" style="border:hidden;" >
+							<h:outputText value="#{det.initialTaxAmount}">
+							 <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+									
+							</p:column>	
+							<p:column headerText=" #{msg['Tax_amount']} " width="50" style="border:hidden;" >
+							<h:outputText value="#{det.taxAmount}">
+							 <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+									
+							</p:column>	
+									<p:column headerText="#{msg['Gross_Total']}   " width="50" style="border:hidden;" >
+							<h:outputText value="#{det.initialTotal}">
+							                <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+							</p:column>
+								<p:column headerText="#{msg['Total']}" width="50" style="border:hidden;" >
+							<h:outputText value="#{det.total}">
+							                <f:convertNumber pattern="###,###.##"/>
+							</h:outputText>
+							</p:column>
+							
+					
+							
+
+								
+					</p:dataTable>
+					</p:panelGrid>
+			
+				</div>
+				<br />
+
+			</div>
+		</p:panel>
+	</h:body>
+</f:view>
+</html>

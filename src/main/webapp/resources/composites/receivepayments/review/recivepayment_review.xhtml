@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	dir="#{localeMB.dir}">
+<head>
+<composite:interface>
+	<composite:attribute name="addBill" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+</composite:interface>
+
+</head>
+        <f:view contentType="text/html" locale="#{languageDetails.locale}">
+
+	<h:body>
+
+		<h:form>
+
+
+			<composite:implementation>
+				<p:panel id="print">
+						<div class="WordSection1" align="center" dir="#{localeMB.dir}">
+	
+
+
+						<p:spacer Height="180px" />
+
+						<h:panelGroup styleClass=" FLeft left20  " id="header">
+
+
+
+
+						</h:panelGroup>
+
+
+						<p:spacer width="60" />
+
+						<div class="ui-g">
+
+
+							<h:panelGrid columns="1" id="c14"
+								styleClass="no-border Wid80 MarAuto"
+								dir="#{languageDetails.dir}">
+
+
+								<br></br>
+								<h:panelGroup>
+									<h:outputText
+										value="#{utils.isArabic() ?receivePaymentMB.receivePayment.company.legalCompanyName:receivePaymentMB.receivePayment.company.legalCompanyNameEn}"
+										style="font-size: 25px;font-weight:bold;"
+										dir="#{localeMB.dir}" />
+									<p:graphicImage styleClass=" FLeft   " width="80"
+										rendered="#{not empty receivePaymentMB.receivePayment.company.picName}"
+										title="logo"
+										url="#{request.scheme}://#{request.serverName}:#{request.serverPort}/#{utils.getReportPath()}/image/#{companyMB.company.picName}" />
+									<br></br>
+
+									<h:outputText
+										value="#{utils.isArabic() ?receivePaymentMB.receivePayment.company.address:receivePaymentMB.receivePayment.company.addressEn}"
+										style="font-size: 15px;font-weight:bold;" dir="#{localeMB.dir}" />
+									<br></br>
+									<h:outputText
+										value="#{receivePaymentMB.receivePayment.company.faxNumber}"
+										style="font-size: 15px;font-weight:bold;" dir="#{localeMB.dir}" />
+									<br></br>
+									<h:outputText
+										value="#{receivePaymentMB.receivePayment.company.pox}"
+										style="font-size: 15px;font-weight:bold;"  dir="#{localeMB.dir}"/>
+									<br></br>
+									<h:outputText
+										value="#{receivePaymentMB.receivePayment.company.phoneNumber}"
+										style="font-size: 15px;font-weight:bold;" dir="#{localeMB.dir}" />
+									<br></br>
+								</h:panelGroup>
+								<br></br>
+								<h:panelGroup>
+									<h:outputLabel value="#{msg['date']} :"
+										style="font-size: 15px;font-weight:bold;" dir="#{localeMB.dir}">
+										<h:outputText
+											value="#{receivePaymentMB.receivePayment.todayDate}"
+											style="font-size: 15px;font-weight:bold;">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+
+										</h:outputText>
+									</h:outputLabel>
+									<h:outputLabel value="#{msg['RV_Number']}:"
+										styleClass=" FLeft   "
+										style="font-size: 15px;font-weight:bold;" >
+										<h:outputText
+											value="#{receivePaymentMB.receivePayment.receivePaymentNumber}"
+											style="font-size: 15px;font-weight:bold;" />
+									</h:outputLabel>
+									<center>
+										<h:outputLabel style="font-size: 25px;font-weight:bold;"
+											value="#{msg['RV']}" />
+
+										<table border="1" style='border-collapse: separate;'>
+											<tr>
+												<th>#{msg['Decimal_'+=utils.getVersion()]}</th>
+												<th>#{msg['Integer_'+=utils.getVersion()]}</th>
+											</tr>
+											<tr>
+												<td>
+													<p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputText
+															value="#{receivePaymentMB.receivePayment.decimalPart}">
+															<f:convertNumber pattern="##" />
+
+														</h:outputText>
+													</p>
+												</td>
+												<td><p class="MsoHeader" align="center"
+														style='text-align: center'>
+														<h:outputText
+															value="#{receivePaymentMB.receivePayment.intPart}">
+														</h:outputText>
+													</p></td>
+											</tr>
+										</table>
+									</center>
+								</h:panelGroup>
+								<br></br>
+								<h:outputLabel value="#{msg['we_received_from']}"
+									style="font-size: 20px;font-weight:bold;" dir="#{localeMB.dir}">
+									<p:spacer width="5" height="5" />
+
+									<h:outputText
+										value="#{utils.isArabic() ?receivePaymentMB.receivePayment.customer.customerNameAr:receivePaymentMB.receivePayment.customer.customerNameEn}"
+										style="font-size: 20px;"  />
+									<p:spacer width="20" height="20" />
+
+
+								</h:outputLabel>
+
+								<h:outputLabel
+									value="#{utils.isArabic()? msg['Amount_of'] : msg['Amount_of'] }"
+									style="font-size: 20px;font-weight:bold;"
+									rendered="#{receivePaymentMB.receivePayment.amountWritten ne null}"
+								dir="#{localeMB.dir}" >
+									<p:spacer>
+									</p:spacer>
+									<h:outputText
+										value="#{receivePaymentMB.receivePayment.amountWritten}"
+										style="font-size: 20px;" />
+
+								</h:outputLabel>
+								<h:outputLabel
+									value="#{utils.isArabic()? msg['Amount_of'] : msg['Amount_of']}"
+									style="font-size: 20px;font-weight:bold;"
+									rendered="#{receivePaymentMB.receivePayment.valueWritten ne null}"
+									dir="#{localeMB.dir}">
+									<p:spacer>
+									</p:spacer>
+									<h:outputText
+										value="#{receivePaymentMB.receivePayment.valueWritten}"
+										style="font-size: 20px;" />
+
+								</h:outputLabel>
+								<h:outputLabel value="#{msg['cash_Money']}"
+									style="font-size: 20px;font-weight:bold;"
+									rendered="#{receivePaymentMB.receivePayment.paymentMethod eq 1}"
+									dir="#{localeMB.dir}">
+
+								</h:outputLabel>
+								<h:outputLabel value="#{msg['Bank_transfer']}"
+									style="font-size: 20px;font-weight:bold;"
+									rendered="#{receivePaymentMB.receivePayment.paymentMethod eq 3}"
+									dir="#{localeMB.dir}">
+
+								</h:outputLabel>
+								<h:outputLabel value="#{msg['check']}:"
+									style="font-size: 20px;font-weight:bold;"
+									rendered="#{receivePaymentMB.receivePayment.paymentMethod eq 2}"
+									dir="#{localeMB.dir}">
+
+									<p:dataTable emptyMessage="#{msg['noRecord']}" id="check"
+										rowIndexVar="index" var="det" styleClass="txt-center"
+										style="border:hidden;"
+										value="#{receivePaymentMB.checkPaymentList}">
+
+										<p:column>
+
+											<f:facet name="header">
+												<h:outputText value="#{msg['check_number']}" />
+											</f:facet>
+											<h:outputText value="#{det.checkNumber}" />
+
+
+										</p:column>
+										<p:column>
+
+											<f:facet name="header">
+												<h:outputText value="#{msg['Due_date']}" />
+											</f:facet>
+											<h:outputText value="#{det.dueDate}" dir="#{localeMB.dir}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+
+
+										<p:column>
+
+											<f:facet name="header">
+												<h:outputText value="#{msg['withdrawn_bank']}"  dir="#{localeMB.dir}"/>
+											</f:facet>
+											<h:outputText value="#{det.bank}" dir="#{localeMB.dir}" />
+
+
+										</p:column>
+
+
+										<p:column>
+
+											<f:facet name="header">
+												<h:outputText value="#{msg['ReceiptDate']}"  dir="#{localeMB.dir}"/>
+											</f:facet>
+											<h:outputText value="#{det.arrestDate}" dir="#{localeMB.dir}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</h:outputText>
+
+
+										</p:column>
+									</p:dataTable>
+								</h:outputLabel>
+								<br></br>
+								<h:outputLabel
+									value="#{utils.isArabic()? msg['That_about'] : msg['That_about']}:"
+									style="font-size: 20px;font-weight:bold;"
+									rendered="#{receivePaymentMB.receivePayment.note ne null}" dir="#{localeMB.dir}">
+									<h:outputText value="#{receivePaymentMB.receivePayment.note}"
+										style="font-size: 20px;font-weight:bold;" />
+								</h:outputLabel>
+								<h:outputLabel value="#{msg['Received_by']} :"
+									style="font-size: 20px;font-weight:bold;" dir="#{localeMB.dir}">
+									<h:outputLabel value="#{utils.getCurrentUser().getUserName()}"
+										style="font-size: 20px;font-weight:bold;" />
+								</h:outputLabel>
+
+								<h:outputLabel value="#{msg['signuter']} :"
+									style="font-size: 20px;font-weight:bold;" dir="#{localeMB.dir}">
+									<h:outputLabel value="--------------------- "
+										style="font-size: 20px;font-weight:bold;" />
+								</h:outputLabel>
+
+
+							</h:panelGrid>
+
+							<br></br> <br></br> <br></br>
+
+
+						</div>
+					</div>
+				</p:panel>
+
+
+			</composite:implementation>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

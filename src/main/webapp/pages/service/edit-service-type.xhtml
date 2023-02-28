@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:se="http://java.sun.com/jsf/composite/composites/service" xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+		<h:outputStylesheet>
+		</h:outputStylesheet>
+		<h:form>
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<se:service_type_info addServiceType="false" title="#{msg['title.edit_service_type']}" /> 
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,320 @@
+@font-face {
+    font-family: Wingdings;
+    panose-1: 5 0 0 0 0 0 0 0 0 0;
+}
+@font-face {
+    font-family: "Cambria Math";
+    panose-1: 2 4 5 3 5 4 6 3 2 4;
+}
+@font-face {
+    font-family: "EY Tagline";
+}
+@font-face {
+    font-family: Times;
+    panose-1: 2 2 6 3 5 4 5 2 3 4;
+}
+@font-face {
+    font-family: Tahoma;
+    panose-1: 2 11 6 4 3 5 4 4 2 4;
+}
+.TxtCenter {
+    text-align: center!important;
+}
+/* Style Definitions */
+
+.WordSection1 p.MsoNormal,
+li.MsoNormal,
+div.MsoNormal {
+    padding: 0 5px;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+.WordSection1 h1 {
+    margin-bottom: .0001pt;
+    text-align: center;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+    font-weight: normal;
+    font-style: italic;
+    text-decoration: underline;
+}
+.WordSection1 h2 {
+    margin-bottom: .0001pt;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+.WordSection1 h3 {
+    margin-bottom: .0001pt;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+.WordSection1 .h4 {
+    margin-top: 6.0pt;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+    margin-left: 0cm;
+    margin-bottom: .0001pt;
+    text-align: justify;
+    line-height: 14.0pt;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+.WordSection1h5 {
+    margin-top: 0cm;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+    margin-left: -5.4pt;
+    margin-bottom: .0001pt;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+.WordSection1 td h6,
+.WordSection1 td p {
+    margin: 0.3em;
+}
+.WordSection1 h6 {
+    margin-bottom: .0001pt;
+    text-align: center;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+p.MsoHeading7,
+li.MsoHeading7,
+div.MsoHeading7 {
+    margin-top: 0cm;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+    margin-left: -5.4pt;
+    margin-bottom: .0001pt;
+    page-break-after: avoid;
+    font-size: 26.0pt;
+    font-family: "EY Tagline";
+}
+p.MsoHeading8,
+li.MsoHeading8,
+div.MsoHeading8 {
+    margin-top: 0cm;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+    margin-left: -5.4pt;
+    margin-bottom: .0001pt;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+    font-style: italic;
+}
+p.MsoCommentText,
+li.MsoCommentText,
+div.MsoCommentText {
+    padding: 0 5px;
+    /*   // margin-bottom: .0001pt;*/
+    
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+p.MsoHeader,
+li.MsoHeader,
+div.MsoHeader {
+    mso-style-link: "Header Char";
+    margin-bottom: .0001pt;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+p.MsoFooter,
+li.MsoFooter,
+div.MsoFooter {
+    margin-bottom: .0001pt;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+p.MsoTitle,
+li.MsoTitle,
+div.MsoTitle {
+    margin-top: 6.0pt;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+    margin-left: 0cm;
+    margin-bottom: .0001pt;
+    text-align: center;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+    font-weight: bold;
+}
+p.MsoBodyText,
+li.MsoBodyText,
+div.MsoBodyText {
+    margin-bottom: .0001pt;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+p.MsoBodyText2,
+li.MsoBodyText2,
+div.MsoBodyText2 {
+    margin-bottom: .0001pt;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+    font-style: italic;
+}
+p.MsoBodyText3,
+li.MsoBodyText3,
+div.MsoBodyText3 {
+    margin-top: 6.0pt;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+    margin-left: 0cm;
+    margin-bottom: .0001pt;
+    text-align: justify;
+    line-height: 14.0pt;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+p.MsoBodyTextIndent3,
+li.MsoBodyTextIndent3,
+div.MsoBodyTextIndent3 {
+    mso-style-link: "Body Text Indent 3 Char";
+    margin-top: 0cm;
+    margin-right: 0cm;
+    margin-bottom: 6.0pt;
+    margin-left: 14.15pt;
+    font-size: 8.0pt;
+    font-family: "Times New Roman", "serif";
+}
+p.MsoAcetate,
+li.MsoAcetate,
+div.MsoAcetate {
+    margin-bottom: .0001pt;
+    font-size: 8.0pt;
+    font-family: "Tahoma", "sans-serif";
+}
+p.SourceText,
+li.SourceText,
+div.SourceText {
+    mso-style-name: "Source Text";
+    margin-top: 0cm;
+    margin-right: 4.3pt;
+    margin-bottom: 0cm;
+    margin-left: 0cm;
+    margin-bottom: .0001pt;
+    text-align: right;
+    font-size: 12.0pt;
+    font-family: "Times", "serif";
+    font-style: italic;
+}
+p.MainHeading,
+li.MainHeading,
+div.MainHeading {
+    mso-style-name: "Main Heading";
+    margin-top: 9.0pt;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+    margin-left: 0cm;
+    margin-bottom: .0001pt;
+    text-align: center;
+    font-size: 14.0pt;
+    font-family: "Times", "serif";
+    font-weight: bold;
+}
+p.SubHeading,
+li.SubHeading,
+div.SubHeading {
+    mso-style-name: "Sub Heading";
+    margin-top: 9.0pt;
+    margin-right: 0cm;
+    margin-bottom: 0cm;
+    margin-left: 0cm;
+    margin-bottom: .0001pt;
+    page-break-after: avoid;
+    font-size: 12.0pt;
+    font-family: "Times", "serif";
+    font-style: italic;
+}
+p.TableText,
+li.TableText,
+div.TableText {
+    mso-style-name: "Table Text";
+    margin-top: 3.0pt;
+    margin-right: 0cm;
+    margin-bottom: 3.0pt;
+    margin-left: 0cm;
+    font-size: 12.0pt;
+    font-family: "Times New Roman", "serif";
+}
+/* Page Definitions */
+
+@page WordSection1 {
+    size: 595.45pt 841.7pt;
+    margin: 50.45pt 35.5pt 70.3pt 53.85pt;
+}
+div.WordSection1 {
+    page: WordSection1;
+}
+/* List Definitions */
+
+.WordSection1 ol {
+    margin-bottom: 0cm;
+}
+.WordSection1 ul {
+    margin-bottom: 0cm;
+}
+.bordAll td {
+    border: 1px dotted;
+}
+.bordAll td p {
+    padding: 0px!important;
+}
+table {
+    page-break-inside: auto
+}
+tr,
+.blockPrint {
+    page-break-inside: avoid;
+    page-break-after: auto
+}
+/* //  tr ,table ,.blockPrint  { page-break-inside:avoid; page-break-after:auto } /**/
+
+.C .val {
+    margin-right: 15px
+}
+.P td {
+    background: #ccddf3;
+    border-top: 3px solid!important;
+    padding: 1px 5px !important;
+}
+.WordSection2 {
+    font-size: 18px
+}
+table {
+    page-break-inside: auto
+}
+tr {
+    page-break-inside: avoid;
+    page-break-after: auto
+}
+thead {
+    display: table-header-group
+}
+tfoot {
+    display: table-footer-group
+}
+@media print {
+    .no-print {
+        display: none;
+    }
+    .ui-button {
+        display: none;
+        visibility: hidden
+    }
+    tr,
+    td,
+    .blockPrint {
+        page-break-inside: avoid;
+        page-break-after: always
+    }
+}

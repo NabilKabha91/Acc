@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:us="http://java.sun.com/jsf/composite/composites/user" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+		<h:outputStylesheet>
+		</h:outputStylesheet>
+		<h:form id="userInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+				<p:commandButton icon="ui-icon-add" value="#{msg['title.add_user']}" action="#{userMB.init()}" actionListener="#{userDetailsMB.redirectToUserAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{userMB.addUser}" />
+				</p:commandButton>
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="userDetails" var="det" styleClass="txt-center" value="#{userDetailsMB.userList}">
+					<p:column filterBy="#{utils.isArabic() ? det.nameAr : det.nameEn}" headerText="#{utils.isArabic() ? msg['addUser.name_ar'] : msg['addUser.name_en']}">
+						<p:outputLabel value="#{utils.isArabic() ? det.nameAr : det.nameEn}" />
+					</p:column>
+
+					<p:column filterBy="#{det.email}" headerText="#{msg['addUser.email']}">
+						<p:outputLabel value="#{det.email}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.phoneNumber}" headerText="#{msg['addUser.phone_number']}">
+						<p:outputLabel value="#{det.phoneNumber}" />
+					</p:column>
+
+					
+					
+					<p:column headerText="#{msg['addUser.user_status']}">					
+					   <p:selectBooleanCheckbox value="#{det.activated}" disabled="true"/>
+					</p:column>
+
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit"  actionListener="#{userDetailsMB.redirectToUserEdit()}" process="@this" >
+						    <f:setPropertyActionListener value="#{det}" target="#{userMB.user}" />
+						    <f:setPropertyActionListener value="false" target="#{userMB.addUser}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_user']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-remove" actionListener="#{userDetailsMB.deleteUser(det)}" process="@this" update="@form"
+						rendered="#{det.activated}">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['deactivate_btn']}" trackMouse="true" />
+						<p:commandButton id="activeBtn" icon="ui-icon-check" actionListener="#{userDetailsMB.reActivateUser(det)}" process="@this" update="@form"
+						rendered="#{!det.activated}">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="activeBtn" value="#{msg['activate_btn']}" trackMouse="true" />
+						
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

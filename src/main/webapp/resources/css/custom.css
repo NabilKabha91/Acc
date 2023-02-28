@@ -1,0 +1,365 @@
+.txt-center {
+	text-align: center !important;
+}
+
+.ui-slider .ui-slider-handle {
+	width: 35px !important;
+	height: 35px !important;
+}
+
+.ui-slider.ui-slider-horizontal .ui-slider-handle {
+	top: -17.5px !important;
+}
+
+.Wid100 {
+	width: 100% !important;
+}
+
+.Wid90 {
+	width: 90% !important;
+}
+
+.Wid80 {
+	width: 80%;
+}
+
+.Wid70 {
+	width: 70%;
+}
+
+.Wid60 {
+	width: 60%;
+}
+
+.Wid50 {
+	width: 50%;
+}
+
+.Wid60 {
+	width: 60%;
+}
+
+.Wid50 {
+	width: 50%;
+}
+
+.Wid45 {
+	width: 45% !important;
+}
+
+.Wid40 {
+	width: 40%;
+}
+
+.Wid35 {
+	width: 35%;
+}
+
+.Wid33 {
+	width: 33%;
+}
+
+.Wid30 {
+	width: 30%;
+}
+
+.Wid20 {
+	width: 20%;
+}
+
+.Wid25 {
+	width: 25%;
+}
+
+.Wid15 {
+	width: 15%;
+}
+
+.Wid10 {
+	width: 10%;
+}
+
+.Wid5 {
+	width: 5%;
+}
+
+.Wid3 {
+	width: 3%;
+}
+
+.Wid2 {
+	width: 2%;
+}
+
+.Wid1 {
+	width: 1%;
+}
+
+.pad10 {
+	padding: 10px;
+}
+
+.mar10 {
+	margin: 10px;
+}
+
+.marR10 {
+	margin-right: 10px;
+}
+
+.marR15 {
+	margin-right: 15px;
+}
+
+.marR20 {
+	margin-right: 20px;
+}
+
+.marR30 {
+	margin-right: 30px;
+}
+
+.marR40 {
+	margin-right: 40px;
+}
+
+.marT5 {
+	margin-top: 5px;
+}
+
+.sub {
+	background: #f5f2f2;
+}
+
+.mar5 {
+	margin: 5px;
+}
+
+.smallBtn {
+	width: 25px !important;
+	height: 25px;
+}
+
+.no-border {
+	border: none;
+}
+
+.no-border .ui-panelgrid tr, .no-border .ui-panelgrid td {
+	border: none !important;
+}
+
+.no-border.ui-panelgrid tr, .no-border.ui-panelgrid td {
+	border: none !important;
+}
+
+.ui-button-icon-only .ui-button-text {
+	padding: inherit !important;
+}
+
+.disblock {
+	display: block;
+}
+
+.posFixed {
+	position: fixed;
+	z-index: 99999
+}
+
+.posStatic {
+	position: static;
+	z-index: 99999
+}
+
+.posRelative {
+	position: relative;
+}
+
+.FLeft {
+	float: left;
+}
+
+.MarL20 {
+	margin-left: 20px
+}
+
+.left20 {
+	left: 20px;
+}
+
+.left30 {
+	left: 30px;
+}
+
+.left40 {
+	left: 40px;
+}
+
+.left50 {
+	left: 50px;
+}
+
+.left60 {
+	left: 60px;
+}
+
+.left70 {
+	left: 70px;
+}
+
+.left80 {
+	left: 80px;
+}
+
+.right20 {
+	right: 20px;
+}
+
+.Fright {
+	float: right;
+}
+
+.clear {
+	clear: both;
+}
+
+.Vt {
+	vertical-align: top;
+}
+
+.Vt tr, .Vt tr {
+	vertical-align: top;
+}
+
+.login-body {
+	background-size: 100% 100% !important;
+	background: url("#{resource['images/bg.jpg']}");
+}
+
+.layout-wrapper .topbar .logo {
+	height: 70px;
+	width: 250px;
+	background: url("#{resource['images/logo-full.png']}");
+	background-size: 100%;
+}
+
+.layout-wrapper .topbar .topbar-left {
+	padding: 0px
+}
+
+body .ui-tabs.ui-tabs-top>.ui-tabs-nav {
+	float: right;
+	width: 100%;
+}
+
+.ui-tabs-panels {
+	margin: 3em auto auto auto;
+}
+
+.customCalender {
+	/* padding: 2px !important; */
+}
+
+.customCalender input {
+	width: 50px;
+	float: right;
+}
+
+.customCalender .ui-state-disabled {
+	opacity: 1 !important;
+}
+
+.customCalender .ui-inputfield.ui-state-disabled {
+	border-bottom: 1px dotted;
+	border: none;
+	color: black;
+	width: 100%;
+	text-align: -webkit-center;
+}
+
+}
+.no-border {
+	border: none !important;
+}
+
+.mar0 {
+	margin: 0px !important;
+}
+
+.no-padding, .no-padding .ui-panel-content {
+	padding: 0px !important;
+}
+
+tfoot {
+	display: table-footer-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+.ui-datatable table tfoot td {
+	background-color: #3F51B5;
+	color: #ffffff;
+	font-size: 16px;
+	border: 1px solid #3F51B5;
+}
+
+.txt-center  tfoot td {
+	text-align: center !important;
+}
+
+.MarAuto {
+	margin: auto;
+}
+
+.hide {
+	visibility: hidden;
+}
+
+.show-on-print {
+	visibility: hidden !important;
+	display: none;
+}
+
+.Wid45 input {
+	width: 45% !important;
+	margin: auto 2px;
+}
+
+@media print {
+	.no-print {
+		display: none;
+		visibility: hidden !important;
+	}
+	.show-on-print {
+		visibility: visible !important;
+		display: table;
+	}
+	.no-porder {
+        border: solid #fff 0px !important;
+        border-width: 0px !important;
+    }
+  .no-porder  th,.no-porder td,.no-porder tr {
+        border: solid #fff 0px!important;
+        border-width: 0px!important;
+    }
+  .no-porder  tbody{
+        border: solid #fff 0px!important;
+        border-width: 0px!important;
+    }
+	
+}
+
+.btn-del-image {
+	position: absolute;
+	right: 0;
+	top: 5px;
+}
+.bold{font-weight: bold;}
+
+.no-border{
+    border: white!important;
+    
+}
+.years .ui-state-disabled{color: black;    opacity: 1;}
+.years .ui-inputfield.ui-state-disabled {
+    border-bottom: 1px solid #bdbdbd;
+}

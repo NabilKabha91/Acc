@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCompany" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+	
+		 
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card card-w-title">
+					<h1>#{cc.attrs.title}</h1>
+					<p:panelGrid id="pnlCompany" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						
+							
+						
+
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.legalCompanyName}" required="true" />
+							<label>#{msg['addCompany.legalCompanyName_'+=utils.getVersion()]}</label>
+						</h:panelGroup>
+
+	<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.legalCompanyNameEn}"/>
+							<label>الاسم الشركة القانوني بالانجليزي </label>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="md-inputfield" >
+							<p:inputText value="#{companyMB.company.companyCommercialName}" required="true" />
+							<label>#{msg['addCompany.companyCommercialName_'+=utils.getVersion()]}</label>
+						</h:panelGroup>
+
+
+<h:panelGroup styleClass="md-inputfield" rendered="#{companyMB.company.billNumber ==null }" >
+							<p:inputText value="#{companyMB.company.billNumber}" />
+							<label>بداية ترقيم فاتورة المبيعات   </label>
+						</h:panelGroup>
+
+<h:panelGroup  rendered="#{companyMB.company.billNumber !=null }" >
+							<label>  بداية ترقيم فاتورة المبيعات : </label>
+
+							<h:outputText value="#{companyMB.company.billNumber}" readonly="true" />
+						</h:panelGroup>
+
+
+                       <h:panelGroup >
+                  <p:selectOneMenu value="#{companyMB.company.companyType}" required="true" >
+					<f:selectItems value="#{companyMB.comTypeList}" />
+						</p:selectOneMenu>
+						</h:panelGroup>
+						
+						<h:panelGroup >
+                        <p:selectOneMenu value="#{companyMB.company.companyActivityNature}" required="true" >
+							<f:selectItems value="#{companyMB.comNatList}" />
+											</p:selectOneMenu>
+						</h:panelGroup>
+						
+						
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.nationalCompanyNumber}" />
+							<label>#{msg['addCompany.companyId_'+=utils.getVersion()]}</label>
+						</h:panelGroup>
+						
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.registrationId}"  />
+							<label>#{msg['addCompany.registrationId_'+=utils.getVersion()]}</label>
+						</h:panelGroup>
+						
+							<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'EGY' }">
+							<p:calendar required="true" id="date2" pattern="dd/MM/yyyy" effect="fold" value="#{companyMB.company.dateOfIssuance}" />
+							<label> #{msg['addCompany.DateOfIssuance_'+=utils.getVersion()]}*</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'EGY' }">
+							<p:calendar required="true" id="date3" pattern="dd/MM/yyyy" effect="fold" value="#{companyMB.company.expiaryDate}" />
+							<label>#{msg['addCompany.ExpiaryDate_'+=utils.getVersion()]}*</label>
+						</h:panelGroup>
+						
+							<h:panelGroup styleClass="md-inputfield" rendered="#{utils.getVersion() eq 'EGY' }">
+							<p:inputText value="#{companyMB.company.issuingAuthority}" required="true" />
+							<label>#{msg['addCompany.IssuingAuthority_'+=utils.getVersion()]}*</label>
+						</h:panelGroup>
+						
+						
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.companyGoal}" required="true" />
+							<label>#{msg['addCompany.companyGoal']}</label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.email}" />
+							<label>#{msg['addCompany.email']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.phoneNumber}" />
+							<label>#{msg['addCompany.phone_number']}</label>
+						</h:panelGroup>
+						
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.taxNumber}" />
+							<label>الرقم الضريبي </label>
+						</h:panelGroup>
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.saleTaxNumber}" />
+							<label>#{msg['Sales_Tax_Number_'+=utils.getVersion()]} </label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.address}" />
+							<label>#{msg['addCompany.address']}</label>
+						</h:panelGroup>
+						
+							<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.addressEn}" />
+							<label>اسم العنوان بالانجليزي </label>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.pox}" />
+							<label>#{msg['addCompany.pox']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.faxNumber}" />
+							<label>#{msg['addCompany.fax']}</label>
+						</h:panelGroup>
+						<h:panelGroup styleClass="md-inputfield">
+							<p:inputText value="#{companyMB.company.companyCapital}" />
+							<label>#{msg['addCompany.Issuingauthority_'+=utils.getVersion()]}</label>
+						</h:panelGroup>
+							 <h:panelGroup >
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="periodic" value="#{companyMB.company.countSystem}"
+													style="margin-bottom:10px;" styleClass="Wid100">
+											<f:selectItem itemLabel="#{msg['addCompany.Countsystem_'+=utils.getVersion()]}" itemValue="0" />
+													
+													<f:selectItem itemLabel="#{msg['addCompany.periodic_'+=utils.getVersion()]}" itemValue="1" />
+						<f:selectItem itemLabel="#{msg['addCompany.perpetual_'+=utils.getVersion()]}" itemValue="2" />
+					
+												</p:selectOneMenu>
+											
+						</h:panelGroup>
+						
+							
+						 <h:panelGroup >
+								<p:selectOneMenu  
+													converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" id="FIFO" value="#{companyMB.company.inventoryCosting}"
+													style="margin-bottom:10px;" styleClass="Wid100">
+											<f:selectItem itemLabel="#{msg['addCompany.Inventorycosting_'+=utils.getVersion()]} " itemValue="0" />
+													
+													<f:selectItem itemLabel="FIFO " itemValue="1" />
+						<f:selectItem itemLabel="LIFO " itemValue="2" />
+											<f:selectItem itemLabel="WA " itemValue="3" />
+					
+												</p:selectOneMenu>
+											
+						</h:panelGroup>
+						
+						    <p:commandButton action="#{companyMB.addNewDetails()}" oncomplete="PF('bui').hide()" onstart="PF('bui').show()" style="width:auto" value="اضافه سطر" 
+												process="@this" icon="ui-icon-plus" />
+                <br></br>
+				   <p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet12" rowIndexVar="index" var="det" styleClass="txt-center" style="border:hidden;"
+											value="#{companyMB.branchList}" >
+											
+						<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="  الفرع " />
+											</f:facet>
+					   <h:inputText   value="#{companyMB.branch.branch}"  />
+											
+								
+								</p:column>
+										
+											
+										<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="  عنوان الفرع " />
+											</f:facet>
+					   <h:inputText   value="#{companyMB.branch.branchAddress}"  />
+											
+								
+								</p:column>		
+											
+								
+												
+																								
+					</p:dataTable> 
+				  <br></br>
+				
+											<h:panelGroup >
+					
+					<p:commandButton action="#{companyMB.addNewDetails2()}" oncomplete="PF('bui').hide()" onstart="PF('bui').show()" style="width:auto" value="اضافه سطر" 
+												process="@this" icon="ui-icon-plus" />
+                <br></br>
+				   <p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet122" rowIndexVar="index" var="det"  styleClass="no-border Wid100 MarAuto" style="border:hidden;"
+											value="#{companyMB.partnersList}" >
+											
+						<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value=" #{msg['addCompany.Partnersname_'+=utils.getVersion()]} " />
+											</f:facet>
+					   <h:inputText   value="#{det.partnersName}"  />
+											
+								
+								</p:column>
+										
+											
+										<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="  #{msg['addCompany.Shares_'+=utils.getVersion()]}  " />
+											</f:facet>
+					   <h:inputText   value="#{det.shares}"  />
+											
+								
+								</p:column>		
+											
+							
+								<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="#{msg['addCompany.Sharetype_'+=utils.getVersion()]} " />
+											</f:facet>
+					   <h:inputText   value="#{det.shareType}"  />
+											
+								
+								</p:column>
+										
+											<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="#{msg['addCompany.address_'+=utils.getVersion()]} " />
+											</f:facet>
+					   <h:inputText   value="#{det.address}"  />
+											
+								
+								</p:column>
+										
+											<p:column>
+											
+											<f:facet name="header">
+												<h:outputText value="#{msg['addCompany.Email_'+=utils.getVersion()]}" />
+											</f:facet>
+					   <h:inputText   value="#{det.email}"  />
+											
+								
+								</p:column>
+											
+												
+																								
+					</p:dataTable>  
+					
+            </h:panelGroup>
+										</p:panelGrid>
+			<p:panelGrid id="uploadImage" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+						<p:outputLabel value="logo : " />
+						<p:spacer />
+						<p:fileUpload fileUploadListener="#{companyMB.handlePicFileUpload1}" mode="advanced" dragDropSupport="false"
+							allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" process="@this" update="view deletePic" auto="true" label="#{msg['select']}">
+						</p:fileUpload>
+						<p:spacer />
+						<h:panelGroup layout="block" id="view" styleClass="posRelative">
+							<p:graphicImage cache="false" 
+															
+							
+				url="/resources/logos/image/#{companyMB.company.picName}" 
+								 width="200"
+								height="100">
+							</p:graphicImage>
+							<p:commandButton styleClass="btn-del-image" id="deletePic" icon="ui-icon-delete" action="#{companyMB.deletePic}" process="@this"
+								update="uploadImage" rendered="#{not empty companyMB.company.picName}" />
+						</h:panelGroup>
+					</p:panelGrid>
+					
+
+
+					<br />
+					<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{companyMB.saveCompany()}" process="@form"
+						update="@form"   >
+						    <f:setPropertyActionListener value="false" target="#{companyMB.addCompany}" />
+						
+						 </p:commandButton>
+                                <p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this"
+						update="@this" action="#{companyMB.cancelAction1()}" />
+					
+						
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

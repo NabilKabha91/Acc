@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add" value="#{msg['addEmployee']}" action="#{employeesMB.init()}" actionListener="#{employeesDetailsMB.redirectToEmployeeAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{employeesMB.addEmployee}" />
+				</p:commandButton>
+				
+				<p:fileUpload  fileUploadListener="#{employeesMB.listener}" mode="advanced" label="تحميل اكسل "
+		 auto="true" uploadLabel="تحميل اكسل" cancelLabel="الغاء" />
+		
+					
+				<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="customerDetails" var="det" styleClass="txt-center" value="#{employeesDetailsMB.employeeList}">
+					<p:column filterBy="#{utils.isArabic() ? det.employeeNameAr : det.employeeNameEn}" headerText="#{msg['addEmployee.employeeName']}">
+						<p:outputLabel value="#{utils.isArabic() ? det.employeeNameAr : det.employeeNameEn}" />
+					</p:column>
+					<p:column filterBy="#{det.nationalEmployeeNumber}"  headerText="#{msg['addCustomer.customerIdNumber_'+=utils.getVersion()]}">
+						<p:outputLabel value="#{det.nationalEmployeeNumber}" />
+					</p:column>
+					<p:column filterBy="#{det.securityNumber}"  headerText="#{msg['addEmployee.securityNumber']}">
+						<p:outputLabel value="#{det.securityNumber}" />
+					</p:column>
+					
+					
+
+               	<p:column filterBy="#{det.dateHiring}"  headerText="#{msg['addEmployee.dateHiring']}">
+						<p:outputLabel value="#{det.dateHiring}" />
+					</p:column>
+					<p:column filterBy="#{det.jobNumber}"  headerText="#{msg['addEmployee.JobNumber']}">
+						<p:outputLabel value="#{det.jobNumber}" />
+					</p:column>
+					
+					
+					
+                   <p:column filterBy="#{det.basicSalary}"  headerText="#{msg['addEmployee.basicSalary']}">
+						<p:outputLabel value="#{det.basicSalary}" />
+					</p:column>
+	                  <p:column  filterBy="#{det.socialSecurityRate}" headerText="#{msg['addEmployee.socialSecurityRate']}">
+                           <h:outputLabel value="#{det.socialSecurityRate}" />
+								</p:column>
+					<p:column  filterBy="#{det.thePercentageOfTheCompanySocialSecurity}" headerText="#{msg['addEmployee.thePercentageOfTheCompanySocialSecurity']}">
+						<p:outputLabel value="#{det.thePercentageOfTheCompanySocialSecurity}" />
+					</p:column>
+                      
+                       <p:column  headerText="اعزب/متزوج">
+						<p:outputLabel value="#{det.socialStatus}" />
+					</p:column>
+                        <p:column  headerText="رقم حساب الموظف" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.accountNum}" />
+					</p:column>
+                      
+                      <p:column  headerText="IBAN" rendered="#{utils.getVersion() eq 'KSA'}">
+						<p:outputLabel value="#{det.iban}" />
+					</p:column>
+					
+	                    
+                          <p:column  headerText="#{msg['addDeductions.deductionsType']}">
+						<p:outputLabel value="#{det.deduction}" />
+					</p:column>
+
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{employeesMB.init()}" actionListener="#{employeesDetailsMB.redirectToEmployeeEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{employeesMB.employee}" />
+							<f:setPropertyActionListener value="false" target="#{employeesMB.addEmployee}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['title.edit_agent']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{employeesDetailsMB.deleteEmployee(det)}" process="@this" update="@form">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+					</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

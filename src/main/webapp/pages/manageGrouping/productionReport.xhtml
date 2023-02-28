@@ -1,0 +1,241 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="title">#{msg['production_report']}  </ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+
+		<h:form id="officeInfo">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px">
+							#{msg['production_report']}</h1>
+						<p:panelGrid id="pnlReport" columns="1" layout="grid"
+							styleClass="ui-panelgrid-blank form-group">
+
+
+
+							<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+								filter="true" filterMatchMode="contains" id="fromWarehouses"
+								value="#{productionReportMB.warehousesFrom}"
+								style="margin-bottom:10px;" styleClass="Wid100" required="true">
+								<f:selectItem itemLabel="من مستودع" />
+								<f:selectItems value="#{productionReportMB.warehousesList}"
+									var="warehouses"
+									itemLabel="#{utils.isArabic() ? warehouses.nameWarehouses : warehouses.nameWarehousesEn}"
+									itemValue="#{warehouses}" />
+
+							</p:selectOneMenu>
+							<p:column></p:column>
+
+
+							<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+								filter="true" filterMatchMode="contains" id="toWarehouses"
+								value="#{productionReportMB.warehousesTo}"
+								style="margin-bottom:10px;" styleClass="Wid100" required="true">
+								<f:selectItem itemLabel="الى مستودع" />
+								<f:selectItems value="#{productionReportMB.warehousesList}"
+									var="warehouses"
+									itemLabel="#{utils.isArabic() ? warehouses.nameWarehouses : warehouses.nameWarehousesEn}"
+									itemValue="#{warehouses}" />
+
+							</p:selectOneMenu>
+
+							<p:column>
+								<h:panelGroup>
+									<label>#{msg['report.from_date']}:</label>
+
+									<p:calendar value="#{productionReportMB.fromDate}"
+										pattern="dd/MM/yyyy">
+										<p:ajax event="dateSelect" process="@form" update="@form"></p:ajax>
+									</p:calendar>
+								</h:panelGroup>
+							</p:column>
+							<p:column>
+							</p:column>
+							<p:column>
+								<h:panelGroup>
+									<label>#{msg['report.to_date']}:</label>
+
+									<p:calendar value="#{productionReportMB.toDate}"
+										pattern="dd/MM/yyyy">
+										<p:ajax process="@form" update="@form"></p:ajax>
+									</p:calendar>
+								</h:panelGroup>
+							</p:column>
+
+							<p:spacer />
+
+						</p:panelGrid>
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save"
+							style="width:auto" action="#{productionReportMB.init2()}"
+							process="@form" update="@form" />
+
+
+						<br />
+					</div>
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+
+									<common:printHeader target="@form:print"
+										office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['Statement_of_account']}  ">
+
+									</common:printHeader>
+
+
+									<br />
+									<p:commandButton value="اصدار الى اكسل " id="exportEx"
+										style="width:auto"
+										action="#{productionReportMB.exportToExcel}">
+									</p:commandButton>
+
+									<p:dataTable var="record"
+										value="#{productionReportMB.statementAccountList}"
+										id="groupList">
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="#{msg['Date']}" />
+											</f:facet>
+											<p:outputLabel value="#{record.date}">
+												<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3" />
+
+
+											</p:outputLabel>
+										</p:column>
+
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="اسم المستودع" />
+											</f:facet>
+											<p:outputLabel value="#{record.warehouses}">
+
+
+											</p:outputLabel>
+										</p:column>
+
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="رقم المستند" />
+											</f:facet>
+											<p:outputLabel value="#{record.documentNumber}">
+
+
+											</p:outputLabel>
+										</p:column>
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="كود الصنف  " />
+											</f:facet>
+											<p:outputLabel value="#{record.codeItem}">
+
+
+											</p:outputLabel>
+										</p:column>
+
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="اسم الصنف" />
+											</f:facet>
+											<p:outputLabel value="#{record.nameItem}">
+
+
+											</p:outputLabel>
+										</p:column>
+
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="الوصف " />
+											</f:facet>
+											<p:outputLabel value="#{record.description}">
+
+
+											</p:outputLabel>
+										</p:column>
+				               <p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="وحدة القياس  " />
+											</f:facet>
+											<p:outputLabel value="#{record.uint}">
+
+
+											</p:outputLabel>
+										</p:column>
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value=" الكمية  " />
+											</f:facet>
+											<h:outputLabel value="#{record.debitTransaction}">
+												<f:convertNumber pattern="###,###.##" />
+
+											</h:outputLabel>
+											<f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{productionReportMB.statementAccountList.stream().map(s->s.debitTransaction).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+										</p:column>
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="  القيمة " />
+											</f:facet>
+											<h:outputLabel value="#{record.credit}">
+												<f:convertNumber pattern="###,###.##" />
+
+											</h:outputLabel>
+											<f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{productionReportMB.statementAccountList.stream().map(s->s.credit).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+										</p:column>
+
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value=" الرصيد   " />
+											</f:facet>
+											<h:outputLabel value="#{record.total}">
+												<f:convertNumber pattern="###,###.##" />
+
+											</h:outputLabel>
+		                                <f:facet name="footer">
+												<h:outputLabel style="color: Black;font-size: 15px;"
+													value="#{productionReportMB.statementAccountList.stream().map(s->s.credit).sum()}">
+													<f:convertNumber pattern="###,###.##" />
+												</h:outputLabel>
+											</f:facet>
+										</p:column>
+
+
+									</p:dataTable>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

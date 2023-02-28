@@ -1,0 +1,148 @@
+.ui-selectonemenu .ui-selectonemenu-label, .ui-selectonemenu-panel .ui-selectonemenu-list-item,
+	.ui-timepicker-div dl {
+	text-align: right;
+}
+
+.ui-selectonemenu {
+	padding-right: 22px;
+}
+
+.ui-timepicker-div dl {
+	direction: rtl !important;
+}
+
+.ui-panel .ui-panel-titlebar .ui-panel-title {
+	line-height: 30px !important;
+}
+
+.ui-panel .ui-panel-title {
+	margin: .1em 0px .2em 0;
+}
+
+.ui-timepicker-div dl dd {
+	margin: 0 40% 10px 20px;
+}
+
+.ui-timepicker-div dl dt {
+	float: right;
+	clear: right;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-label-container {
+	top: 3px;
+	margin-right: 15px;
+}
+
+.md-inputfield  .ui-inputswitch {
+	float: left;
+}
+
+.md-inputfield label {
+	left: auto;
+	right: 5px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+	text-align: right;
+}
+
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item label {
+	padding-right: 28px;
+	padding-left: auto;
+}
+
+.ui-fluid .ui-selectonemenu .ui-selectonemenu-trigger {
+	margin-right: 0px;
+	padding: 0 0px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+	margin-top: 0px !important;
+}
+
+.ui-growl {
+	left: 20px;
+	right: auto;
+}
+
+body .fc {
+	
+}
+
+body .ui-datepicker .ui-datepicker-header {
+	direction: ltr !important;
+}
+
+.ui-datepicker-next {
+	left: 8px !important;
+	right: auto!important;
+	-webkit-transform: rotate(180deg)!important;
+	-moz-transform: rotate(180deg)!important;
+	-o-transform: rotate(180deg)!important;
+	-ms-transform: rotate(180deg)!important;
+	transform: rotate(180deg)!important;
+}
+
+.ui-datepicker-prev {
+	right: 8px !important;
+	left: auto!important;
+	-webkit-transform: rotate(0deg)!important;
+	-moz-transform: rotate(0deg)!important;
+	-o-transform: rotate(0deg)!important;
+	-ms-transform: rotate(0deg)!important;
+	transform: rotate(0deg)!important;
+}
+
+
+@media ( min-width : 1025px) {
+	.layout-wrapper .topbar-items>li>ul {
+		left: 5px;
+		right: auto;
+	}
+}
+
+@media ( max-width : 640px) {
+	.ui-datatable-reflow .ui-datatable-data td[role="gridcell"] {
+		text-align: right;
+	}
+}
+
+.ui-panel .ui-panel-titlebar-icon {
+	float: left;
+	cursor: pointer;
+}
+
+.fc .fc-button-group>* {
+	float: right;
+	margin: 0 0 0 -1px;
+}
+
+.ui-icon-circle-triangle-e {
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
+
+.ui-icon-circle-triangle-w {
+	-webkit-transform: rotate(0deg);
+	-moz-transform: rotate(0deg);
+	-o-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+
+
+.fc {
+    direction: rtl;
+    text-align: right;
+}
+
+.fc-toolbar .fc-right {
+    float: left;
+}
+.fc-toolbar .fc-left {
+    float: right;
+}

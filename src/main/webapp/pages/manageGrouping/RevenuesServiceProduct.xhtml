@@ -1,0 +1,190 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:common="http://java.sun.com/jsf/composite/composites/common"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="title">#{msg['Statement_of_account']}  </ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+
+		<h:form id="officeInfo">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12 no-border no-padding">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<h1 style="padding-right: 10px">
+							الايرادات حسب نوع الخدمه والمنتج </h1>
+						<p:panelGrid id="pnlReport" columns="1" layout="grid"
+							styleClass="ui-panelgrid-blank form-group">
+				
+	
+					<p:column>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="agents12"
+									value="#{revenuesServiceProductMB.servicesProducts}"
+									style="margin-bottom:10px;" styleClass="Wid100">
+
+									<f:selectItem itemLabel="اختيار الخدمه  " />
+									<f:selectItems
+										value="#{revenuesServiceProductMB.servicesProductsList}"
+										var="servicesProducts"
+										itemLabel="#{servicesProducts.nameProductOrService}"
+										itemValue="#{servicesProducts}" />
+
+								</p:selectOneMenu>
+
+							</p:column>
+							<p:column>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="delegateCoding1"
+									value="#{revenuesServiceProductMB.servicesProducts1}"
+									style="margin-bottom:10px;" styleClass="Wid100">
+
+									<f:selectItem itemLabel="اختيار الخدمه " />
+									<f:selectItems
+										value="#{revenuesServiceProductMB.servicesProductsList}"
+										var="servicesProducts"
+										itemLabel="#{servicesProducts.nameProductOrService}"
+										itemValue="#{servicesProducts}" />
+
+								</p:selectOneMenu>
+
+							</p:column>
+							<p:column>
+								<h:panelGroup>
+									<label>#{msg['report.from_date']}:</label>
+
+									<p:calendar value="#{revenuesServiceProductMB.fromDate}"
+										pattern="dd/MM/yyyy">
+										<p:ajax event="dateSelect" process="@form" update="@form"></p:ajax>
+									</p:calendar>
+								</h:panelGroup>
+							</p:column>
+							<p:column>
+							</p:column>
+							<p:column>
+								<h:panelGroup>
+									<label>#{msg['report.to_date']}:</label>
+
+									<p:calendar value="#{revenuesServiceProductMB.toDate}"
+										pattern="dd/MM/yyyy">
+										<p:ajax process="@form" update="@form"></p:ajax>
+									</p:calendar>
+								</h:panelGroup>
+							</p:column>
+
+							<p:spacer />
+
+						</p:panelGrid>
+
+						<p:commandButton value="#{msg['search']}" icon="ui-icon-save"
+							style="width:auto"
+							action="#{revenuesServiceProductMB.init2()}"
+							process="@form" update="@form" />
+
+
+						<br />
+					</div>
+					<div class="card card-w-title">
+						<div class="ui-g">
+							<div class="ui-g-12">
+								<h:panelGroup id="print" layout="block">
+									
+									<common:printHeader target="@form:print"
+										office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['Statement_of_account']}  ">
+
+									</common:printHeader>
+
+									
+
+									<br />
+<p:commandButton  value="اصدار الى اكسل "   id="exportEx"  style="width:auto" action="#{revenuesServiceProductMB.exportToExcel}">
+			</p:commandButton>
+									
+									<p:dataTable var="record"
+										value="#{revenuesServiceProductMB.statementAccountList}"
+										id="groupList" sortBy="#{record.date}">
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="#{msg['Date']}" />
+											</f:facet>
+											<p:outputLabel value="#{record.date}">
+												<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+3" />
+
+
+											</p:outputLabel>
+										</p:column>
+									
+
+									<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="اسم العميل " />
+											</f:facet>
+											<p:outputLabel value="#{record.customerName}">
+
+
+											</p:outputLabel>
+										</p:column>
+									
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="رقم الفاتورة   " />
+											</f:facet>
+											<p:outputLabel value="#{record.documentNumber}">
+
+
+											</p:outputLabel>
+										</p:column>
+											<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="نوع المستند    " />
+											</f:facet>
+											<p:outputLabel value="#{record.documentType}">
+
+
+											</p:outputLabel>
+										</p:column>
+											<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="نوع الخدمة   " />
+											</f:facet>
+											<p:outputLabel value="#{record.description}">
+
+
+											</p:outputLabel>
+										</p:column>
+									
+										<p:column width="6%">
+											<f:facet name="header">
+												<h:outputText value="القيمة  " />
+											</f:facet>
+											<h:outputLabel value="#{record.debit}">
+												<f:convertNumber pattern="###,###.##" />
+
+											</h:outputLabel>
+											<f:facet name="footer">
+											<h:outputLabel style="color: Black;font-size: 15px;"
+						value="#{revenuesServiceProductMB.statementAccountList.stream().map(s->s.debit).sum()}" >
+								 <f:convertNumber pattern="###,###.##"/>
+						</h:outputLabel>
+						</f:facet>
+										</p:column>
+								
+									
+									</p:dataTable>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

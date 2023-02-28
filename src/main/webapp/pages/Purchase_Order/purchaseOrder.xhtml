@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/customer" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+<ui:define name="head" >
+	<style>
+ .ui-datatable * {
+     border : 0px !important;
+}
+th {
+  color: #6495ED !important;
+}
+
+</style>
+</ui:define>	<ui:define name="content">
+
+		<h:form id="customer">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+			
+				<p:commandButton icon="ui-icon-add" value="اضافة امر الشراء" action="#{purchaseOrderMB.init()}" actionListener="#{purchaseOrderDetailsMB.redirectToPurchaseBillsAddition()}" >
+					<f:setPropertyActionListener value="true" target="#{purchaseOrderMB.addPurchaseBill}" />
+				</p:commandButton>
+				
+					<p:commandButton onclick="window.print();" type="button" icon="ui-icon-print" >
+					</p:commandButton>
+								
+								<p:dataTable reflow="true" emptyMessage="#{msg['noRecord']}" id="billsDetails" var="det" styleClass="txt-center" value="#{purchaseOrderDetailsMB.purchaseOrderList}">
+					<p:column   headerText="#{msg['Supplier_Name_Arabic']} ">
+						
+					    <p:outputLabel  value="#{utils.isArabic() ? det.suppliers.suppliersNameAr:det.suppliers.suppliersNameEn}"  />
+						
+							
+														</p:column>
+										
+										<p:column  headerText="رقم امر الشراء " >
+	                      <p:outputLabel  value="#{det.purchaseBillsNumber}"  />
+						
+					
+					</p:column>				
+														
+									<p:column  headerText="تاريخ امر الشراء ">
+	                      <p:outputLabel  value="#{det.todayDate}"  />
+						
+					
+					</p:column>
+					
+						<p:column  headerText=" قيمة امر الشراء ">
+	                      <p:outputLabel  value="#{det.total}"  >
+	                      							 <f:convertNumber pattern="###,###.##"/>
+	                      
+	                      </p:outputLabel>
+						
+					
+					</p:column>		
+						<p:column  headerText=" #{msg['user']} ">
+						<p:outputLabel  value="#{det.user.nameAr}" />
+							</p:column>		
+							
+									
+					<p:column headerText="#{msg['global.options']}">
+						<p:commandButton id="editBtn" icon="ui-icon-edit" action="#{purchaseOrderMB.init()}" actionListener="#{purchaseOrderDetailsMB.redirectToPurchaseBillsEdit()}" process="@this" >
+							<f:setPropertyActionListener value="#{det}" target="#{purchaseOrderMB.purchaseOrder}" />
+							<f:setPropertyActionListener value="false" target="#{purchaseOrderMB.addPurchaseBill}" />
+						</p:commandButton>
+						<p:tooltip for="editBtn" value="#{msg['Edit_invoice']}" trackMouse="true" />
+						<p:commandButton id="delteBtn" icon="ui-icon-delete" actionListener="#{purchaseOrderDetailsMB.deletePurchaseBills(det)}" process="@this" update="@this" rendered="false">
+							<p:confirm header="#{msg['glopal.confirmation']}" message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:tooltip for="delteBtn" value="#{msg['delete_btn']}" trackMouse="true" />
+												
+					</p:column>						
+														</p:dataTable>
+				
+				
+			
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

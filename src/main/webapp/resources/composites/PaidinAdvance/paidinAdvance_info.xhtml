@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html" xmlns:common="http://java.sun.com/jsf/composite/composites/common" >
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addBills" required="true" default="true" type="java.lang.Boolean"
+			shortDescription="true for add company, false for edit " />
+		 
+</composite:interface>
+</head>
+<body>
+
+	<composite:implementation>
+
+	<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save" style="width:auto" action="#{purchaseBillsMB.savePurchaseBills()}"
+						process="@form" update="@form" />
+			
+		<p:commandButton onclick="window.print();" type="button" icon="ui-icon-print" >
+					</p:commandButton>	
+	<div class="ui-g">
+		
+							
+
+                </div>
+                
+                <br></br>
+                 <p:commandButton action="#{purchaseBillsMB.addNewDetails()}" oncomplete="PF('bui').hide()" onstart="PF('bui').show()" style="width:auto" value="اضافه سطر" 
+												process="@this" icon="ui-icon-plus" />
+                
+                   <div class="ui-g-12 ui-md-12 ui-lg-12 table-g-24">				
+								                
+																<div class="card card-w-title">
+								
+            		<p:panelGrid columns="8" id="pnl2" styleClass="ui-noborder Wid120" >
+            			      
+            			                
+            				
+					<p:dataTable emptyMessage="#{msg['noRecord']}" id="tblSheet" rowIndexVar="index" var="det" styleClass="txt-center" 
+											value="#{purchaseBillsMB.paidInAdvanceList}" style="border:hidden;" >
+								
+								 
+								
+											   
+                    <p:column headerText="#" width="20" style="border:hidden;" >
+					
+												<h:outputText value="#{index+1}" />
+									
+               						
+					
+											</p:column>
+				
+												<p:column   headerText="اسم العميل">
+						
+						
+							<p:selectOneMenu id="bonusesList" value="#{det.suppliers}" style="margin-bottom:10px;" converter="omnifaces.SelectItemsConverter" required="true"
+									requiredMessage="#{msg['addDeductions.deductionsType']} #{msg['required']}"
+									 filter="true" filterMatchMode="contains" disabled="true" >
+									<f:selectItems value="#{purchaseBillsMB.suppliersList}" var="suppliers" itemLabel="#{suppliers.suppliersNameAr}" itemValue="#{suppliers}" />
+								</p:selectOneMenu>
+														</p:column>
+											
+					
+								<p:column headerText="نوع العقد" width="100" style="border:hidden;" >
+								<p:inputTextarea value="#{det.typeOfContract}"> 
+								</p:inputTextarea>
+								</p:column>	
+										
+							
+							<p:column headerText="الكمية" width="50" style="border:hidden;" >
+							<p:inputNumber value="#{det.contractValue}"/>
+							</p:column>	
+								
+							
+								
+							
+							
+					
+					</p:dataTable>
+					</p:panelGrid>
+					</div>
+					</div>
+					
+ 
+										
+										
+										
+	</composite:implementation>
+</body>
+</html>

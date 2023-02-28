@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ag="http://java.sun.com/jsf/composite/composites/agent" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml" xmlns:common="http://java.sun.com/jsf/composite/composites/common">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form id="agentInfo">
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<p:panelGrid columns="1" layout="grid">
+				
+					
+					
+							<p:commandButton value="#{msg['search']}" icon="ui-icon-save" style="width:auto"
+							action="#{reportFixedAssetMB.search()}" process="@form" update="@form" />
+							
+								<h:panelGroup id="print" layout="block ">
+									<common:printHeader target="@form:print" office="#{utils.getCurrentOffice()}"
+										reportName="#{msg['reports.job_hours_schedule']} ">
+
+									</common:printHeader>
+										<p:dataTable  id="agentDetails" var="det" styleClass="txt-center" value="#{reportFixedAssetMB.fixedAssetsList}">
+				
+
+					<p:column filterBy="#{det.assetsName}"  headerText="اسم الاصل">
+						<p:outputLabel value="#{det.assetsName}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.assetsGroup}" headerText="مجموعه الاصل ">
+						<p:outputLabel value="#{det.assetsGroup}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.consumptionDate}" headerText="تاريخ بداية الاستهلاك ">
+						<p:outputLabel value="#{det.consumptionDate}" />
+					</p:column>
+
+					<p:column filterBy="#{det.dateOfPurchase}" headerText="تاريخ  الشراء">
+						<p:outputLabel value="#{det.dateOfPurchase}" />
+					</p:column>
+
+					<p:column  filterBy="#{det.depreciationPercentage}" headerText="نسبة الاستهلاك السنوي">
+						<p:outputLabel value="#{det.depreciationPercentage}" />
+					</p:column>
+<p:column   headerText=" العمر الانتاجي ">
+						<p:outputLabel value="#{det.usefulLife}" >
+						                        <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+					</p:column>
+					<p:column   headerText=" فترة الاستخدام   ">
+						<p:outputLabel value="#{det.usagePeriod}" >
+												                        <f:convertNumber pattern="###,###.##"/>
+						</p:outputLabel>
+					</p:column>
+					
+				</p:dataTable>
+				</h:panelGroup>
+				
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

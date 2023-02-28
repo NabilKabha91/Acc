@@ -1,0 +1,456 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<composite:interface>
+	<composite:attribute name="title" required="true" />
+	<composite:attribute name="addCustomer" required="true" default="true"
+		type="java.lang.Boolean"
+		shortDescription="true for add company, false for edit " />
+
+
+</composite:interface>
+</head>
+<body>
+	<composite:implementation>
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-lg-12">
+				<!-- Left Side -->
+				<div class="card" style="box-shadow: 3px 3px 3px 3px #888888;">
+					<div>
+
+						<center>
+
+							<h:outputLabel style='font-size: 25.0pt '
+								value="#{noteDebitMB.noteDebit.documentType}">
+
+
+							</h:outputLabel>
+						</center>
+						<br></br> <br></br>
+
+						<div
+							style="display: flex; flex-direction: row; justify-content: flex-start;margin-bottom:50px">
+							<div style="width: 150px">
+								<p:outputLabel value="#{msg['CN_number']}"
+									style="font-weight:bold;" />
+
+								<p:inputText value="#{noteDebitMB.noteDebit.notedebitNumber}" />
+							</div>
+
+							<div style="width: 150px">
+								<p:outputLabel value="عميل/مورد  " style="font-weight:bold;" />
+
+								<p:selectOneRadio id="enterVacationList"
+									value="#{noteDebitMB.noteDebit.suppliersCustomer}"
+									style="margin-bottom:10px;" filter="true"
+									filterMatchMode="contains" required="true">
+									<p:ajax event="change" process="@this" update="@form" />
+
+									<f:selectItem itemLabel="عميل " itemValue="1" />
+									<f:selectItem itemLabel="مورد" itemValue="2" />
+
+
+								</p:selectOneRadio>
+
+							</div>
+							<div style="width: 200px">
+								<p:outputLabel value="فاتوره/بدون فاتورة  "
+									rendered="#{noteDebitMB.noteDebit.suppliersCustomer eq 1}"
+									style="font-weight:bold;" />
+
+
+								<p:selectOneRadio id="enterVacationList8"
+									value="#{noteDebitMB.noteDebit.bill}"
+								 filter="true"
+									filterMatchMode="contains" required="true"
+									rendered="#{noteDebitMB.noteDebit.suppliersCustomer eq 1}">
+									<p:ajax process="@this" update="@parent:customer5" />
+									<p:ajax event="change" process="@this" update="@form" />
+
+									<f:selectItem itemLabel="فاتورة " itemValue="1" />
+									<f:selectItem itemLabel="بدون فاتورة" itemValue="2" />
+
+
+								</p:selectOneRadio>
+							</div>
+						</div>
+							<div
+							style="display: flex; flex-direction: row; justify-content:space-between;margin-bottom:50px">
+						<div style="width: 150px">
+							<p:outputLabel value="#{msg['Date']}" style="font-weight:bold;" />
+
+							<p:calendar value="#{noteDebitMB.noteDebit.todayDate}"
+								pattern="yyyy/MM/dd" required="true" />
+						</div>
+						<div style="width: 200px">
+							<p:outputLabel value="#{msg['Supplier_Name']}"
+								rendered="#{noteDebitMB.noteDebit.suppliersCustomer eq 2}"
+								style="font-weight:bold;" />
+
+							<p:selectOneMenu id="suppliersList"
+								value="#{noteDebitMB.noteDebit.suppliers}"
+								style="width: 200px"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								filter="true" filterMatchMode="contains" multiple="true"
+								rendered="#{noteDebitMB.noteDebit.suppliersCustomer eq 2}">
+
+								<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+
+								<f:selectItems value="#{noteDebitDetailsMB.suppliersList}"
+									var="suppliers"
+									itemLabel="#{utils.isArabic() ? suppliers.suppliersNameAr : suppliers.suppliersNameEn}"
+									itemValue="#{suppliers}" />
+
+
+							</p:selectOneMenu>
+						</div>
+
+						<div style="width: 200px">
+							<p:outputLabel value="#{msg['addCustomer.customerName']}"
+								rendered="#{noteDebitMB.noteDebit.suppliersCustomer eq 1}"
+								style="font-weight:bold;" />
+
+							<p:selectOneMenu id="customer"
+								value="#{noteDebitMB.noteDebit.customer}"
+								style="width: 200px"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								filter="true" filterMatchMode="contains" multiple="true"
+								rendered="#{noteDebitMB.noteDebit.suppliersCustomer eq 1}">
+								<p:ajax update="customer5" />
+								<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+
+								<f:selectItems value="#{noteDebitDetailsMB.customerList}"
+									var="customer"
+									itemLabel="#{utils.isArabic() ? customer.customerNameAr:customer.customerNameEn}"
+									itemValue="#{customer}" />
+
+
+							</p:selectOneMenu>
+						</div>
+							<div style="width: 140px">
+							<p:outputLabel value="رقم الفاتورة "
+								rendered="#{noteDebitMB.noteDebit.bill eq 1 and noteDebitMB.noteDebit.suppliersCustomer eq 2 }"
+								style="font-weight:bold;" />
+							<p:selectOneMenu id="customer59"
+								value="#{noteDebitMB.noteDebit.purchaseBills}"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								filter="true" filterMatchMode="contains" multiple="true"
+								rendered="#{noteDebitMB.noteDebit.bill eq 1 and noteDebitMB.noteDebit.suppliersCustomer eq 2 }">
+
+								<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+
+								<f:selectItems value="#{noteDebitDetailsMB.purchaseBillsList}"
+									var="purchaseBills"
+									itemLabel="#{purchaseBills.purchaseBillsNumber}"
+									itemValue="#{purchaseBills}" />
+
+
+							</p:selectOneMenu>
+						</div>
+							
+						<div style="width: 140px">
+							<p:outputLabel value="رقم الفاتورة "
+								rendered="#{noteDebitMB.noteDebit.bill eq 1 and noteDebitMB.noteDebit.suppliersCustomer eq 1 }" />
+
+							<p:selectOneMenu id="customer5"
+								value="#{noteDebitMB.noteDebit.bills}"
+								style="margin-bottom:10px;"
+								converter="omnifaces.SelectItemsConverter" required="true"
+								filter="true" filterMatchMode="contains" multiple="true"
+								rendered="#{noteDebitMB.noteDebit.bill eq 1 and noteDebitMB.noteDebit.suppliersCustomer eq 1 }">
+				   	<p:ajax event="change" listener="#{noteDebitMB.test}" update="bill" />
+
+								<f:selectItem itemLabel="#{msg['select']}" itemValue="" />
+
+								<f:selectItems
+									value="#{noteDebitMB.noteDebit.customer.billsList}"
+									var="customer" itemLabel="#{customer.billsNumber}"
+									itemValue="#{customer}" />
+
+
+
+							</p:selectOneMenu>
+							
+	
+					
+						</div>
+
+							</div>
+
+								
+			<div	style="margin-bottom:80px">
+			
+		<p:dataTable var="bill" value="#{noteDebitMB.addbillsList}" id="bill"	rendered="#{selectCompany.id eq 2 and noteDebitMB.noteDebit.bill ne 2 and  utils.getVersion() eq 'KSA' and noteDebitMB.noteDebit.suppliersCustomer eq 1 and (utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 10 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 11 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 22 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 17 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 20 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 25 )}">
+            <p:column headerText="كود الصنف ">
+                <h:outputText value="#{bill.itemsScreen.codeItem}" />
+            </p:column>
+            
+                 <p:column headerText="اسم  الصنف ">
+                <h:outputText value="#{bill.itemsScreen.nameItem}" />
+            </p:column>
+                 <p:column headerText="Th/h	">
+                <h:outputText value="#{bill.th}" />
+            </p:column>
+                 <p:column headerText="width">
+                <h:outputText value="#{bill.width}" />
+            </p:column>
+                 <p:column headerText="length ">
+                <h:outputText value="#{bill.length}" />
+            </p:column>
+            
+  <p:column headerText="Pcs" >
+                   <h:outputText value="#{bill.pcs}"	/>
+               
+            </p:column>
+                 <p:column headerText="Pcs">
+                  	<p:inputText value="#{bill.returnPieces}"	required="true"/>
+               
+            </p:column>
+            
+                 <p:column headerText="الوحدة ">
+                <h:outputText value="#{bill.units.unitName}" />
+            </p:column>
+    
+          <p:column headerText="سعر الوحدة ">
+                <h:outputText value="#{bill.costUnit}" />
+            </p:column>
+            
+                     <p:column headerText=" الكمية المرتجعة  ">
+              <h:outputText value="#{bill.returnQuantity}" />
+            </p:column>
+            
+         <p:column headerText="القيمة المرتجعة">
+              <h:outputText value="#{bill.returnValue}" >	
+              	<f:convertNumber pattern="###,###.##" />
+			</h:outputText>			
+			     </p:column>
+            
+               <p:column headerText="قيمة الضريبة ">
+              <h:outputText value="#{bill.returnValueAefterTax}">	
+              	<f:convertNumber pattern="###,###.##" />
+							</h:outputText>			
+            </p:column>
+            <p:column headerText="القيمة بعد الضريبة ">
+              <h:outputText value="#{bill.returnTotal}">
+              	<f:convertNumber pattern="###,###.##" />
+							</h:outputText>			
+            </p:column>
+            
+            
+         <p:column headerText="احتساب القيمة المرتجعة">
+          		<p:commandButton value="احتساب" 
+
+								style="width:auto;border-radius:20px;background-color:#888888"
+								process="@this,bill" update="@this"
+								action="#{noteDebitMB.calculat(bill)}" />
+								
+								
+								<p:commandButton value="clear" 
+
+								style="width:auto;border-radius:20px;background-color:#888888"
+								process="@this,bill" update="bill"
+								action="#{noteDebitMB.clear(bill)}" />		
+            </p:column>
+              
+        </p:dataTable>
+          <p:commandButton value="احتساب المجموع الكلي "
+
+								style="width:auto;border-radius:20px;background-color:#888888"
+								process="@this,bill" update="@this,test"
+								action="#{noteDebitMB.test1()}" rendered="#{utils.getVersion() eq 'KSA' and noteDebitMB.noteDebit.bill eq 1 and (utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 10 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 11 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 22 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 17 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 20 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 25 )}"/>	
+        </div>
+      
+        
+							<div
+							style="display: flex; flex-direction: row; justify-content:space-between;margin-bottom:80px">
+										<div style="width: 150px"  >
+									<p:outputLabel value="#{msg['Group_'+=utils.getVersion()]}"
+								style="font-weight:bold;" rendered="#{noteDebitMB.noteDebit.bill eq 1 and utils.getVersion() eq 'JO' or utils.getVersion() eq 'EGY'}"/>
+							<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+								filter="true" filterMatchMode="contains" id="group1"
+								style="width: 200px"
+								value="#{noteDebitMB.noteDebit.groupingId}"  rendered="#{noteDebitMB.noteDebit.bill eq 1 and utils.getVersion() eq 'JO' or utils.getVersion() eq 'EGY'}">
+								<f:selectItem itemLabel="#{msg['Group_'+=utils.getVersion()]}" />
+								<f:selectItems value="#{noteDebitMB.groupList}" var="grouping"
+									itemLabel="#{grouping.grpDesc}" itemValue="#{grouping.grpId}" />
+
+							</p:selectOneMenu>
+
+
+					
+						</div>
+								
+								<div style="width: 150px">
+							<p:outputLabel style="font-weight:bold;"
+								value="#{msg['Currency']}     " />
+							<p:selectOneMenu id="definitionOfCurrencies"
+								value="#{noteDebitMB.noteDebit.definitionOfCurrencies}"
+								converter="omnifaces.SelectItemsConverter" filter="true"
+								filterMatchMode="contains" multiple="true">
+								<f:selectItem itemLabel=" " itemValue="" />
+
+								<f:selectItems value="#{noteDebitMB.definitionOfCurrenciesList}"
+									var="definitionOfCurrenciesList"
+									itemLabel="#{definitionOfCurrenciesList.definitionOfCurrenciesName}"
+									itemValue="#{definitionOfCurrenciesList}" />
+
+
+							</p:selectOneMenu>
+						</div>
+	
+				<div style="width: 150px">
+							<p:outputLabel value="#{msg['Group_'+=utils.getVersion()]}"
+								style="font-weight:bold;" rendered="#{noteDebitMB.noteDebit.bill eq 2}"/>
+
+							<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+								filter="true" filterMatchMode="contains" id="group2"
+								style="width: 200px"
+								value="#{noteDebitMB.noteDebit.groupingId}"  rendered="#{noteDebitMB.noteDebit.bill eq 2 }">
+								<f:selectItem itemLabel="#{msg['Group_'+=utils.getVersion()]}" />
+								<f:selectItems value="#{noteDebitMB.groupList}" var="grouping"
+									itemLabel="#{grouping.grpDesc}" itemValue="#{grouping.grpId}" />
+
+							</p:selectOneMenu>
+
+
+					
+						</div>
+				
+						<div style="width: 140px">
+							<h:outputLabel style="font-weight:bold;"
+								value="#{msg['we_debited_your_account_by']}" rendered="#{utils.getVersion() eq 'JO' or utils.getVersion() eq 'EGY'}" >
+							</h:outputLabel>
+
+							<p:inputText value="#{noteDebitMB.noteDebit.initalAmount}"   rendered="#{utils.getVersion() eq 'JO' or utils.getVersion() eq 'EGY'}"	required="true">
+                    
+							</p:inputText>
+							</div>
+						<div style="width: 140px">
+							<h:outputLabel style="font-weight:bold;"
+								value="#{msg['we_debited_your_account_by']}  " rendered="#{noteDebitMB.noteDebit.bill eq 1 and utils.getVersion() eq 'KSA' and (utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 10 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 11 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 22 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 17 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 20 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 25 )}">
+							</h:outputLabel>
+
+							<h:outputText  value="#{noteDebitMB.noteDebit.initalAmount}"  id="test"
+								required="true" rendered="#{noteDebitMB.noteDebit.bill eq 1 and utils.getVersion() eq 'KSA' and (utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 10 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 11 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 22 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 17 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 20 or utils.getCurrentUser().getCompany().getCompanyActivityNature() eq 25 )}">
+
+							</h:outputText >
+						<h:outputLabel style="font-weight:bold;"
+								value="#{msg['we_debited_your_account_by']}" rendered="#{utils.getVersion() eq 'KSA' and noteDebitMB.noteDebit.bill eq 2}" >
+							</h:outputLabel>
+
+							<p:inputText value="#{noteDebitMB.noteDebit.initalAmount}"   rendered="#{utils.getVersion() eq 'KSA' and noteDebitMB.noteDebit.bill eq 2}" 	required="true">
+                    
+							</p:inputText>
+							
+							
+								<div style="width: 140px">
+									<h:outputLabel style="font-weight:bold;"
+								value="#{noteDebitMB.noteDebit.definitionOfCurrencies.definitionOfCurrenciesName}">
+
+							</h:outputLabel>
+						</div>
+						</div>
+							
+						</div>
+						<div
+							style="display: flex; flex-direction: column ; justify-content:space-between">
+					<div style="width: 150px;margin-bottom:20px">
+							<h:outputLabel style="font-weight:bold"
+								value="#{msg['Total']}  " id="test2">
+							</h:outputLabel>
+							<h:outputText value="#{noteDebitMB.noteDebit.amount}">
+								<f:convertNumber pattern="###,###.##" />
+							</h:outputText>
+						</div>
+						<div style="width: 300px">
+							<h:outputLabel style="font-weight:bold;"
+								value="#{msg['Descreption']}  " />
+
+
+							<p:inputTextarea value="#{noteDebitMB.noteDebit.note}"
+								autoResize="false" styleClass="Wid200" rows="3">
+							</p:inputTextarea>
+
+						</div>
+						</div>
+
+
+
+				
+						<center>
+							<p:commandButton value="#{msg['save_btn']}" icon="ui-icon-save"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								action="#{noteDebitMB.saveNoteDebit()}" process="@form"
+								update="@form" />
+							<p:commandButton value="#{msg['cancel_btn']}"
+								icon="ui-icon-cancel"
+								style="width:auto;border-radius:20px;background-color:#888888"
+								process="@this" update="@this"
+								action="#{noteDebitMB.cancelAction()}" />
+						</center>
+
+						<p:dialog resizable="false" height="45vh" width="450px"
+							modal="true" showHeader="false" widgetVar="uploadDocument"
+							closeOnEscape="true" dynamic="true">
+
+							<p:spacer height="10" width="100%"></p:spacer>
+							<center>
+								<h:panelGroup columns="2" id="fd" layout="block"
+									styleClass="no-border Wid70 MarAuto">
+
+									<p:outputLabel style="font-size: 17px;"
+										value="#{msg['Do_you_want_to_download_an_attachment']}"></p:outputLabel>
+									<p:spacer height="10" width="100%"></p:spacer>
+
+									<p:fileUpload rendered="#{noteDebitMB.noteDebit.id ne null}"
+										fileUploadListener="#{noteDebitMB.uploadDocument}"
+										mode="advanced" label="#{msg['attached']}" auto="true"
+										allowTypes="/(\.|\/)(gif|jpg|jpe?g|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/i"
+										uploadLabel="#{msg['attached']}"
+										cancelLabel="#{msg['Cancel']}" multiple="true">
+
+									</p:fileUpload>
+
+									<p:commandButton value="لا" style="width:auto"
+										action="#{noteDebitMB.cancelAction()}" process="@form"
+										update="@form">
+
+									</p:commandButton>
+
+
+								</h:panelGroup>
+							</center>
+						</p:dialog>
+
+
+						<p:dataTable rendered="#{noteDebitMB.noteDebit.id ne null}"
+							reflow="true" emptyMessage="#{msg['noRecord']}" id="document"
+							var="doc" styleClass="txt-center"
+							value="#{noteDebitMB.documentList}">
+
+							<p:column>
+								<p:link value="#{doc.documentName}" type="button"
+									onclick="window.open('/#{utils.getReportPath()}/#{doc.office.id}#{doc.company.id}/#{doc.documentName}');" />
+								<p:commandButton id="delteBtn" icon="ui-icon-delete"
+									action="#{billsMB.deleteDoucment()}" process="@this"
+									update="@this">
+									<p:confirm header="#{msg['glopal.confirmation']}"
+										message="#{msg['glopal.are_sure']}" icon="ui-icon-alert" />
+								</p:commandButton>
+							</p:column>
+
+
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</div>
+	</composite:implementation>
+</body>
+</html>

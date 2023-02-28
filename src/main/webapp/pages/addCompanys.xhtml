@@ -1,0 +1,157 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:pu="http://primefaces.org/ultima">
+	
+
+        <h:form id="menuformv">
+		<div class="layout-menu #{guestPreferences.menuClass}">
+			<div class="nano">
+				<div class="nano-content menu-scroll-content">
+				
+				
+						
+ 	                  <p:outputLabel value="#{selectCompany.legalCompanyName}"></p:outputLabel>
+				
+				
+						<pu:menu widgetVar="me" styleClass="men">
+
+						<p:submenu id="manage" label="#{msg['menu.manage']}" icon="&#xE8B8;">
+												<p:menuitem value="#{msg['title.office']}" rendered="#{utils.isAdmin()}" icon="add_to_queue" url="/pages/office/offices.html" ajax="false" />
+						
+								<p:menuitem value="معلومات الشركة" rendered="#{utils.isAdmin()}" icon="add_to_queue" url="/pages/company/edit-company.html" ajax="false" />
+							<p:menuitem value="#{msg['title.user']}" rendered="#{utils.isAdmin() or utils.isSuperUser()}" icon="add_to_queue" url="/pages/user/users.html" ajax="false" />
+															<p:menuitem value=" اداره الفواتير  " rendered="#{utils.isAdmin() or utils.isSuperUser()}" icon="add_to_queue" url="/pages/bill_management/bill_management.html" ajax="false" />
+																						<p:menuitem value="بيانات البنك " rendered="#{utils.isAdmin() or utils.isSuperUser()}" icon="add_to_queue" url="/pages/bank_data/bank_data.html" ajax="false" />
+																	<p:menuitem value=" تعريف العملات   " rendered="#{utils.isAdmin() or utils.isSuperUser()}" icon="add_to_queue" url="/pages/definition_of_currencies/definition_of_currencies.html" ajax="false" />
+															<p:menuitem value=" تحميل    "  icon="add_to_queue" url="/pages/uploadsDocument.html" ajax="false" />
+							
+							<p:menuitem value="Dashboard" rendered="#{utils.isAdmin() or utils.isSuperUser()}" icon="add_to_queue" url="/pages/dashboard.html"
+								ajax="false" />
+							
+							
+									
+						</p:submenu>
+
+                        <p:submenu id="customer" label="العملاء" icon="&#xE8B8;">
+                       <p:menuitem value="قائمة العملاء "   rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/customer/customers.html"  ajax="false" />
+						   <p:menuitem value="قائمة الخدمات و المنتجات " rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/services_and_products/services_and_products.html" ajax="false" />
+												   <p:menuitem value="اعمار الذمم " rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/customer/customers.html" ajax="false" />
+						
+									
+						</p:submenu>				
+
+						<p:submenu id="suppliers" label="الموردين" icon="&#xE8B8;">
+                       <p:menuitem value="قائمة الموردين " rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/suppliers/suppliers.html" ajax="false" />
+												   <p:menuitem value="اعمار الذمم " rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/customer/customers.html" ajax="false" />
+						
+									
+						</p:submenu>
+						<p:submenu id="report" label="المحاسبة" icon="fa fa-clone">
+																					<p:menuitem value="تعريف الضريبة " icon="fa fa-file-text-o" url="/pages/definition_of_tax/definition_of_tax.html" ajax="false"/>
+							
+							<p:menuitem value="سندات قبض"  icon="fa fa-file-text-o"
+								url="/pages/receive_payment/receivePayment.html"  ajax="false" />
+								<p:menuitem value="ايداع بنكي   "  icon="fa fa-file-text-o"
+								url="/pages/bankDeposit/bank_deposit.html" ajax="false" />
+								<p:menuitem value="اشعار مدين    "  icon="fa fa-file-text-o"
+								url="/pages/noteCredit/note_credit.html" ajax="false" />
+								<p:menuitem value="اشعار دائن    "  icon="fa fa-file-text-o"
+								url="/pages/noteDebit/note_debit.html" ajax="false" />
+								<p:menuitem value="القيود    "  icon="fa fa-file-text-o"
+								url="/pages/restrictions/restrictions.html" ajax="false" />
+								
+							<p:menuitem value="سندات صرف" icon="fa fa-file-text-o" url="/pages/bills_exchange/billexchange.html" ajax="false"/>
+							<p:menuitem value="فواتير " icon="fa fa-file-text-o" url="/pages/bills/bills.html" ajax="false"/>
+																							<p:menuitem value="فواتير المشتريات  " icon="fa fa-file-text-o" url="/pages/purchase_bills/purchasebills.html" ajax="false"/>
+									<p:submenu id="fixedassets" label="الموجودات الثابتة" icon="&#xE8B8;">
+																	<p:menuitem value="تعريف الموجودات الثابتة " icon="fa fa-file-text-o" url="/pages/fixed_assets/fixed_assets.html" ajax="false"/>
+															
+																				<p:menuitem value="  تقرير سجل الموجودات الثابته " icon="fa fa-file-text-o" url="/pages/fixed_assets/fixed_assets_report.html" ajax="false"/>
+								</p:submenu>
+	                 <p:menuitem value="سندات قيد" icon="fa fa-file-text-o" url="/pages/reports/report-emp-vacation.html" ajax="false"/>
+                     <p:menuitem value="اشعار دائن " icon="fa fa-file-text-o" url="/pages/reports/report-emp-vacation.html" ajax="false"/>
+                     <p:menuitem value="اشعار مدين " icon="fa fa-file-text-o" url="/pages/reports/report-emp-vacation.html" ajax="false"/>
+		                <p:menuitem       value="شجرة الحسابات   " icon="fa fa-file-text-o"  action="#{groupingBacking.initialize}" ajax="false"/>
+							<p:menuitem       value="شجرة الحسابات  المحسنة " icon="fa fa-file-text-o"  action="#{accountsTreeMBean.initialize}" ajax="false"/>
+		              <p:menuitem  value=" اضافه شجره حسابات    " icon="fa fa-file-text-o"  action="#{accountsTreeBacking.getAccountsTree}"/>
+			        	</p:submenu>
+						
+	
+				    	<p:submenu id="employees" label="كشف  الرواتب" icon="&#xE8B8;">
+                       <p:menuitem value="تعريف الموظف  " rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/employees/employees.html" ajax="false" />
+                       <p:menuitem value="تعريف العلاوات  " rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/bonuses/bonuses.html" ajax="false" />
+                         <p:menuitem value="تعريف الاقتطاعات  " rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/deductions/deductions.html" ajax="false" />
+                       
+									
+												   <p:menuitem value=" كشف الرواتب  " rendered="#{utils.isAdmin()or utils.isSuperUser()}" icon="add_to_queue" url="/pages/employees/payroll.html" ajax="false" />
+						
+									
+						</p:submenu>								
+							<p:submenu id="report1" label="#{msg['title.reports']}" icon="fa fa-clone">
+						
+							<p:menuitem value="ميزان مراجعة" rendered="#{utils.isAdmin() or utils.isSuperUser()}" icon="fa fa-file-text-o"
+								url="/pages/reports/report-expected-hours.html" ajax="false" />
+							<p:menuitem value="كشف حساب " icon="fa fa-file-text-o" url="/pages/reports/report-job-hours-schedule.html" ajax="false"/>
+								
+							
+						</p:submenu>
+										
+	        				<p:submenu id="themes" label="#{msg['global.color']}" icon="&#xE40A;">
+							<p:menuitem id="theme1" value="Indigo - Pink" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('indigo')}" ajax="false" />
+							<p:menuitem id="theme2" value="Brown - Green" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('brown')}" ajax="false" />
+							<p:menuitem id="theme3" value="Blue - Amber" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('blue')}" ajax="false" />
+							<p:menuitem id="theme4" value="Blue Grey - Green" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('blue-grey')}" ajax="false" />
+							<p:menuitem id="theme5" value="Dark - Blue" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('dark-blue')}" ajax="false" />
+							<p:menuitem id="theme6" value="Dark - Green" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('dark-green')}" ajax="false" />
+							<p:menuitem id="theme7" value="Green - Yellow" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('green')}" ajax="false" />
+							<p:menuitem id="theme8" value="Purple - Cyan" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('purple-cyan')}" ajax="false" />
+							<p:menuitem id="theme9" value="Purple - Amber" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('purple-amber')}" ajax="false" />
+							<p:menuitem id="theme10" value="Teal - Lime" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('teal')}" ajax="false" />
+							<p:menuitem id="theme11" value="Cyan - Amber" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('cyan')}" ajax="false" />
+							<p:menuitem id="theme12" value="Grey - Deep Orange" icon="&#xE3AE;" actionListener="#{guestPreferences.setTheme('grey')}" ajax="false" />
+						</p:submenu>
+		</pu:menu>
+</div>
+</div>
+</div>
+
+       
+     <h:outputScript>
+		
+		
+		$('.ultima-menu li').removeClass('active-menuitem');
+		$('.ultima-menu ul').css('display','none');
+		
+		 var currentPageName;
+                currentPageName=document.location.href.match(/[^\/]+$/)[0];
+                if(currentPageName.indexOf('.')>0){
+                	currentPageName=currentPageName.split('.')[0];
+                	currentPageName=currentPageName+'.';
+                    }
+                    
+                    console.log(currentPageName);
+                    
+                     $.each($('.ultima-menu li a'), function(index, value) {
+                     if($(value).attr('href').indexOf(currentPageName)>0){
+                     
+                     $(value).parents( ".ultima-menu  li" ).addClass('active-menuitem');
+                     $(value).parents( ".ultima-menu ul" ).css('display','block');;
+                     console.log($(value));
+                     }
+                     
+                     if(null!= $(value).attr('title')){
+                     if($(value).attr('title').indexOf(currentPageName)>0){
+                     
+                     $(value).parents( ".ultima-menu  li" ).addClass('active-menuitem');
+                     $(value).parents( ".ultima-menu ul" ).css('display','block');;
+                     console.log($(value));
+                     }}
+                     
+                      });
+</h:outputScript>
+       
+       
+
+	</h:form>
+
+</ui:composition>

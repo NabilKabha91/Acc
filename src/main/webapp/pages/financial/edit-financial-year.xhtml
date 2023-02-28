@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form styleClass="years">
+			<p:growl autoUpdate="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12">
+					<div class="card card-w-title">
+						<h1>#{financialYearEditMB.yearInfo.close eq true ? msg['title.edit_financial_year_un_close'] :
+							msg['title.edit_financial_year_close']}</h1>
+						<p:panelGrid id="pnlFile" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+							<p:selectOneMenu id="agentList" value="#{financialYearEditMB.agentInfo}" style="margin-bottom:10px;"
+								converter="omnifaces.SelectItemsConverter" required="true" requiredMessage=" #{msg['agent.select_agent']} #{msg['required']}"
+								filter="true" filterMatchMode="contains">
+								<p:ajax update="yearList" process="@this" />
+								<f:selectItem itemLabel="#{msg['agent.select_agent']}" itemValue="" />
+								<f:selectItems value="#{financialYearEditMB.agentList}" var="agent" itemLabel="#{agent.agentNameAr}" itemValue="#{agent}" />
+							</p:selectOneMenu>
+
+							<p:selectOneMenu id="yearList" value="#{financialYearEditMB.yearInfo}" style="margin-bottom:10px;"
+								converter="omnifaces.SelectItemsConverter" required="true" requiredMessage=" #{msg['newFinancialYear.year']} #{msg['required']}">
+								<p:ajax update="@form" process="@this" listener="#{financialYearEditMB.selectYear}" />
+								<f:selectItem itemLabel="#{msg['newFinancialYear.year']}" noSelectionOption="true" />
+								<f:selectItems value="#{financialYearEditMB.agentInfo.years}" var="year" itemLabel="#{year.toStringDate()}" itemValue="#{year}" />
+							</p:selectOneMenu>
+
+							<h:panelGrid columns="3" id="grd">
+								<p:outputLabel value="#{msg['financial.closeUnClose']}" />
+								<p:graphicImage library="images" rendered="#{financialYearEditMB.yearInfo.close}" name="lock.png" height="30px"></p:graphicImage>
+								<p:graphicImage library="images" rendered="#{!financialYearEditMB.yearInfo.close}" name="unlock.png" height="30px"></p:graphicImage>
+								<p:inputSwitch value="#{financialYearEditMB.yearInfo.close}">
+									<p:ajax process="@this" update="grd"></p:ajax>
+								</p:inputSwitch>
+								</h:panelGrid>
+							<p:spacer />
+							<p:column>
+								<h4>#{msg['serviceType.select_service']}:</h4>
+								<p:selectManyCheckbox id="grid" value="#{financialYearEditMB.serviceTypeSelectedList}" layout="grid" columns="4"
+									valueChangeListener="#{financialYearEditMB.changeServiceTypeList}" converter="omnifaces.SelectItemsConverter">
+									<p:ajax event="change" process="@this" update="@parent:expecHours" />
+									<f:selectItems value="#{financialYearEditMB.serviceTypeList}" var="type" itemLabel="#{type.serviceNameAr}" itemValue="#{type}" />
+								</p:selectManyCheckbox>
+							</p:column>
+						</p:panelGrid>
+
+						<h:panelGroup id="expecHours" layout="block">
+							<ui:fragment rendered="#{not empty financialYearEditMB.yList}">
+								<h2>الساعات المقدرة</h2>
+								<p:tabView value="#{financialYearEditMB.yList}" var="ys" rendered="#{not empty financialYearEditMB.yList}" orientation="top"
+									cache="false">
+									<p:tab title="#{ys.serviceType.serviceNameAr}">
+										<p:panelGrid id="pnl" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+											<ui:repeat var="type" value="#{ys.yinfo}">
+												<p:panelGrid id="pnl2" columns="6" layout="grid" styleClass="ui-panelgrid-blank form-group">
+													<h:panelGroup styleClass="md-inputfield">
+														<p:inputNumber value="#{type.expectedTime}" emptyValue="null" minValue="0" decimalPlaces=" " decimalSeparator=" " symbol=" ">
+															<p:ajax event="blur" update="@this expectedFiancePnl @(.sum)" process="@this" global="false" />
+														</p:inputNumber>
+														<label>#{type.userType.typeNameAr}</label>
+													</h:panelGroup>
+													<h:panelGroup styleClass="md-inputfield">
+														<p:inputNumber value="#{type.hourAvg}" emptyValue="null" minValue="0" decimalPlaces=" " decimalSeparator=" " symbol=" ">
+															<p:ajax event="blur" update="@this expectedFiancePnl @(.sum1) @(.sum2)" process="@this" global="false" />
+														</p:inputNumber>
+														<label>#{msg['newFinancialYear.hour_avg']}</label>
+													</h:panelGroup>
+													<h:panelGroup id="expectedFiancePnl" styleClass="md-inputfield">
+														<p:inputNumber disabled="true" value="#{type.estimatedCosts}" emptyValue="null" minValue="0" decimalPlaces=" "
+															decimalSeparator=" " symbol=" " readonly="true">
+														</p:inputNumber>
+														<label>#{msg['newFinancialYear.estimated_costs']}</label>
+													</h:panelGroup>
+												</p:panelGrid>
+											</ui:repeat>
+											<p:panelGrid id="pnl3" columns="6" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+												<h:panelGroup id="hoursTotalGrp" styleClass="md-inputfield sum">
+													<p:inputNumber disabled="true" value="#{ys.totalExpectedHours}" readonly="true" />
+													<label>#{msg['newFinancialYear.expected_hour_total']}</label>
+												</h:panelGroup>
+												<h:panelGroup id="hoursAvgTotalGrp" styleClass="md-inputfield sum1">
+													<p:inputNumber disabled="true" value="#{ys.totalHourAvg}" readonly="true" />
+													<label>#{msg['newFinancialYear.hour_avg']}</label>
+												</h:panelGroup>
+
+												<h:panelGroup id="expectedFinanceTotalGrp" styleClass="md-inputfield sum2">
+													<p:inputNumber disabled="true" value="#{ys.totalEstimatedCosts}" readonly="true" />
+													<label>#{msg['report.total']} #{msg['newFinancialYear.estimated_costs']}</label>
+												</h:panelGroup>
+											</p:panelGrid>
+										</p:panelGrid>
+									</p:tab>
+								</p:tabView>
+							</ui:fragment>
+						</h:panelGroup>
+						<br />
+						<p:commandButton value="#{msg['edit_btn']}" icon="ui-icon-save" style="width:auto" action="#{financialYearEditMB.save()}"
+							process="@form" update="@form" />
+
+						<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-cancel" style="width:auto" process="@this" update="@this"
+							action="#{financialYearEditMB.cancelAction()}" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
