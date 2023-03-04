@@ -64,9 +64,9 @@ public class AccountsMBean implements Serializable {
                     parent.getId());
 
             if (number == 0l) {
-                finAccount.setAccount_number(Long.valueOf(parent.getAccount_number() + "" + (number + 1)));
+                finAccount.setAccountNumber(Long.valueOf(parent.getAccountNumber() + "" + (number + 1)));
             } else {
-                finAccount.setAccount_number(number + 1);
+                finAccount.setAccountNumber(number + 1);
             }
 
             finAccount.setCompanyId(currentCompany.getId());
@@ -76,7 +76,7 @@ public class AccountsMBean implements Serializable {
         } else {
             parent = new Account();
             long number = accountService.getMaxAccLevelNumber(1l);
-                finAccount.setAccount_number(Long.valueOf("100" + (number + 1)));
+                finAccount.setAccountNumber(Long.valueOf("100" + (number + 1)));
             finAccount.setLevel(1l);
             finAccount.setParent(null);
             finAccount.setCompanyId(currentCompany.getId());
@@ -145,21 +145,20 @@ public class AccountsMBean implements Serializable {
         return currentOffice;
     }
 
+    public void setCurrentOffice(Office currentOffice) {
+        this.currentOffice = currentOffice;
+    }
 
     public Company getCurrentCompany() {
         return currentCompany;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    public void setCurrentOffice(Office currentOffice) {
-        this.currentOffice = currentOffice;
-    }
-
     public void setCurrentCompany(Company currentCompany) {
         this.currentCompany = currentCompany;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 
     public void setCurrentUser(User currentUser) {

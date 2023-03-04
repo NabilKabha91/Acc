@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+				xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Dashboard</ui:define>
+    <ui:define name="head"/>
+    <ui:define name="content">
+
+        <h:form>
+            <p:growl autoUpdate="true" globalOnly="true"/>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <!-- Left Side -->
+                    <div class="card card-w-title">
+						<f:facet name="header">
+							<p:outputLabel value="#{templateAccountsBean.currentCompany.legalCompanyName}"/>
+						</f:facet>
+
+						<p:panelGrid id="pnlAcc" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+							<p:panelGrid    columns="1"  >
+								<label style="font-weight: bold;">رقم الحساب </label>
+
+								<h:inputText readonly ="true" value="#{templateAccountsBean.templateAccount.account_number}"   />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1">
+								<label style="font-weight: bold;">الاسم بالعربي </label>
+
+								<p:inputText readonly ="true" value="#{templateAccountsBean.templateAccount.grpDesc}"/>
+							</p:panelGrid>
+
+							<p:panelGrid columns="1" >
+								<label style="font-weight: bold;">الاسم بالانجليزي </label>
+
+								<p:inputText readonly ="true" value="#{templateAccountsBean.templateAccount.grpDescEn}" required="true" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1"   >
+								<label style="font-weight: bold;"> وصف  الحساب  </label>
+ 								<p:inputText readonly ="true" value="#{templateAccountsBean.templateAccount.grpName}" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1"   >
+								<label style="font-weight: bold;"> نوع الشركة   </label>
+
+								<p:inputText readonly ="true" value="#{templateAccountsBean.templateAccount.companyForm}" />
+							</p:panelGrid>
+							<p:panelGrid columns="1"   >
+								<label style="font-weight: bold;"> طبيعة الشركة    </label>
+
+								<p:inputText readonly ="true" value="#{msg['companyForm.'.concat(templateAccountsBean.templateAccount.companyForm)]}" />
+							</p:panelGrid>
+
+
+						</p:panelGrid>
+
+
+						<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-save" style="width:auto" action="#{templateAccountsBean.cancel()}"
+										 immediate="true"/>
+
+					</div>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

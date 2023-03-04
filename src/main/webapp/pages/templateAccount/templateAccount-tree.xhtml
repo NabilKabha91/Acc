@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">شجرة الحسابات</ui:define>
+    <ui:define name="head">شجرة الحسابات</ui:define>
+    <ui:define name="content">
+            
+        <div class="ui-fluid" >
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                                <h:form id="treeForm">
+                          <p:growl id="messages" showDetail="true" />
+                            	 <br/>
+                            	
+                            	<p:panelGrid columns="1"   >
+							<label style="font-weight: bold;">نوع الشركة   </label>
+								<p:selectOneMenu value="#{templateAccountsTreeBean.selecteCompanyType}"
+												   converter="omnifaces.SelectItemsConverter"
+												 filter="true" filterMatchMode="contains" id="compType">
+									<f:selectItem itemLabel="#{msg['addCompany.companyType']}" itemValue="" />
+									<f:selectItems value="#{templateAccountsTreeBean.comTypeList}" 	var="type"	itemLabel="#{type.codeDesc}" itemValue="#{type}" />
+									    <p:ajax event="change" listener="#{templateAccountsTreeBean.retrieveTreeOnCompanyType}" update="docs" process="@this"  />
+								</p:selectOneMenu>
+
+
+
+						</p:panelGrid>
+
+                          <br/>
+                          <br/>
+                   
+                            
+                              <p:tree    animate="true"     draggable="false" dir="#{profileMBean.direction}"
+                                       selectionMode="single" selection="#{templateAccountsTreeBean.selectedNode}"  id="docs" 
+                                       value="#{templateAccountsTreeBean.root}"
+                                       var="node"  filterBy="#{node}"   >
+
+                                <p:treeNode    icon="fa fa-dollar-sign" type="root">
+                                    <h:outputText value="#{node}"/>
+                                </p:treeNode>
+
+                                <c:forEach items="#{templateAccountsTreeBean.levels}" var="level">
+
+                                    <p:treeNode  icon="fa fa-dollar-sign" type="#{level}">
+                                        <h:outputText value="#{node.fintTempAccount.grpName}"/>
+                                    </p:treeNode>
+
+                                </c:forEach>
+
+                            </p:tree>
+
+                            <c:forEach items="#{templateAccountsTreeBean.levels}" var="level">
+
+                                <p:contextMenu for="docs"   nodetype="#{level}" >
+                                    <p:menuitem  action="#{templateAccountsTreeBean.addAccount}"  value="#{msg['add']}" icon="fa fa-plus" />
+                                    <p:menuitem iconPos=""  action="#{templateAccountsTreeBean.viewAccount}" ajax="false" async="true" target="_blank" value="عرض" icon="fa fa-eye" />
+                                </p:contextMenu>
+
+                            </c:forEach>
+                            
+                            
+                                </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+                    
+
+
+
+    </ui:define>
+</ui:composition>

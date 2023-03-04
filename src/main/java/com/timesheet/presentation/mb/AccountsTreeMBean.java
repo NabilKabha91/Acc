@@ -83,6 +83,7 @@ public class AccountsTreeMBean implements Serializable {
             JsfUtils.redirect("/pages/account/create-new-account.html");
         }
     }
+
     private void buildTree(TreeNode parent, List<AccountDTO> children) {
 
         if (children == null) return;

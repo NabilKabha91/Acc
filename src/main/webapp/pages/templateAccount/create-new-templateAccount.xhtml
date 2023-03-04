@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="title">Dashboard</ui:define>
+	<ui:define name="head" />
+	<ui:define name="content">
+
+		<h:form>
+			<p:growl autoUpdate="true" globalOnly="true" />
+			<div class="ui-g ui-fluid">
+				<div class="ui-g-12 ui-lg-12">
+					<!-- Left Side -->
+					<div class="card card-w-title">
+						<f:facet name="header">
+							<p:outputLabel
+								value="#{templateAccountsBean.currentCompany.legalCompanyName}" />
+						</f:facet>
+
+						<p:panelGrid id="pnlAcc" columns="3" layout="grid"
+							styleClass="ui-panelgrid-blank form-group">
+
+							<p:panelGrid columns="1">
+								<label style="font-weight: bold;">رقم الحساب </label>
+
+								<p:inputText
+									value="#{templateAccountsBean.templateAccount.accountNumber}"
+									required="true" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1">
+								<label style="font-weight: bold;">الاسم بالعربي </label>
+
+								<p:inputText
+									value="#{templateAccountsBean.templateAccount.grpDesc}"
+									required="true" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="1">
+								<label style="font-weight: bold;">الاسم بالانجليزي </label>
+
+								<p:inputText
+									value="#{templateAccountsBean.templateAccount.grpDescEn}"
+									required="true" />
+							</p:panelGrid>
+
+
+
+							<p:panelGrid columns="1">
+								<label style="font-weight: bold;">نوع الشركة </label>
+								<p:selectOneMenu
+									value="#{templateAccountsBean.templateAccount.typeCompany}"
+									converter="omnifaces.SelectItemsConverter" filter="true"
+									filterMatchMode="contains" id="compType">
+									<f:selectItem itemLabel="#{msg['addCompany.companyType']}*"
+										itemValue="" />
+									<f:selectItems value="#{templateAccountsBean.comTypeList}"
+										var="typeCopm" itemLabel="#{typeCopm.codeDesc}"
+										itemValue="#{typeCopm}" />
+								</p:selectOneMenu>
+
+
+
+							</p:panelGrid>
+
+							<p:panelGrid columns="1">
+								<label style="font-weight: bold;"> طبيعة الشركة </label>
+
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="groupto"
+									value="#{templateAccountsBean.templateAccount.companyForm}">
+									<f:selectItems value="#{templateAccountsBean.companyForm}"
+										var="companyForm1"
+										itemLabel="#{msg['companyForm.'.concat(companyForm1)]}"
+										itemValue="#{companyForm1}" />
+
+								</p:selectOneMenu>
+
+							</p:panelGrid>
+							<p:panelGrid columns="1">
+								<label style="font-weight: bold;">فئة الحساب </label>
+
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									filter="true" filterMatchMode="contains" id="groupto"
+									value="#{templateAccountsBean.templateAccount.accType}">
+									<f:selectItems value="#{templateAccountsBean.accTypes}" var="type"
+										itemLabel="#{msg['accType.'.concat(type)]}"
+										itemValue="#{type}" />
+
+								</p:selectOneMenu>
+
+							</p:panelGrid>
+						</p:panelGrid>
+						<p:panelGrid columns="2">
+							<p:commandButton value="#{msg['add']}" icon="ui-icon-save"
+								style="width:auto"
+								action="#{templateAccountsBean.addtempAccount()}" ajax="true"
+								process="@form" update="@form" />
+
+							<p:commandButton value="#{msg['cancel_btn']}" icon="ui-icon-save"
+								style="width:auto" action="#{templateAccountsBean.cancel()}"
+								immediate="true" />
+						</p:panelGrid>
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

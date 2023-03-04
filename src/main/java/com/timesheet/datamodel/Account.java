@@ -17,7 +17,7 @@ public class Account implements Serializable {
     private Long id;
 
     @Column(name = "account_number")
-    private Long account_number;
+    private Long accountNumber;
 
     @Column(name = "grp_name")
     private String grpName;
@@ -98,17 +98,6 @@ public class Account implements Serializable {
     @Column(name = "type7")
     private Long type7;
 
-
-
-//    @Column(name = "name")
-//
-//    private   List<Integer> groupNatList = new ArrayList<Integer>();
-//
-//    @Column(name = "name")
-//    private   List<Integer> groupTypelist = new ArrayList<Integer>();
-
-
-
     public Long getId() {
         return id;
     }
@@ -117,7 +106,13 @@ public class Account implements Serializable {
         this.id = id;
     }
 
+    public Long getAccountNumber() {
+        return accountNumber;
+    }
 
+    public void setAccountNumber(Long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
 
     public String getGrpName() {
         return grpName;
@@ -135,6 +130,22 @@ public class Account implements Serializable {
         this.grpHeader = grpHeader;
     }
 
+    public Long getGrpOfficeId() {
+        return grpOfficeId;
+    }
+
+    public void setGrpOfficeId(Long grpOfficeId) {
+        this.grpOfficeId = grpOfficeId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
     public String getGrpDesc() {
         return grpDesc;
     }
@@ -149,6 +160,70 @@ public class Account implements Serializable {
 
     public void setGrpDescEn(String grpDescEn) {
         this.grpDescEn = grpDescEn;
+    }
+
+    public Account getChildren() {
+        return children;
+    }
+
+    public void setChildren(Account children) {
+        this.children = children;
+    }
+
+    public Account getParent() {
+        return parent;
+    }
+
+    public void setParent(Account parent) {
+        this.parent = parent;
+    }
+
+    public Long getLevel() {
+        return level;
+    }
+
+    public void setLevel(Long level) {
+        this.level = level;
+    }
+
+    public AccType getAccType() {
+        return accType;
+    }
+
+    public void setAccType(AccType accType) {
+        this.accType = accType;
+    }
+
+    public Double getOpeningCreditBalance() {
+        return openingCreditBalance;
+    }
+
+    public void setOpeningCreditBalance(Double openingCreditBalance) {
+        this.openingCreditBalance = openingCreditBalance;
+    }
+
+    public Double getOpeningDebitBalance() {
+        return openingDebitBalance;
+    }
+
+    public void setOpeningDebitBalance(Double openingDebitBalance) {
+        this.openingDebitBalance = openingDebitBalance;
+    }
+
+    public Double getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Double credit) {
+        this.credit = credit;
+    }
+
+    public Double getDebit() {
+        return debit;
+    }
+
+    public void setDebit(Double debit) {
+        this.debit = debit;
     }
 
     public Long getGrpType() {
@@ -231,91 +306,13 @@ public class Account implements Serializable {
         this.type7 = type7;
     }
 
-    public Account getChildren() {
-        return children;
-    }
 
-    public void setChildren(Account children) {
-        this.children = children;
-    }
+//    @Column(name = "name")
+//
+//    private   List<Integer> groupNatList = new ArrayList<Integer>();
+//
+//    @Column(name = "name")
+//    private   List<Integer> groupTypelist = new ArrayList<Integer>();
 
-    public Long getGrpOfficeId() {
-        return grpOfficeId;
-    }
 
-    public void setGrpOfficeId(Long grpOfficeId) {
-        this.grpOfficeId = grpOfficeId;
-    }
-
-    public Long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
-    }
-
-    public Account getParent() {
-        return parent;
-    }
-
-    public void setParent(Account parent) {
-        this.parent = parent;
-    }
-
-    public Long getLevel() {
-        return level;
-    }
-
-    public void setLevel(Long level) {
-        this.level = level;
-    }
-
-    public Double getOpeningCreditBalance() {
-        return openingCreditBalance;
-    }
-
-    public void setOpeningCreditBalance(Double openingCreditBalance) {
-        this.openingCreditBalance = openingCreditBalance;
-    }
-
-    public Double getOpeningDebitBalance() {
-        return openingDebitBalance;
-    }
-
-    public void setOpeningDebitBalance(Double openingDebitBalance) {
-        this.openingDebitBalance = openingDebitBalance;
-    }
-
-    public Double getCredit() {
-        return credit;
-    }
-
-    public void setCredit(Double credit) {
-        this.credit = credit;
-    }
-
-    public Double getDebit() {
-        return debit;
-    }
-
-    public void setDebit(Double debit) {
-        this.debit = debit;
-    }
-
-    public Long getAccount_number() {
-        return account_number;
-    }
-
-    public void setAccount_number(Long account_number) {
-        this.account_number = account_number;
-    }
-
-    public AccType getAccType() {
-        return accType;
-    }
-
-    public void setAccType(AccType accType) {
-        this.accType = accType;
-    }
 }
